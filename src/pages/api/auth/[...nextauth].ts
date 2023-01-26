@@ -2,7 +2,7 @@ import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "../../../models/User";
 import db from "../../../utils/db";
-import {compare} from "bcrypt";
+// import {compare} from "bcrypt";
 
 /**
  * Authentication options that are going to be used by NextAuth
