@@ -13,6 +13,7 @@
   "rules": {
     "quotes": ["error", "double"],
     "require-jsdoc": "warn",
-    "new-cap": "warn"
+    "new-cap": "warn",
+    "max-len": "warn"
   }
 }
