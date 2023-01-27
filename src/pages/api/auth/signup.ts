@@ -3,10 +3,15 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import User from "@/models/User";
-import {hashSync} from "bcrypt";
-import crypto, {CipherGCMTypes, CipherKey} from "crypto";
+import {hash} from "argon2";
+import crypto, {CipherKey} from "crypto";
 
-
+/**
+ * Sign up route
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     return;
@@ -30,14 +35,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Hash the password with bcrypt
-  const hashedPassword = hashSync(password, 12);
+  const hashedPassword = await hash(password);
 
-  // Encrypting the password
-  const key = process.env.ENCRYPTION_KEY;
-  const iv = crypto.randomBytes(16);
+  // Encrypting the password using AES-256-CBC
+  let key = process.env.ENCRYPTION_KEY;
+  key = key?.slice(0, 32);
+
+  // Generate IV and create cipher
+  const iv = crypto.randomBytes(16).subarray(0, 16);
   const cipher = crypto
-      .createCipheriv("aes-256-cbc" as CipherGCMTypes, key as CipherKey, iv);
+      .createCipheriv("aes-256-cbc", key as CipherKey, iv);
 
+  // Encrypt already hashed password for more security
   let encrypted = cipher.update(hashedPassword);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
   const encryptedHashedPassword = `${iv.toString("hex")}

@@ -2,7 +2,8 @@ import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "../../../models/User";
 import db from "../../../utils/db";
-// import {compare} from "bcrypt";
+import crypto, {CipherKey} from "crypto";
+import {verify} from "argon2";
 
 /**
  * Authentication options that are going to be used by NextAuth
@@ -29,13 +30,34 @@ export const authOptions: NextAuthOptions = {
         await db.connect();
 
         const user = await User.findOne({email: email});
-
         if (!user) throw new Error("User not found!");
 
+        // Split the IV and the encrypted hashed password
+        const [iv, encryptedHashedPassword] = user.password.split(":");
+
+        // Get the encryption key from the environment variable
+        // and truncate the key to 32 bytes
+        let key = process.env.ENCRYPTION_KEY;
+        key = key?.slice(0, 32);
+
+        // Create the IV buffer and buffer for the encrypted hashed password
+        const ivBuffer = Buffer.from(iv, "hex").subarray(0, 16);
+        const encryptedHashedPasswordBuffer = Buffer
+            .from(encryptedHashedPassword, "hex");
+
+        // Create the decipher
+        const decipher = crypto
+            .createDecipheriv("aes-256-cbc",
+            key as CipherKey, ivBuffer);
+
+        // Decrypt the hashed password
+        let decrypted = decipher.update(encryptedHashedPasswordBuffer);
+        decrypted = Buffer.concat([decrypted, decipher.final()]);
+        const hashedPassword = decrypted.toString();
+
         // Comparing the passwords
-        const isValid = (password === user.password);
-        // const isValid = await compare(password, user.password);
-        if (!isValid) throw new Error(" Wrong credentials!");
+        const isValid = await verify(hashedPassword, password);
+        if (!isValid) throw new Error("Wrong credentials!");
 
         await db.disconnect();
 
