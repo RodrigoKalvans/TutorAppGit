@@ -1,9 +1,10 @@
 import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import User from "../../../models/User";
 import db from "../../../utils/db";
 import crypto, {CipherKey} from "crypto";
 import {verify} from "argon2";
+import Student from "../../../models/Student";
+import Tutor from "@/models/Tutor";
 
 /**
  * Authentication options that are going to be used by NextAuth
@@ -29,8 +30,11 @@ export const authOptions: NextAuthOptions = {
 
         await db.connect();
 
-        const user = await User.findOne({email: email});
-        if (!user) throw new Error("User not found!");
+        let user = await Student.findOne({email: email});
+        if (!user) {
+          user = await Tutor.findOne({email: email});
+          if (!user) throw new Error("Wrong credentials!");
+        }
 
         // Split the IV and the encrypted hashed password
         const [iv, encryptedHashedPassword] = user.password.split(":");
