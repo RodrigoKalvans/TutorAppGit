@@ -17,7 +17,7 @@ export default function Home() {
       <main className="bg-scroll bg-landing bg-contain bg-no-repeat bg-top z-0 w-full">
 
         <div className="flex justify-center sticky top-0 z-50">
-        <Navbar />
+          <Navbar />
         </div>
 
         {/* Top part of page (everything in front of bg image) */}
@@ -33,32 +33,37 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex-col ml-20">
+          <div className="ml-20">
             <Button text="Browse" color="orange" link="" />
             <Button text="Join Us" color="blue" link="" />
           </div>
         </div>
 
         {/* Top subjects */}
-        <h1 className="content-center mt-80 p-20 text-bold text-5xl flex justify-center ">Browse tutors by subject.</h1>
-        <div className="flex justify-center">
-          <div className="w-4/5 bord max-w-1/5 flex justify-center">
-            {/* {subjects.map((s) => {
-              <div className="">
-                yo
-                <SubjectBox  />
-              </div>
-            })} */}
-            <SubjectBox />
-            <SubjectBox subject="Mathematics" />
+        <div>
+          <h1 className="content-center mt-80 p-20 text-bold text-5xl flex justify-center ">Browse tutors by&nbsp;<div className="text-orange-500 ">Subject</div></h1>
+          <div className="flex justify-center">
+            <div className="w-4/5 bord max-w-1/5 flex justify-center">
+              {/* {subjects.map((s) => {
+                <div className="">
+                  yo
+                  <SubjectBox  />
+                </div>
+              })} */}
+              <SubjectBox />
+              <SubjectBox subject="Mathematics" />
+            </div>
           </div>
         </div>
 
         {/* Top tutors */}
-        <div className="flex justify-center m-20 w-4/5 p-1">
-          <div className="bord rounded-md flex justify-center">
-            <div className="text-4xl pl-5 py-10">Take a look at our <div className="text-orange-500">trending tutors</div></div>
-            <TutorCard />
+        <div className="flex justify-center mt-20 w-full">
+          <div className="bord rounded-md w-4/5 flex-col justify-center p-3">
+            <div className="text-4xl pl-10 py-10 w-full">Take a look at our <span className="text-orange-500">Trending Tutors</span></div>
+            <div className="flex items-center justify-around">
+              <TutorCard />
+              <TutorCard />
+            </div>
           </div>
         </div>
 

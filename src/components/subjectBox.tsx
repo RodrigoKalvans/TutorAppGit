@@ -1,5 +1,6 @@
 // import {NextResponse} from "next/server";
 
+
 // TODO: Need to format number of tutors
 
 export default function SubjectBox({img = "", subject = "placeholder"}: { img: string, subject: string }) {
@@ -13,16 +14,15 @@ export default function SubjectBox({img = "", subject = "placeholder"}: { img: s
 
 
   return (
-    <div className="bord rounded-md min-w-1/5 w-80 p-4 m-10 inline-flex hover:bg-white-800 hover:shadow">
-      <div className="bord h-full w-2/5">
+    <div className="bord rounded-md min-w-1/5 w-80 p-4 m-10 inline-flex hover:bg-gray-50 hover:shadow-xl">
+      <div className=" h-full w-2/5">
                 image
       </div>
       <div className="flex-col h-full pl-5 w-auto">
-        <div className="text-xl">
+        <div className="text-xl p-1">
           {subject}
         </div>
-        <br />
-        <div className="text-sm">
+        <div className="text-sm p-1">
           {plc} tutors
         </div>
       </div>
