@@ -8,9 +8,19 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'landing': "url('../public/landing-background-image.jpg')",
+        'landing': "url('../public/images/landing-background-image.jpg')",
       },
+      width: {
+        '3/5': "60%",
+      },
+      borderRadius: {
+        '4xl': "2rem",
+      },
+      colors: {
+
+      }
     },
+    
   },
   plugins: [],
 }
