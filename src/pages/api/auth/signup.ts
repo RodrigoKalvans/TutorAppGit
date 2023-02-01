@@ -1,7 +1,6 @@
 import db from "../../../utils/db";
 import {StatusCodes} from "http-status-codes";
-import {NextApiResponse} from "next";
-import {NextApiRequest} from "next";
+import {NextApiResponse, NextApiRequest} from "next";
 import {hash} from "argon2";
 import crypto, {CipherKey} from "crypto";
 import Student from "../../../models/Student";
@@ -22,9 +21,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!reqUser.firstName || !reqUser.lastName ||
         !reqUser.role || !reqUser.email || !reqUser.password ||
-        (reqUser.role !== "student" || reqUser !== "tutor")) {
+        (reqUser.role !== "student" && reqUser.role !== "tutor")) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({message: "Not enough information (Validation Error)"});
+    return;
   }
 
   await db.connect();
@@ -35,12 +35,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (foundUser) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({message: "User with this email already exists"});
+    return;
   } else {
     foundUser = await Tutor.findOne({email: reqUser.email});
 
     if (foundUser) {
       res.status(StatusCodes.UNPROCESSABLE_ENTITY)
           .send({message: "User with this email already exists"});
+      return;
     }
   }
 
@@ -76,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   delete newUser.password;
   delete newUser.role;
 
-  res.status(StatusCodes.CREATED).json({user: newUser.toJson()});
+  res.status(StatusCodes.CREATED).json({user: newUser});
 };
 
 export default handler;

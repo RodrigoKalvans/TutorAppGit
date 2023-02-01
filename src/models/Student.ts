@@ -7,7 +7,7 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
       firstName: {type: String, required: true},
       secondName: {types: String},
       lastName: {type: String, required: true},
-      role: "student",
+      role: {type: String, required: true, default: "student"},
       picture: {type: Buffer},
       description: {type: String},
       language: [{type: String}],

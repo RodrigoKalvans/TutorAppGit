@@ -7,7 +7,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       firstName: {type: String, required: true},
       secondName: {types: String},
       lastName: {type: String, required: true},
-      role: "tutor",
+      role: {type: String, required: true, default: "tutor"},
       picture: {type: Buffer},
       description: {type: String},
       language: [{type: String}],
