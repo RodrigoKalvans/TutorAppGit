@@ -19,7 +19,7 @@ import Navbar from "@/components/navbar";
 import SubjectBox from "@/components/landingPage/subjectBox";
 import TutorCard from "@/components/landingPage/tutorCard";
 
-// TODO: Get subjects that will be displayed
+// TODO: Add subject images
 // TODO: Get tutors that will be displayed
 
 export default function Home() {
