@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React from "react";
 
 // TODO: typing and conditional props
 export default function Button({children, style, link = "/"}: {children: React.ReactNode, style?: string, link?: string}) {

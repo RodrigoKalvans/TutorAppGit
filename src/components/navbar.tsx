@@ -15,6 +15,8 @@ export default function Navbar() {
           />
         </Link>
       </span>
+
+      {/** search field */}
       <span className="form-control w-1/5 pl-3 flex-row relative text-black-800">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
