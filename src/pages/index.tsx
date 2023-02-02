@@ -77,14 +77,18 @@ export default function Home() {
         {/** Discover more about us */}
         <LandingPageContainer>
           <LandingPageBlurBox style="bg-blue-200 ">
-            <div className=" pl-10 py-10 ml-auto mr-0 ">
-              <h1 className="text-5xl">Discover more <br/><div className="text-blue-900">about us</div></h1>
-              <p className="w-1/2 text-2xl my-10">
-                We are so excited to connect you with the best tutors to help you excel in your studies.
-                If you want to know more about our mission,
-                values, and the story behind our platform, visit our about us page!
-              </p>
-              <Button style="bg-blue-600" >Learn more about us</Button>
+            <div className=" pl-10 py-10 ml-auto mr-0 flex-col justify-end ">
+              <h1 className="text-5xl text-right px-5">Discover more <br/><div className="text-blue-900">about us</div></h1>
+              <div className="w-full flex justify-end">
+                <p className="w-1/2 text-2xl my-10 text-right ">
+                  We are so excited to connect you with the best tutors to help you excel in your studies.
+                  If you want to know more about our mission,
+                  values, and the story behind our platform, visit our about us page!
+                </p>
+              </div>
+              <div className="flex w-full justify-end">
+                <Button style="bg-blue-600 hover:bg-blue-700" >Learn more about us</Button>
+              </div>
             </div>
           </LandingPageBlurBox>
         </LandingPageContainer>
@@ -100,7 +104,7 @@ export default function Home() {
                 Your support will help us to continue to improve and expand our services
                 to reach more students who need our help.
               </p>
-              <Button style="bg-blue-600" >Support us now</Button>
+              <Button style="bg-blue-600 hover:bg-blue-700" >Support us now</Button>
             </div>
           </LandingPageBlurBox>
         </LandingPageContainer>

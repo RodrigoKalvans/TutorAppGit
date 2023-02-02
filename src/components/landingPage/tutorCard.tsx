@@ -32,7 +32,7 @@ export default function TutorCard({id}: { id?: number }) {
           <span className="w-1/2 flex-col px-5 justify-center shadow-lg bg-blue-800 rounded-xl">
             <div className="font-bold py-4 text-xl">{name}</div>
             <div className="">{bio}</div>
-            <Button style="bg-orange-600 m-5">View Profile</Button>
+            <Button style="bg-orange-600 hover:bg-orange-700 m-5">View Profile</Button>
           </span>
         </div>
 
@@ -48,7 +48,7 @@ export default function TutorCard({id}: { id?: number }) {
                 <div className="text-md"><span>icon</span>{twitter}</div>
               </div>
             </div>
-            <Button style="bg-blue-600 m-5 mb-8">Follow</Button>
+            <Button style="bg-blue-600 hover:bg-blue-700 m-5 mb-8">Follow</Button>
           </span>
 
           {/** reviews */}

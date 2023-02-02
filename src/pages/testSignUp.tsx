@@ -1,3 +1,4 @@
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 
 const testSignUp = () => {
@@ -6,7 +7,7 @@ const testSignUp = () => {
   const [email, setEmail] = useState(null);
   const [password,setPassword] = useState(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     const {id , value} = e.target;
     if(id === "firstName"){
         setFirstName(value);
@@ -22,6 +23,8 @@ const testSignUp = () => {
     }
   }
 
+  // Signs up a new user, logs him in and redirects to the testAuth page where information
+  // about him is displayed
   const handleSubmit = async () => {
     const res = await fetch("http://localhost:3000/api/auth/signup", {
       method: "POST",
@@ -39,7 +42,17 @@ const testSignUp = () => {
 
     const json = await res.json();
 
-    console.log(json);
+    if (json) {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        callbackUrl: "/testAuth"
+      });
+
+      if (result?.error) {
+        alert(result.error);
+      }
+    }
   }
 
   return(
