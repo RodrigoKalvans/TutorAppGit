@@ -1,10 +1,10 @@
 import db from "../../../utils/db";
 import {StatusCodes} from "http-status-codes";
-import {NextApiResponse} from "next";
-import {NextApiRequest} from "next";
-import User from "@/models/User";
+import {NextApiResponse, NextApiRequest} from "next";
 import {hash} from "argon2";
 import crypto, {CipherKey} from "crypto";
+import Student from "../../../models/Student";
+import Tutor from "../../../models/Tutor";
 
 /**
  * Sign up route
@@ -17,25 +17,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const {firstName, lastName, role, email, password} = req.body;
+  const reqUser = req.body;
 
-  if (!firstName || !lastName || !role || !email || !password) {
+  if (!reqUser.firstName || !reqUser.lastName ||
+        !reqUser.role || !reqUser.email || !reqUser.password ||
+        (reqUser.role !== "student" && reqUser.role !== "tutor")) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
-        .send({message: "Validation Error"});
+        .send({message: "Not enough information (Validation Error)"});
+    return;
   }
 
   await db.connect();
 
-  // Check if user already exists
-  const foundUser = await User.findOne({email: email});
+  // Check if user already exists as a student or as a tutor
+  let foundUser = await Student.findOne({email: reqUser.email});
 
   if (foundUser) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
-        .send({message: "User already exists"});
+        .send({message: "User with this email already exists"});
+    return;
+  } else {
+    foundUser = await Tutor.findOne({email: reqUser.email});
+
+    if (foundUser) {
+      res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+          .send({message: "User with this email already exists"});
+      return;
+    }
   }
 
   // Hash the password with bcrypt
-  const hashedPassword = await hash(password);
+  const hashedPassword = await hash(reqUser.password);
 
   // Encrypting the password using AES-256-CBC
   let key = process.env.ENCRYPTION_KEY;
@@ -52,17 +64,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const encryptedHashedPassword = `${iv.toString("hex")}
       :${encrypted.toString("hex")}`;
 
-  // Initializing a new user
-  const newUser = new User({
-    firstName: firstName,
-    lastName: lastName,
-    role: role,
-    email: email,
-    password: encryptedHashedPassword,
-  });
+  // Initializing a new user depending on their role
+  reqUser.password = encryptedHashedPassword;
+  let newUser;
+  if (reqUser.role === "student") {
+    newUser = new Student(reqUser);
+    await newUser.save();
+  } else {
+    newUser = new Tutor(reqUser);
+    await newUser.save();
+  }
 
-  await newUser.save();
-  res.status(StatusCodes.CREATED).json({message: "User created successfully"});
+  delete newUser.password;
+  delete newUser.role;
+
+  res.status(StatusCodes.CREATED).json({user: newUser});
 };
 
 export default handler;

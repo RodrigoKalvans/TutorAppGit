@@ -1,0 +1,48 @@
+import mongoose from "mongoose";
+
+const TutorSchema: mongoose.Schema = new mongoose.Schema(
+    {
+      email: {type: String, required: true, unique: true},
+      password: {type: String, required: true},
+      firstName: {type: String, required: true},
+      secondName: {types: String},
+      lastName: {type: String, required: true},
+      role: {type: String, required: true, default: "tutor"},
+      picture: {type: Buffer},
+      description: {type: String},
+      language: [{type: String}],
+      phoneNumber: {type: String},
+      emailAddress: {type: String},
+      location: {type: String},
+      isOnlineAvailable: {type: Boolean},
+      subjectsOfSpecialty: [{type: String}],
+      priceForLessons: {type: Map},
+      followers: [
+        {
+          userId: {type: String},
+          accountType: {type: String},
+        },
+      ],
+      following: [
+        {
+          userId: {type: String},
+          accountType: {type: String},
+        },
+      ],
+      subjects: [{type: String}],
+      rating: {type: Number},
+      reviews: [{reviewId: {type: Number}}],
+      activity: [{
+        activityId: {type: String},
+        activityType: {type: String},
+      }],
+      posts: [{postId: {type: String}}],
+      isPromoted: {type: Boolean, default: false},
+      promotedDue: {type: Date, default: undefined},
+      isSuspended: {type: Boolean, default: false},
+    },
+);
+
+const Tutor = mongoose.models.Tutor ||
+      mongoose.model("Tutor", TutorSchema);
+export default Tutor;

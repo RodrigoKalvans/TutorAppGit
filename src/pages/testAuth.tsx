@@ -1,8 +1,9 @@
 import {signIn, signOut, useSession} from "next-auth/react";
 
-// password12345 
-const fakeAuth = () => {
+
+const testAuth = () => {
   const {data: session} = useSession();
+
   return (
     <div>
       <p>fakeAuth</p>
@@ -16,7 +17,7 @@ const fakeAuth = () => {
           <p>Your first name is: {session.user.firstName}</p>
           <p>Your last name is: {session.user.lastName}</p>
           <p>Your role: {session.user.role}</p>
-          <button onClick={() => signOut()}>Sign Out</button>
+          <button onClick={async () => await signOut()}>Sign Out</button>
         </div>
       )}
 
@@ -24,4 +25,4 @@ const fakeAuth = () => {
   );
 };
 
-export default fakeAuth;
+export default testAuth;
