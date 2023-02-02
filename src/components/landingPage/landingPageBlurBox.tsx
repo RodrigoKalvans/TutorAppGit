@@ -4,7 +4,7 @@ import React from "react";
 export default function LandingPageBlurBox({children, style = ""}: { children: React.ReactNode, style?: string }) {
   return (
     <>
-      <div className={`${style} w-4/5 mt-20 rounded-4xl p-6 pb-10 shadow-xl`}>
+      <div className={`${style} w-4/5 mt-16 rounded-4xl p-6 pb-10 shadow-xl`}>
         {children}
       </div>
     </>
