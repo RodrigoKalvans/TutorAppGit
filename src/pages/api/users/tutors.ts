@@ -4,6 +4,12 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 
+/**
+ * Tutors route
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
   // GET request
@@ -17,6 +23,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return;
 };
 
+/**
+ * GET tutors request
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const getTutors = async (req: NextApiRequest, res: NextApiResponse) => {
   const foundTutors = await Tutor.find(req.query);
 
@@ -24,6 +36,12 @@ const getTutors = async (req: NextApiRequest, res: NextApiResponse) => {
   return;
 };
 
+/**
+ * PUT tutor request
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const updateTutor = async (req: NextApiRequest, res: NextApiResponse) => {
   const check = await checkToken(req);
 
@@ -53,6 +71,12 @@ const updateTutor = async (req: NextApiRequest, res: NextApiResponse) => {
   return;
 };
 
+/**
+ * DELETE tutor request
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const deleteTutor = async (req: NextApiRequest, res: NextApiResponse) => {
   const check = await checkToken(req);
 

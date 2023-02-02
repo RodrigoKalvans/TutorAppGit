@@ -4,6 +4,12 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 
+/**
+ * Students route
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
   // GET request
@@ -17,6 +23,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return;
 };
 
+/**
+ * GET students request
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const getStudents = async (req: NextApiRequest, res: NextApiResponse) => {
   const foundStudents = await Student.find(req.query);
 
@@ -24,6 +36,12 @@ const getStudents = async (req: NextApiRequest, res: NextApiResponse) => {
   return;
 };
 
+/**
+ * PUT student request
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const updateStudent = async (req: NextApiRequest, res: NextApiResponse) => {
   const check = await checkToken(req);
 
@@ -50,6 +68,12 @@ const updateStudent = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+/**
+ * DELETE student request
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const deleteStudent = async (req: NextApiRequest, res: NextApiResponse) => {
   const check = await checkToken(req);
 
