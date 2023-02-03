@@ -12,25 +12,26 @@ import db from "@/utils/db";
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
+  const {id} = req.query;
   // GET request
-  if (req.method === "GET") await getTutors(req, res);
+  if (req.method === "GET") await getTutorById(res, id as String);
   // PUT request
-  if (req.method === "PUT") await updateTutor(req, res);
+  if (req.method === "PUT") await updateTutorById(req, res, id as String);
   // DELETE request
-  if (req.method === "DELETE") await deleteTutor(req, res);
+  if (req.method === "DELETE") await deleteTutorById(req, res, id as String);
 
   await db.disconnect();
   return;
 };
 
 /**
- * GET tutors request
- * @param {NextApiRequest} req HTTP request received from client side
+ * GET tutor by id request
  * @param {NextApiResponse} res HTTP response sent to client side
+ * @param {String} id tutor id from dynamic page
  * @return {null} returns null in case the method of request is incorrect
  */
-const getTutors = async (req: NextApiRequest, res: NextApiResponse) => {
-  const foundTutors = await Tutor.find(req.query);
+const getTutorById = async (res: NextApiResponse, id: String) => {
+  const foundTutors = await Tutor.findById(id);
 
   res.status(StatusCodes.OK).send(foundTutors);
   return;
@@ -40,9 +41,10 @@ const getTutors = async (req: NextApiRequest, res: NextApiResponse) => {
  * PUT tutor request
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
+ * @param {String} id tutor id from dynamic page
  * @return {null} returns null in case the method of request is incorrect
  */
-const updateTutor = async (req: NextApiRequest, res: NextApiResponse) => {
+const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const check = await checkToken(req);
 
   if (!check) {
@@ -53,10 +55,9 @@ const updateTutor = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  console.log("Called. ID is ", req.query.id);
   try {
     const updatedTutors = await Tutor
-        .findByIdAndUpdate(req.query.id,
+        .findByIdAndUpdate(id,
             {
               $set: req.body,
             },
@@ -75,9 +76,10 @@ const updateTutor = async (req: NextApiRequest, res: NextApiResponse) => {
  * DELETE tutor request
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
+ * @param {String} id tutor id from dynamic page
  * @return {null} returns null in case the method of request is incorrect
  */
-const deleteTutor = async (req: NextApiRequest, res: NextApiResponse) => {
+const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const check = await checkToken(req);
 
   if (!check) {
@@ -89,7 +91,7 @@ const deleteTutor = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const tutorToDelete = await Tutor.findByIdAndDelete(req.query.id);
+    const tutorToDelete = await Tutor.findByIdAndDelete(id);
 
     res.status(StatusCodes.OK).send({
       message: "User has been deleted",

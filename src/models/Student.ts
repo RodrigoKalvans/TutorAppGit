@@ -33,6 +33,7 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
       posts: [{postId: {type: String}}],
       isSuspended: {type: Boolean, default: false},
     },
+    {timestamps: true},
 );
 
 const Student = mongoose.models.Student ||
