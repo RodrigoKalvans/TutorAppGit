@@ -1,5 +1,5 @@
 import Tutor from "../../../models/Tutor";
-import checkToken from "../../../utils/checkToken";
+import checkTokenForUsers from "../../../utils/checkToken";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
@@ -45,7 +45,7 @@ const getTutorById = async (res: NextApiResponse, id: String) => {
  * @return {null} returns null in case the method of request is incorrect
  */
 const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await checkToken(req);
+  const check = await checkTokenForUsers(req);
 
   if (!check) {
     res.status(StatusCodes.UNAUTHORIZED)
@@ -80,7 +80,7 @@ const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
  * @return {null} returns null in case the method of request is incorrect
  */
 const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await checkToken(req);
+  const check = await checkTokenForUsers(req);
 
   if (!check) {
     res.status(StatusCodes.UNAUTHORIZED)
