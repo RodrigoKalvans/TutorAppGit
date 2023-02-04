@@ -1,6 +1,10 @@
 import {signIn} from "next-auth/react";
 import {useState} from "react";
 
+/**
+ * Page for testing signing up
+ * @return {JSX} page to be displayed
+ */
 const testSignUp = () => {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);

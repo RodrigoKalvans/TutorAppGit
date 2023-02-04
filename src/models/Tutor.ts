@@ -41,6 +41,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       promotedDue: {type: Date, default: undefined},
       isSuspended: {type: Boolean, default: false},
     },
+    {timestamps: true},
 );
 
 const Tutor = mongoose.models.Tutor ||
