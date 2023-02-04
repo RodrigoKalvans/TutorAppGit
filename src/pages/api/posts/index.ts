@@ -1,8 +1,8 @@
-import checkTokenForUsers from "../../../utils/checkToken";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import Post from "../../../models/Post";
+import {getToken} from "next-auth/jwt";
 
 /**
  * Posts route
@@ -41,7 +41,7 @@ const getPosts = async (req: NextApiRequest, res: NextApiResponse) => {
  * @return {null} returns null in case the method of request is incorrect
  */
 const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
-  const token = await checkTokenForUsers(req);
+  const token = await getToken({req});
 
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)

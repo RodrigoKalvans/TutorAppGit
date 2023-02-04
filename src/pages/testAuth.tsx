@@ -1,6 +1,9 @@
 import {signIn, signOut, useSession} from "next-auth/react";
 
-
+/**
+ * Page for testing authentication
+ * @return {JSX} page to be displayed
+ */
 const testAuth = () => {
   const {data: session} = useSession();
 
@@ -18,7 +21,7 @@ const testAuth = () => {
           <p>Your last name is: {session.user.lastName}</p>
           <p>Your role: {session.user.role}</p>
           <div><button onClick={async () => {
-            const res = await fetch("http://localhost:3000/api/tutors/63d81bd6bcac71a5dcc321fe",
+            const res = await fetch(`http://localhost:3000/api/tutors/${session.user.id}`,
                 {
                   method: "PUT",
                   body: JSON.stringify({

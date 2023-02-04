@@ -68,6 +68,8 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }
+
+  return;
 };
 
 /**

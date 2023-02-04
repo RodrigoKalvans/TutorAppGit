@@ -78,6 +78,8 @@ const updatePostById = async (req: NextApiRequest, res: NextApiResponse, id: Str
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }
+
+  return;
 };
 
 /**
