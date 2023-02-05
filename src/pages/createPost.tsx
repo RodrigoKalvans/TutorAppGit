@@ -6,7 +6,7 @@ const createPost = () => {
 
   const [description, setDescription] = useState("");
 
-  const createPost = async () => {
+  const createPostRequest = async () => {
     const res = await fetch("http://localhost:3000/api/posts",
         {
           method: "POST",
@@ -38,7 +38,7 @@ const createPost = () => {
             <input type="text" onChange={(e) => setDescription(e.target.value)} />
             <button onClick={async (e) => {
               e.preventDefault();
-              await createPost();
+              await createPostRequest();
             }}>Create</button>
           </form>
         </>
