@@ -70,15 +70,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (reqUser.role === "student") {
     newUser = new Student(reqUser);
     await newUser.save();
-  } else {
+  } else if (reqUser.role === "tutor") {
     newUser = new Tutor(reqUser);
     await newUser.save();
+  } else {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "This role is not supported"});
   }
 
   delete newUser.password;
   delete newUser.role;
 
   res.status(StatusCodes.CREATED).json({user: newUser});
+  return;
 };
 
 export default handler;
