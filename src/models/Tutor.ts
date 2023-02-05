@@ -34,7 +34,10 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       reviews: [{reviewId: {type: Number}}],
       activity: [{
         activityId: {type: String},
-        activityType: {type: String},
+        activityType: {type: String, enum: {
+          values: ["comment", "like", "review"],
+          message: "{VALUE} is not supported as an activity type!",
+        }},
       }],
       posts: [{postId: {type: String}}],
       isPromoted: {type: Boolean, default: false},
