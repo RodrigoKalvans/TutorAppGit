@@ -3,7 +3,9 @@ import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import Comment from "../../../../../models/Comment";
 import {getToken} from "next-auth/jwt";
-import Post from "@/models/Post";
+import Post from "../../../../../models/Post";
+import Tutor from "../../../../../models/Tutor";
+import Student from "../../../../../models/Student";
 
 /**
  * Comment route
@@ -65,13 +67,14 @@ const createComment = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const newComment = new Comment(reqComment);
 
-  const updatedPost = await Post.findByIdAndUpdate(reqComment.postId,
+  const commentedPost = await Post.findByIdAndUpdate(reqComment.postId,
       {
         $push: {comments: {commentId: newComment._id}},
       });
 
-  if (updatedPost) {
+  if (commentedPost) {
     await newComment.save();
+    await addCommentToUserActivity(newComment.role, newComment._id, newComment.userId);
     res.status(StatusCodes.CREATED).send({
       message: "Comment was successfully created!",
       comment: newComment,
@@ -83,6 +86,18 @@ const createComment = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   return;
+};
+
+const addCommentToUserActivity = async (role: String, commentId: String, userId: String) => {
+  if (role === "tutor") {
+    await Tutor.findByIdAndUpdate(userId, {
+      $push: {activity: {activityId: commentId, activityType: "comment"}},
+    });
+  } else if (role === "student") {
+    await Student.findByIdAndUpdate(userId, {
+      $push: {activity: {activityId: commentId, activityType: "comment"}},
+    });
+  }
 };
 
 
