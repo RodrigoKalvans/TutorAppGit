@@ -1,7 +1,7 @@
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
-import Post from "../../../models/Post";
+import Post from "../../../../models/Post";
 import {getToken} from "next-auth/jwt";
 
 /**
