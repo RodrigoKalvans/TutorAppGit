@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 /**
- * GET post by id request
+ * GET posts request
  * @param {NextApiRequest} req HTTP req received from client
  * @param {NextApiResponse} res HTTP response sent to client side
  * @return {null} returns null in case the method of request is incorrect

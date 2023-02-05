@@ -3,6 +3,7 @@ import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import Post from "../../../../models/Post";
 import {getToken} from "next-auth/jwt";
+import Comment from "@/models/Comment";
 
 /**
  * Dynamic post route
@@ -83,7 +84,9 @@ const updatePostById = async (req: NextApiRequest, res: NextApiResponse, id: Str
 };
 
 /**
- * DELETE post request
+ * DELETE request
+ * Deletes the post only if the user tries to delete their own post
+ * Also all the comments are deleted from the database
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
  * @param {String} id post id from dynamic page
@@ -111,10 +114,13 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
   }
 
   try {
+    deletingPost.comments.forEach(async (element: {commentId: String;}) => {
+      await Comment.findByIdAndDelete(element.commentId);
+    });
     const postToDelete = await Post.findByIdAndDelete(id);
 
     res.status(StatusCodes.OK).send({
-      message: "Post has been deleted",
+      message: "Post with its comments has been deleted",
       post: postToDelete,
     });
   } catch (error) {
