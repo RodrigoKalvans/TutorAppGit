@@ -3,6 +3,7 @@ import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import Comment from "../../../../../models/Comment";
 import {getToken} from "next-auth/jwt";
+import {deleteCommentFromUserActivity} from "@/utils/apiHelperFunction/commentHelper";
 
 /**
  * Dynamic comment route
@@ -66,6 +67,7 @@ const deleteCommentById = async (req: NextApiRequest, res: NextApiResponse, id: 
   try {
     const commentToDelete = await Comment.findByIdAndDelete(id);
 
+    await deleteCommentFromUserActivity(commentToDelete._id, commentToDelete.role, commentToDelete.userId);
     res.status(StatusCodes.OK).send({
       message: "Comment has been deleted",
       comment: commentToDelete,
