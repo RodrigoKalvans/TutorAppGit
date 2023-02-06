@@ -4,6 +4,8 @@ import db from "@/utils/db";
 import Post from "../../../../models/Post";
 import {getToken} from "next-auth/jwt";
 import Comment from "@/models/Comment";
+import Student from "@/models/Student";
+import Tutor from "@/models/Tutor";
 
 /**
  * Dynamic post route
@@ -115,7 +117,21 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
 
   try {
     deletingPost.comments.forEach(async (element: {commentId: String;}) => {
-      await Comment.findByIdAndDelete(element.commentId);
+      const deletedComment = await Comment.findByIdAndDelete(element.commentId);
+
+      if (deletedComment.role === "student") {
+        await Student.findByIdAndUpdate(deletedComment.userId, {
+          $pull: {activity: {activityId: deletedComment._id}},
+        },
+        {safe: true},
+        );
+      } else {
+        await Tutor.findByIdAndUpdate(deletedComment.userId, {
+          $pull: {activity: {activityId: deletedComment._id}},
+        },
+        {safe: true},
+        );
+      }
     });
     const postToDelete = await Post.findByIdAndDelete(id);
 
