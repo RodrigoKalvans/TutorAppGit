@@ -136,9 +136,12 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
   try {
     const reviewToDelete = await Review.findByIdAndDelete(id);
 
-    // TODO: DELETE ACTIVITY FROM USER WHO LEFT REVIEW AND DELETE REVIEW REFERENCE FROM REVIEWED USER ARRAY
+    // Delete references from other models to the deleted review
+    await deleteActivityFromUser(reviewToDelete._id, reviewToDelete.reviewerUserRole, reviewToDelete.reviewerUserId);
+    await deleteReviewFromReviewedUser(reviewToDelete._id, reviewToDelete.reviewedUserRole, reviewToDelete.reviewedUserId);
+
     res.status(StatusCodes.OK).send({
-      message: "Review has been deleted",
+      message: "Review and its references have been deleted.",
       review: reviewToDelete,
     });
   } catch (error) {
@@ -146,4 +149,36 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
   }
 
   return;
+};
+
+const deleteActivityFromUser = async (reviewId: String, role: String, userId: String) => {
+  if (role === "student") {
+    await Student.findByIdAndUpdate(userId, {
+      $pull: {activity: {activityId: reviewId}},
+    },
+    {safe: true},
+    );
+  } else {
+    await Tutor.findByIdAndUpdate(userId, {
+      $pull: {activity: {activityId: reviewId}},
+    },
+    {safe: true},
+    );
+  }
+};
+
+const deleteReviewFromReviewedUser = async (reviewId: String, role: String, userId: String) => {
+  if (role === "student") {
+    await Student.findByIdAndUpdate(userId, {
+      $pull: {reviews: {reviewId: reviewId}},
+    },
+    {safe: true},
+    );
+  } else {
+    await Tutor.findByIdAndUpdate(userId, {
+      $pull: {reviews: {reviewId: reviewId}},
+    },
+    {safe: true},
+    );
+  }
 };
