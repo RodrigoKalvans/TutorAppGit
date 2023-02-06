@@ -3,6 +3,8 @@ import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import Post from "../../../models/Post";
 import {getToken} from "next-auth/jwt";
+import Student from "@/models/Student";
+import Tutor from "@/models/Tutor";
 
 /**
  * Posts route
@@ -62,17 +64,33 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const newPost = new Post(reqPost);
+  try {
+    const newPost = new Post(reqPost);
 
-  await newPost.save();
+    await addPostToUserPosts(newPost.role, newPost._id, newPost.userId);
+    await newPost.save();
 
-  res.status(StatusCodes.CREATED).send({
-    message: "Post was successfully created!",
-    post: newPost,
-  });
+    res.status(StatusCodes.CREATED).send({
+      message: "Post was successfully created!",
+      post: newPost,
+    });
+  } catch (error) {
+    res.status(StatusCodes.NOT_FOUND).send({error});
+  }
 
   return;
 };
 
+const addPostToUserPosts = async (role: String, postId: String, userId: String) => {
+  if (role === "tutor") {
+    await Tutor.findByIdAndUpdate(userId, {
+      $push: {posts: {postId: postId}},
+    });
+  } else if (role === "student") {
+    await Student.findByIdAndUpdate(userId, {
+      $push: {posts: {postId: postId}},
+    });
+  }
+};
 
 export default handler;

@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
  * @return {null} returns null in case the method of request is incorrect
  */
 const getStudentById = async (res: NextApiResponse, id: String) => {
-  const foundStudent = await Student.findById(id);
+  const foundStudent = await Student.findById(id, {password: 0});
 
   res.status(StatusCodes.OK).send(foundStudent);
   return;

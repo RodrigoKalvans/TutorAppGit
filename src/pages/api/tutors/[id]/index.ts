@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
  * @return {null} returns null in case the method of request is incorrect
  */
 const getTutorById = async (res: NextApiResponse, id: String) => {
-  const foundTutors = await Tutor.findById(id);
+  const foundTutors = await Tutor.findById(id, {password: 0});
 
   res.status(StatusCodes.OK).send(foundTutors);
   return;
