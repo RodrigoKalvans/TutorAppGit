@@ -24,11 +24,17 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
         },
       ],
       subjectsStudied: [{type: String}],
-      rating: {type: Number},
-      reviews: [{reviewId: {type: Number}}],
+      rating: {
+        number: {type: Number, default: 0},
+        ratingCount: {type: Number, default: 0},
+      },
+      reviews: [{reviewId: {type: String}}],
       activity: [{
         activityId: {type: String},
-        activityType: {type: String},
+        activityType: {type: String, enum: {
+          values: ["comment", "like", "review"],
+          message: "{VALUE} is not supported as an activity type!",
+        }},
       }],
       posts: [{postId: {type: String}}],
       isSuspended: {type: Boolean, default: false},

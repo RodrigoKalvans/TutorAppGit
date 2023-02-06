@@ -1,11 +1,11 @@
-import Student from "../../../models/Student";
-import checkTokenForUsers from "../../../utils/checkToken";
+import Tutor from "../../../../models/Tutor";
+import checkTokenForUsers from "../../../../utils/checkToken";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 
 /**
- * Dynamic student route
+ * Tutors route
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
  * @return {null} returns null in case the method of request is incorrect
@@ -14,37 +14,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
   const {id} = req.query;
   // GET request
-  if (req.method === "GET") await getStudentById(res, id as String);
+  if (req.method === "GET") await getTutorById(res, id as String);
   // PUT request
-  if (req.method === "PUT") await updateStudentById(req, res, id as String);
+  if (req.method === "PUT") await updateTutorById(req, res, id as String);
   // DELETE request
-  if (req.method === "DELETE") await deleteStudentById(req, res, id as String);
+  if (req.method === "DELETE") await deleteTutorById(req, res, id as String);
 
   await db.disconnect();
   return;
 };
 
 /**
- * GET student by id request
+ * GET tutor by id request
  * @param {NextApiResponse} res HTTP response sent to client side
- * @param {String} id student id from dynamic page
+ * @param {String} id tutor id from dynamic page
  * @return {null} returns null in case the method of request is incorrect
  */
-const getStudentById = async (res: NextApiResponse, id: String) => {
-  const foundStudent = await Student.findById(id);
+const getTutorById = async (res: NextApiResponse, id: String) => {
+  const foundTutors = await Tutor.findById(id, {password: 0});
 
-  res.status(StatusCodes.OK).send(foundStudent);
+  res.status(StatusCodes.OK).send(foundTutors);
   return;
 };
 
 /**
- * PUT student by id request
+ * PUT tutor request
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
- * @param {String} id student id from dynamic page
+ * @param {String} id tutor id from dynamic page
  * @return {null} returns null in case the method of request is incorrect
  */
-const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
+const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const check = await checkTokenForUsers(req);
 
   if (!check) {
@@ -56,7 +56,7 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
   }
 
   try {
-    const updatedStudent = await Student
+    const updatedTutors = await Tutor
         .findByIdAndUpdate(id,
             {
               $set: req.body,
@@ -64,7 +64,7 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
             {new: true},
         );
 
-    res.status(StatusCodes.OK).send(updatedStudent);
+    res.status(StatusCodes.OK).send(updatedTutors);
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }
@@ -73,13 +73,13 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
 };
 
 /**
- * DELETE student request
+ * DELETE tutor request
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
- * @param {String} id student id from dynamic page
+ * @param {String} id tutor id from dynamic page
  * @return {null} returns null in case the method of request is incorrect
  */
-const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
+const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const check = await checkTokenForUsers(req);
 
   if (!check) {
@@ -91,16 +91,19 @@ const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
   }
 
   try {
-    const studentToDelete = await Student.findByIdAndDelete(id);
+    const tutorToDelete = await Tutor.findByIdAndDelete(id);
 
     res.status(StatusCodes.OK).send({
       message: "User has been deleted",
-      user: studentToDelete,
+      user: tutorToDelete,
     });
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }
 
+  // Test if token gets deleted or if user can do some actions
+  // after deleting their account
+  // Possibly there is a way to sign out the user from the server side
   return;
 };
 

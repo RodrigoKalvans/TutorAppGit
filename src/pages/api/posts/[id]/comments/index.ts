@@ -3,7 +3,9 @@ import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import Comment from "../../../../../models/Comment";
 import {getToken} from "next-auth/jwt";
-import Post from "@/models/Post";
+import Post from "../../../../../models/Post";
+import Tutor from "../../../../../models/Tutor";
+import Student from "../../../../../models/Student";
 
 /**
  * Comment route
@@ -23,13 +25,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 /**
- * GET comments request
+ * GET comments per post request
  * @param {NextApiRequest} req HTTP req received from client
  * @param {NextApiResponse} res HTTP response sent to client side
  * @return {null} returns null in case the method of request is incorrect
  */
 const getComments = async (req: NextApiRequest, res: NextApiResponse) => {
-  const foundComments = await Comment.findById(req.query);
+  const {id, ...query} = req.query;
+  const foundComments = await Comment.find({postId: id, query});
 
   res.status(StatusCodes.OK).send(foundComments);
   return;
@@ -65,24 +68,38 @@ const createComment = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const newComment = new Comment(reqComment);
 
-  const updatedPost = await Post.findByIdAndUpdate(reqComment.postId,
-      {
-        $push: {comments: {commentId: newComment._id}},
-      });
+  try {
+    await Post.findByIdAndUpdate(reqComment.postId,
+        {
+          $push: {comments: {commentId: newComment._id}},
+        });
 
-  if (updatedPost) {
     await newComment.save();
+    await addCommentToUserActivity(newComment.role, newComment._id, newComment.userId);
     res.status(StatusCodes.CREATED).send({
       message: "Comment was successfully created!",
       comment: newComment,
     });
-  } else {
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({
+  } catch (error) {
+    res.status(StatusCodes.NOT_FOUND).send({
       message: "Post does not exist!",
+      error: error,
     });
   }
 
   return;
+};
+
+const addCommentToUserActivity = async (role: String, commentId: String, userId: String) => {
+  if (role === "tutor") {
+    await Tutor.findByIdAndUpdate(userId, {
+      $push: {activity: {activityId: commentId, activityType: "comment"}},
+    });
+  } else if (role === "student") {
+    await Student.findByIdAndUpdate(userId, {
+      $push: {activity: {activityId: commentId, activityType: "comment"}},
+    });
+  }
 };
 
 

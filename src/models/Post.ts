@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const PostSchema: mongoose.Schema = new mongoose.Schema(
     {
-      role: {type: String, required: true},
+      role: {type: String, required: true, enum: {
+        values: ["student", "tutor"],
+        message: "{VALUE} is not supported as a role",
+      }},
       userId: {type: String, required: true},
       images: [{type: Buffer}],
       description: {type: String},
