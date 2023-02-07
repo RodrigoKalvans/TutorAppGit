@@ -46,9 +46,9 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="ml-32">
-            <Button style="bg-orange-500 text-lg" >Browse</Button>
-            <Button style="bg-blue-600 text-lg" link="/testSignUp">Join us</Button>
+          <div className="ml-24">
+            <Button style="bg-orange-500 text-lg mx-5" >Browse</Button>
+            <Button style="bg-blue-600 text-lg mx-5" link="/testSignUp">Join us</Button>
           </div>
         </div>
 
