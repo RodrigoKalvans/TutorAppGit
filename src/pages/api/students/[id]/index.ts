@@ -92,6 +92,7 @@ const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
 
   try {
     const studentToDelete = await Student.findByIdAndDelete(id);
+    // TODO: DELETE POSTS AND ALL ACTIVITY OF THIS USER FROM DATABASE
 
     res.status(StatusCodes.OK).send({
       message: "User has been deleted",
