@@ -11,6 +11,7 @@
 // } from "react-icons";
 
 import Button from "@/components/button";
+import Carousel from "@/components/landingPage/carousel";
 import Footer from "@/components/footer";
 import Head from "next/head";
 import LandingPageBlurBox from "@/components/landingPage/landingPageBlurBox";
@@ -60,6 +61,11 @@ export default function Home() {
             <SubjectBox subject="Mathematics" />
             <SubjectBox />
             <SubjectBox />
+            <SubjectBox />
+            <SubjectBox subject="Mathematics" />
+            <SubjectBox />
+            <SubjectBox />
+            <SubjectBox />
           </div>
         </div>
 
@@ -68,8 +74,7 @@ export default function Home() {
           <LandingPageBlurBox style="bg-blue-200">
             <div className="text-5xl pl-10 py-10 w-full flex justify-center">Take a look at our&nbsp;<span className="text-orange-500">Trending Tutors</span></div>
             <div className="flex items-center justify-around">
-              <TutorCard />
-              <TutorCard />
+              <Carousel />
             </div>
           </LandingPageBlurBox>
         </LandingPageContainer>
