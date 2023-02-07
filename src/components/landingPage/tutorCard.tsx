@@ -1,6 +1,6 @@
 import Button from "../button";
 
-export default function TutorCard({id}: { id?: number }) {
+export default function TutorCard({id, style}: { id?: number, style?: string }) {
   // get tutor from id
 
   const name: string = "Placeholder name";
@@ -15,7 +15,7 @@ export default function TutorCard({id}: { id?: number }) {
   const twitter: string = "exampletwitter";
 
   return (
-    <div className=" bg-blue-900 w-9/20 text-white rounded-xl">
+    <div className={`${style} bg-blue-900 w-9/10 text-white rounded-xl`}>
       <div className="w-full flex-wrap">
 
         <div className="w-full flex justify-content pb-5">
