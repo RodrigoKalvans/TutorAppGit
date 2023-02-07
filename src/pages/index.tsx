@@ -18,7 +18,6 @@ import LandingPageBlurBox from "@/components/landingPage/landingPageBlurBox";
 import LandingPageContainer from "@/components/landingPage/landingPageContainer";
 import Navbar from "@/components/navbar";
 import SubjectBox from "@/components/landingPage/subjectBox";
-import TutorCard from "@/components/landingPage/tutorCard";
 
 // TODO: Add subject images
 // TODO: Get tutors that will be displayed
@@ -31,7 +30,7 @@ export default function Home() {
       </Head>
       <main className="bg-landing bgimage z-0 w-full flex-wrap justify-center absolute">
 
-        <div className="flex justify-center mt-5">
+        <div className="flex justify-center">
           <Navbar />
         </div>
 
