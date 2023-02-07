@@ -14,7 +14,7 @@ The information with examples on how to secure pages and API routes can be found
 
 The easiest and simplest way to get the session on the Client Side is to use `useSession()` hook from next-auth/react. This way is recommended. the hook will return data (session) and status (loading, authenticated, notauthenticated). It can be then used to validate if the user is signed in or not and if we need to display certain components on the page. Simply checking is the session object is defined will do the work. This session object contains all the properties added in the callback in `[...nextauth].ts`.
 
-## Securing pages on Server Side
+## Securing routes on Server Side
 
 You can protect server side rendered pages using the `unstable_getServerSession` method. This is different from the old `getSession()` method, in that it does not do an extra fetch out over the internet to confirm data from itself, increasing performance significantly.
 

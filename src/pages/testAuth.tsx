@@ -1,8 +1,12 @@
 import {signIn, signOut, useSession} from "next-auth/react";
 
-// password12345 
-const fakeAuth = () => {
+/**
+ * Page for testing authentication
+ * @return {JSX} page to be displayed
+ */
+const testAuth = () => {
   const {data: session} = useSession();
+
   return (
     <div>
       <p>fakeAuth</p>
@@ -16,7 +20,23 @@ const fakeAuth = () => {
           <p>Your first name is: {session.user.firstName}</p>
           <p>Your last name is: {session.user.lastName}</p>
           <p>Your role: {session.user.role}</p>
-          <button onClick={() => signOut()}>Sign Out</button>
+          <div><button onClick={async () => {
+            const res = await fetch(`http://localhost:3000/api/tutors/${session.user.id}`,
+                {
+                  method: "PUT",
+                  body: JSON.stringify({
+                    secondName: "Jobich",
+                  }),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+
+            const json = await res.json();
+
+            console.log(json);
+          }}>Update First Name</button></div>
+          <button onClick={async () => await signOut()}>Sign Out</button>
         </div>
       )}
 
@@ -24,4 +44,4 @@ const fakeAuth = () => {
   );
 };
 
-export default fakeAuth;
+export default testAuth;
