@@ -1,4 +1,4 @@
-import TutorCard from "./tutorCard";
+import TutorCard from "./TutorCard";
 
 export default function Carousel({}) {
     return (
