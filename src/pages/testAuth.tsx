@@ -36,6 +36,19 @@ const testAuth = () => {
 
             console.log(json);
           }}>Update First Name</button></div>
+          <div><button onClick={async () => {
+            const res = await fetch(`http://localhost:3000/api/tutors/${session.user.id}`,
+                {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+
+            const json = await res.json();
+
+            console.log(json);
+          }}>Delete account</button></div>
           <button onClick={async () => await signOut()}>Sign Out</button>
         </div>
       )}

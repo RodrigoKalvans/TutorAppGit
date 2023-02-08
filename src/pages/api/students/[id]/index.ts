@@ -3,6 +3,7 @@ import checkTokenForUsers from "../../../../utils/checkToken";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
+import {deleteAllReferencesOfDeletedUser} from "@/utils/apiHelperFunction/userHelper";
 
 /**
  * Dynamic student route
@@ -91,13 +92,22 @@ const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
   }
 
   try {
-    const studentToDelete = await Student.findByIdAndDelete(id);
+    const deletedStudent = await Student.findByIdAndDelete(id);
     // TODO: DELETE POSTS AND ALL ACTIVITY OF THIS USER FROM DATABASE
+
+    await deleteAllReferencesOfDeletedUser(deletedStudent);
+    delete deletedStudent.password;
+
+    // Delete token
+    res.setHeader("Set-Cookie", "next-auth.session-token=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;");
 
     res.status(StatusCodes.OK).send({
       message: "User has been deleted",
-      user: studentToDelete,
+      user: deletedStudent,
     });
+
+    // Redirect user to main page
+    res.redirect(307, "/");
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }
