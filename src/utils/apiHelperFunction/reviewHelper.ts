@@ -167,7 +167,8 @@ const deleteActivityFromUser = async (reviewId: String, role: String, userId: St
   }
 };
 
-const deleteReviewFromReviewedUser = async (reviewId: String, role: String, userId: String) => {
+export const deleteReviewFromReviewedUser = async (reviewId: String, role: String, userId: String) => {
+  // TODO: UPDATE RATING AFTER DELETING REVIEW
   if (role === "student") {
     await Student.findByIdAndUpdate(userId, {
       $pull: {reviews: {reviewId: reviewId}},

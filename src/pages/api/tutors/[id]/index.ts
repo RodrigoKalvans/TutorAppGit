@@ -3,6 +3,7 @@ import checkTokenForUsers from "../../../../utils/checkToken";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
+import {deleteAllReferencesOfDeletedUser} from "@/utils/apiHelperFunction/userHelper";
 
 /**
  * Tutors route
@@ -91,12 +92,22 @@ const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
   }
 
   try {
-    const tutorToDelete = await Tutor.findByIdAndDelete(id);
+    const deletedTutor = await Tutor.findByIdAndDelete(id);
 
+    delete deletedTutor.password;
+
+    // Delete all activity of this tutor from the database
+    await deleteAllReferencesOfDeletedUser(deletedTutor);
+
+    // Delete token
+    res.setHeader("Set-Cookie", "next-auth.session-token=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;");
     res.status(StatusCodes.OK).send({
       message: "User has been deleted",
-      user: tutorToDelete,
+      user: deletedTutor,
     });
+
+    // Redirect user to main page
+    res.redirect(307, "/");
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }

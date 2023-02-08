@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
  * @return {null} returns null in case the method of request is incorrect
  */
 const getPosts = async (req: NextApiRequest, res: NextApiResponse) => {
-  const foundStudent = await Post.findById(req.query);
+  const foundStudent = await Post.find(req.query);
 
   res.status(StatusCodes.OK).send(foundStudent);
   return;

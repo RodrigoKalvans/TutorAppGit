@@ -1,5 +1,16 @@
+import Comment from "@/models/Comment";
+import Post from "@/models/Post";
 import Student from "@/models/Student";
 import Tutor from "@/models/Tutor";
+
+export const deleteCommentFromDB = async (commentId: String) => {
+  const deletedComment = await Comment.findByIdAndDelete(commentId);
+
+  // Delete comment reference form the post
+  await Post.findByIdAndUpdate(deletedComment.postId, {
+    $pull: {comments: {commentId: commentId}},
+  });
+};
 
 /**
  * Delete comment reference from user's activity
