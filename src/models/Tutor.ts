@@ -16,7 +16,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       location: {type: String},
       isOnlineAvailable: {type: Boolean},
       subjectsOfSpecialty: [{type: String}],
-      priceForLessons: {type: Map},
+      priceForLessons: {type: Map, of: String},
       followers: [
         {
           userId: {type: String},
