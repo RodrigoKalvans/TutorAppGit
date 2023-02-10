@@ -21,7 +21,10 @@ const connect = async () => {
   }
 
   mongoose.set("strictQuery", false);
-  const db = await mongoose.connect(process.env.MONGODB_URI as string);
+  const db = await mongoose.connect(process.env.MONGODB_URI as string, {
+    autoIndex: true,
+
+  });
   console.log("Database connected");
   connection.isConnected = db.connections[0].readyState;
 };

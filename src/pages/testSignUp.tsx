@@ -30,7 +30,7 @@ const testSignUp = () => {
   // Signs up a new user, logs him in and redirects to the testAuth page where information
   // about him is displayed
   const handleSubmit = async () => {
-    const res = await fetch("http://localhost:3000/api/auth/signUp", {
+    const res = await fetch("http://localhost:3000/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({
         firstName: firstName,

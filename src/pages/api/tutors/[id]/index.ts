@@ -107,7 +107,7 @@ const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
     });
 
     // Redirect user to main page
-    res.redirect(307, "/");
+    // res.redirect(307, "/");
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }
