@@ -17,6 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  // Add check property
   const reqUser = req.body;
 
   if (!reqUser.firstName || !reqUser.lastName ||
