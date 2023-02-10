@@ -52,7 +52,7 @@ const updatePostById = async (req: NextApiRequest, res: NextApiResponse, id: Str
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authenticated!",
+          message: "You are not authenticated! Login or create an account first!",
         });
     return;
   }
@@ -60,7 +60,7 @@ const updatePostById = async (req: NextApiRequest, res: NextApiResponse, id: Str
   const updatingPost = await Post.findById(id);
 
   if (updatingPost.userId !== token.id) {
-    res.status(StatusCodes.UNAUTHORIZED)
+    res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authorized to do this action! It is not your post!",
         });
@@ -99,7 +99,7 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authenticated!",
+          message: "You are not authenticated! Log in or create an account first!",
         });
     return;
   }
@@ -107,7 +107,7 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
   const deletingPost = await Post.findById(id);
 
   if (deletingPost.userId !== token.id) {
-    res.status(StatusCodes.UNAUTHORIZED)
+    res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authorized to do this action! It is not your post!",
         });

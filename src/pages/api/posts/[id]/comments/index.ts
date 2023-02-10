@@ -50,7 +50,7 @@ const createComment = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authenticated! Log in first to leave comments!",
+          message: "You are not authenticated! Log in or create an account first to leave comments!",
         });
     return;
   }

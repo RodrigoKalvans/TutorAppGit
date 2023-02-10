@@ -49,7 +49,7 @@ const updateSubjectById = async (req: NextApiRequest, res: NextApiResponse, id: 
   const token = await getToken({req});
 
   if (!token || token.role !== "admin") {
-    res.status(StatusCodes.UNAUTHORIZED).send({message: "You are not allowed to edit subjects!"});
+    res.status(StatusCodes.FORBIDDEN).send({message: "You are not allowed to edit subjects!"});
     return;
   }
 
@@ -77,7 +77,7 @@ const deleteSubjectById = async (req: NextApiRequest, res: NextApiResponse, id: 
   const token = await getToken({req});
 
   if (!token || token.role !== "admin") {
-    res.status(StatusCodes.UNAUTHORIZED).send({message: "You are not allowed to edit subjects!"});
+    res.status(StatusCodes.FORBIDDEN).send({message: "You are not allowed to delete subjects!"});
     return;
   }
 

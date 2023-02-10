@@ -84,7 +84,7 @@ const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
   const check = await checkTokenForUsers(req);
 
   if (!check) {
-    res.status(StatusCodes.UNAUTHORIZED)
+    res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authenticated/authorized to do this action!",
         });

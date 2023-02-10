@@ -36,7 +36,7 @@ export const createReview = async (req: NextApiRequest, res: NextApiResponse, ro
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authenticated! Log in first to leave reviews!",
+          message: "You are not authenticated! Log in or create an account first to leave reviews!",
         });
     return;
   }
@@ -118,7 +118,7 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authenticated!",
+          message: "You are not authenticated! Log in first!",
         });
     return;
   }
@@ -126,7 +126,7 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
   const deletingReview = await Review.findById(id);
 
   if (deletingReview.reviewerUserId !== token.id) {
-    res.status(StatusCodes.UNAUTHORIZED)
+    res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authorized to do this action! It is not your review!",
         });

@@ -48,7 +48,7 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authenticated/authorized to do this action!",
+          message: "You are not authenticated! Login or create an account first!",
         });
     return;
   }
