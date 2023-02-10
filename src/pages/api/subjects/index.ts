@@ -35,7 +35,7 @@ const getSubjects = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 /**
- * POST request handler to create new subject (only allowed by admin)
+ * POST request handler to create new subject (only allowed for admin)
  * @param {NextApiRequest} req HTTP req received from client
  * @param {NextApiResponse} res HTTP response sent to client side
  * @return {null} returns null in case the method of request is incorrect
@@ -50,7 +50,7 @@ const createSubject = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const reqSubject = req.body;
 
-  if (!reqSubject.name || !reqSubject.icon) {
+  if (!reqSubject.name && !reqSubject.icon) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Subject is missing a property!"});
     return;
   }
