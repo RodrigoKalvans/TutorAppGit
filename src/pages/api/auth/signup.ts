@@ -5,6 +5,7 @@ import {hash} from "argon2";
 import crypto, {CipherKey} from "crypto";
 import Student from "../../../models/Student";
 import Tutor from "../../../models/Tutor";
+import {getToken} from "next-auth/jwt";
 
 /**
  * Sign up route
@@ -14,6 +15,14 @@ import Tutor from "../../../models/Tutor";
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
+    return;
+  }
+
+  // Check if user is already logged in
+  const token = await getToken({req});
+
+  if (token) {
+    res.status(StatusCodes.FORBIDDEN).send({message: "You are logged in already!"});
     return;
   }
 
@@ -70,13 +79,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newUser;
   if (reqUser.role === "student") {
     newUser = new Student(reqUser);
-    await newUser.save();
   } else if (reqUser.role === "tutor") {
     newUser = new Tutor(reqUser);
-    await newUser.save();
   } else {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "This role is not supported"});
+    return;
   }
+
+  await newUser.save();
 
   delete newUser.password;
   delete newUser.role;
