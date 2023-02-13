@@ -20,13 +20,19 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       followers: [
         {
           userId: {type: String},
-          accountType: {type: String},
+          accountType: {type: String, enum: {
+            values: ["student", "tutor"],
+            message: "{VALUE} is not supported as an account type!",
+          }},
         },
       ],
       following: [
         {
           userId: {type: String},
-          accountType: {type: String},
+          accountType: {type: String, enum: {
+            values: ["student", "tutor"],
+            message: "{VALUE} is not supported as an account type!",
+          }},
         },
       ],
       subjects: [{type: String}],

@@ -18,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  // Check if user is already logged in
   const token = await getToken({req});
 
   if (token) {
