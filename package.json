@@ -15,17 +15,18 @@
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
-    "daisyui": "^2.47.0",
     "argon2": "^0.30.3",
+    "daisyui": "^2.47.0",
     "eslint-config-next": "13.1.4",
     "http-status-codes": "^2.2.0",
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.4",
     "next": "13.1.4",
     "next-auth": "^4.18.10",
+    "primeicons": "^6.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.7.1"
+    "react-tailwindcss-select": "^1.6.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
