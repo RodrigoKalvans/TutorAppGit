@@ -12,6 +12,10 @@
   ul {
     @apply list-disc
   }
+  input {
+    @apply m-3 p-3 rounded-md
+  }
+
 }
 
 .bord {
