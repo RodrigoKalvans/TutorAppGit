@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function LoginPanel() {
 
-    // data to track
+    // user credentials
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -31,6 +31,7 @@ export default function LoginPanel() {
                 })
             })
 
+            // type JSON? 
             const json = await res.json();
 
             // TODO add further logic
@@ -43,15 +44,15 @@ export default function LoginPanel() {
 
     return (
         <>
-            <div className="rounded-md w-1/4 min-h-2/5 ring-black m-5 bg-orange-100 shadow-2xl">
-                <form onSubmit={(e) => submitUser(e)} className="form-control m-5 flex-col justify-center">
+            <div className="rounded-md w-1/4 min-h-2/5 ring-black m-5 bg-orange-50 shadow-2xl">
+                <form onSubmit={(e: any) => submitUser(e)} className="form-control m-5 flex-col justify-center">
 
                     <input 
                     placeholder="Email"  
                     name="email"
                     id="email"
                     required
-                    onChange = {(e) => setEmail(e.target.value)}
+                    onChange = {(e: any) => setEmail(e.target.value)}
                     />
 
                     <input 
@@ -60,7 +61,7 @@ export default function LoginPanel() {
                     id="password"
                     type="password"
                     required
-                    onChange = {(e) => setPassword(e.target.value)}
+                    onChange = {(e: any) => setPassword(e.target.value)}
                     />
 
                     <div className="flex justify-center">

@@ -3,24 +3,30 @@ import Select from "react-tailwindcss-select";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
+// change props type
+/**
+ * Panel is displayed on the signup page
+ * User fills form, then it is submitted
+ * @param {props}: All subject that the tutor can pick
+ * @returns 
+ */
 export default function SignupPanel({props}: {props: any}) {
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
-    const [minutes, setMinutes] = useState("");
-    const [price, setPrice] = useState("");
-
-    // tutors' subjects
-    const [chosenSubjects, setSubjects] = useState();
+    // only for tutors
+    const [minutes, setMinutes] = useState<string>("");
+    const [price, setPrice] = useState<string>("");
+    const [chosenSubjects, setSubjects] = useState<string[]>();
     
     // agree to terms
-    const [check, setCheck] = useState();
+    const [check, setCheck] = useState<any>();
 
     // change roll on button clicks
-    const [role, setRole] = useState("student");
+    const [role, setRole] = useState<string>("student");
     const setStudent = () => {
         setRole("student");
     }
@@ -88,7 +94,8 @@ export default function SignupPanel({props}: {props: any}) {
                 const temp = new Map();
                 temp.set(minutes, price)
 
-                const map = {};
+                // what type is this shit?
+                const map: any = {};
                 temp.forEach((val: string, key: string) => {
                     map[key] = val;
                 });
@@ -106,19 +113,20 @@ export default function SignupPanel({props}: {props: any}) {
                 },
             });
 
-            const json = await res.json();
+            // is this type JSON?
+            const json: any = await res.json();
 
             // sign the user is and redirect
             if (json) {
-            const result = await signIn("credentials", {
-                email,
-                password,
-                callbackUrl: "/testAuth",
-            });
+                const result = await signIn("credentials", {
+                    email,
+                    password,
+                    callbackUrl: "/testAuth",
+                });
 
-            if (result?.error) {
-                alert(result.error);
-            }
+                if (result?.error) {
+                    alert(result.error);
+                }
             }
 
             // if user is a tutor, send patch request to update subjects
@@ -148,14 +156,14 @@ export default function SignupPanel({props}: {props: any}) {
                     <button onClick={setTutor} className="btn w-1/2 bg-orange-600 hover:bg-orange-500">Tutor</button>
                 </div>
 
-                <form onSubmit={(e) => submitUser(e)} className="form-control m-5 flex-col justify-center">
+                <form onSubmit={(e: any) => submitUser(e)} className="form-control m-5 flex-col justify-center">
                     <input 
                     placeholder="First name" 
                     name="firstName"
                     id="firstName"
                     required
                     className="" 
-                    onChange = {(e) => setFirstName(e.target.value)}
+                    onChange = {(e: any) => setFirstName(e.target.value)}
                     />
 
                     <input 
@@ -164,7 +172,7 @@ export default function SignupPanel({props}: {props: any}) {
                     id="lastName"
                     required
                     className="" 
-                    onChange = {(e) => setLastName(e.target.value)}
+                    onChange = {(e: any) => setLastName(e.target.value)}
                     />
 
                     <input 
@@ -173,7 +181,7 @@ export default function SignupPanel({props}: {props: any}) {
                     id="email"
                     required
                     className="" 
-                    onChange = {(e) => setEmail(e.target.value)}
+                    onChange = {(e: any) => setEmail(e.target.value)}
                     />
 
                     <input 
@@ -183,10 +191,10 @@ export default function SignupPanel({props}: {props: any}) {
                     type="password"
                     required
                     className="" 
-                    onChange = {(e) => setPassword(e.target.value)}
+                    onChange = {(e: any) => setPassword(e.target.value)}
                     />
 
-                    {/** Only display the extra field for tutors */}
+                    {/** Only display the extra fields for tutors */}
                     {role === "student" ? (
                     <>
                     </>
@@ -215,7 +223,7 @@ export default function SignupPanel({props}: {props: any}) {
                         required
                         className="w-1/2 mr-0" 
                         onChange = {
-                            (e) => {
+                            (e: any) => {
                                 try {
                                     setMinutes(e.target.value)
                                 } catch (e) {
@@ -232,7 +240,7 @@ export default function SignupPanel({props}: {props: any}) {
                         required
                         className="w-1/2 ml-0" 
                         onChange = {
-                            (e) => {
+                            (e: any) => {
                                 try {
                                     setPrice(e.target.value)
                                 } catch (e) {
@@ -251,7 +259,7 @@ export default function SignupPanel({props}: {props: any}) {
                         id="check" 
                         value="check"
                         className="checkbox-xs" 
-                        onChange={(e) => setCheck(e)}
+                        onChange={(e: any) => setCheck(e)}
                         required
                         />
 
