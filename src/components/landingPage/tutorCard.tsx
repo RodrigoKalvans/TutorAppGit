@@ -1,4 +1,4 @@
-import Button from "../button";
+import Button from "../Button";
 
 export default function TutorCard({id, style}: { id?: number, style?: string }) {
   // get tutor from id

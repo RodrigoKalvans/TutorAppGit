@@ -3,7 +3,7 @@ import Select from "react-tailwindcss-select";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-export default function SignupBox({props}: {props: any}) {
+export default function SignupPanel({props}: {props: any}) {
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -57,73 +57,86 @@ export default function SignupBox({props}: {props: any}) {
     const submitUser = async (e: any) => {
         e.preventDefault()
         console.log('submit')
+
+        // TODO: check if needed
+        // is this needed if submitUser is not called onClick?
         if (!check || !firstName || !lastName || !email || !password) {
             console.log('fail')
             return;
         }
 
-        const user: {
-            firstName: string,
-            lastName: string,
-            email: string,
-            password: string,
-            role: string,
-            priceForLessons?: {}
-        } = {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password,
-            role: role,
-        }
+        try {
 
-        if (role === "tutor") {
-            const temp = new Map();
-            temp.set(minutes, price)
+            // define object to be sent via HTTP
+            const user: {
+                firstName: string,
+                lastName: string,
+                email: string,
+                password: string,
+                role: string,
+                priceForLessons?: {}
+            } = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                role: role,
+            }
 
-            const map = {};
-            temp.forEach((val: string, key: string) => {
-                map[key] = val;
-              });
+            // changes entered prices to proper format
+            if (role === "tutor") {
+                const temp = new Map();
+                temp.set(minutes, price)
 
-            user.priceForLessons = map;
-            console.log(user.priceForLessons)
-        }        
+                const map = {};
+                temp.forEach((val: string, key: string) => {
+                    map[key] = val;
+                });
 
-        const res = await fetch("http://localhost:3000/api/auth/signup", {
-            method: "POST",
-            body: JSON.stringify(user),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+                user.priceForLessons = map;
+                console.log(user.priceForLessons)
+            }        
 
-        const json = await res.json();
-
-        if (json) {
-          const result = await signIn("credentials", {
-            email,
-            password,
-            callbackUrl: "/testAuth",
-          });
-
-          if (result?.error) {
-            alert(result.error);
-          }
-        }
-
-        // if user is a tutor, send patch request to update subjects and prices
-        if (role === "tutor") {
-            console.log('ids',getArrayOfChosenSubjectIds()) // test
-            const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
-                method: "PUT",
-                body: JSON.stringify({
-                    subjects: getArrayOfChosenSubjectIds()
-                }),
+            // post new user to the database
+            const res = await fetch("http://localhost:3000/api/auth/signup", {
+                method: "POST",
+                body: JSON.stringify(user),
                 headers: {
                     "Content-Type": "application/json",
                 },
-            })
+            });
+
+            const json = await res.json();
+
+            // sign the user is and redirect
+            if (json) {
+            const result = await signIn("credentials", {
+                email,
+                password,
+                callbackUrl: "/testAuth",
+            });
+
+            if (result?.error) {
+                alert(result.error);
+            }
+            }
+
+            // if user is a tutor, send patch request to update subjects
+            if (role === "tutor") {
+                console.log('ids',getArrayOfChosenSubjectIds()) // test
+                const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        subjects: getArrayOfChosenSubjectIds()
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+            }
+        } catch (e) {
+            // TODO: redirect to error page
+            alert('An error has occured');
         }
     };
 

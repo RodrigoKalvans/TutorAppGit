@@ -1,7 +1,9 @@
 import Head from "next/head";
-import SignupBox from "@/components/signup/SignupBox";
+import SignupPanel from "@/components/signup/SignupPanel";
 
+// load subjects so that tutors can select them in the panel
 export async function getStaticProps() {
+
     // const res = await fetch("", {
     //     method: "GET",
     //     headers: {
@@ -63,7 +65,7 @@ export default function SignupPage({subjects}:{ subjects: any }) {
             </div>
 
             <div className=" flex justify-center">
-                <SignupBox props={subjects}/>
+                <SignupPanel props={subjects}/>
             </div>
 
         </main>
