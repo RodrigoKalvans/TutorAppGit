@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 
 export default function LoginPanel() {
@@ -23,18 +24,15 @@ export default function LoginPanel() {
             }
 
             // log in
-            const res = await fetch("", {
-                method: "POST",
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                })
-            })
+            const result = await signIn("credentials", {
+                email,
+                password,
+                callbackUrl: "/testAuth",
+            });
 
-            // type JSON? 
-            const json = await res.json();
-
-            // TODO add further logic
+            if (result?.error) {
+                alert(result.error);
+            }
 
         } catch (e) {
             // TODO: redirect to error page
