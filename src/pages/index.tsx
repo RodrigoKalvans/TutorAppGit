@@ -10,14 +10,14 @@
 //   TbMathSymbols,
 // } from "react-icons";
 
-import Button from "@/components/button";
-import Carousel from "@/components/landingPage/carousel";
-import Footer from "@/components/footer";
+import Button from "@/components/Button";
+import Carousel from "@/components/landingPage/Carousel";
+import Footer from "@/components/Footer";
 import Head from "next/head";
-import LandingPageBlurBox from "@/components/landingPage/landingPageBlurBox";
-import LandingPageContainer from "@/components/landingPage/landingPageContainer";
-import Navbar from "@/components/navbar";
-import SubjectBox from "@/components/landingPage/subjectBox";
+import LandingPageBlurBox from "@/components/landingPage/LandingPageBlurBox";
+import LandingPageContainer from "@/components/landingPage/LandingPageContainer";
+import Navbar from "@/components/Navbar";
+import SubjectBox from "@/components/landingPage/SubjectBox";
 
 // TODO: Add subject images
 // TODO: Get tutors that will be displayed
