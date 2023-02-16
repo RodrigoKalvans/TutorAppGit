@@ -12,14 +12,14 @@ import { useState } from "react";
  */
 export default function SignupPanel({props}: {props: any}) {
 
-    const [firstName, setFirstName] = useState<string>("");
-    const [lastName, setLastName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [firstName, setFirstName] = useState(null);
+    const [lastName, setLastName] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
 
     // only for tutors
-    const [minutes, setMinutes] = useState<string>("");
-    const [price, setPrice] = useState<string>("");
+    const [minutes, setMinutes] = useState(null);
+    const [price, setPrice] = useState(null);
     const [chosenSubjects, setSubjects] = useState<string[]>();
     
     // agree to terms
@@ -62,7 +62,6 @@ export default function SignupPanel({props}: {props: any}) {
     /** is called when the form is submitted by either a student or tutor */
     const submitUser = async (e: any) => {
         e.preventDefault()
-        console.log('submit')
 
         // TODO: check if needed
         // is this needed if submitUser is not called onClick?
@@ -101,7 +100,6 @@ export default function SignupPanel({props}: {props: any}) {
                 });
 
                 user.priceForLessons = map;
-                console.log(user.priceForLessons)
             }        
 
             // post new user to the database
@@ -117,10 +115,10 @@ export default function SignupPanel({props}: {props: any}) {
             const json: any = await res.json();
 
             // sign the user is and redirect
-            if (json) {
+            if (json.ok) {
                 const result = await signIn("credentials", {
-                    email,
-                    password,
+                    email: email,
+                    password: password,
                     callbackUrl: "/testAuth",
                 });
 
@@ -131,7 +129,6 @@ export default function SignupPanel({props}: {props: any}) {
 
             // if user is a tutor, send patch request to update subjects
             if (role === "tutor") {
-                console.log('ids',getArrayOfChosenSubjectIds()) // test
                 const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
                     method: "PUT",
                     body: JSON.stringify({
@@ -144,7 +141,7 @@ export default function SignupPanel({props}: {props: any}) {
             }
         } catch (e) {
             // TODO: redirect to error page
-            alert('An error has occured');
+            alert('An error has occured', e);
         }
     };
 

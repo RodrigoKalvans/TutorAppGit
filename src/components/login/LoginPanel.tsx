@@ -10,29 +10,20 @@ export default function LoginPanel() {
 
     /** this is called when the form is submitted */
     const submitUser = async (e: any) => {
-        e.PreventDefault();
-
         try {
-
-            // define object to be sent via HTTP
-            const user: {
-                email: string,
-                password: string,
-            } = {
-                email: email,
-                password: password,
-            }
 
             // log in
             const result = await signIn("credentials", {
-                email,
-                password,
+                email: email,
+                password: password,
                 callbackUrl: "/testAuth",
             });
 
             if (result?.error) {
                 alert(result.error);
             }
+
+            console.log("yooo")
 
         } catch (e) {
             // TODO: redirect to error page
@@ -43,12 +34,13 @@ export default function LoginPanel() {
     return (
         <>
             <div className="rounded-md w-1/4 min-h-2/5 ring-black m-5 bg-orange-50 shadow-2xl">
-                <form onSubmit={(e: any) => submitUser(e)} className="form-control m-5 flex-col justify-center">
+                <form onSubmit={async (e: any) => await submitUser(e)} className="form-control m-5 flex-col justify-center">
 
                     <input 
                     placeholder="Email"  
                     name="email"
                     id="email"
+                    type="text"
                     required
                     onChange = {(e: any) => setEmail(e.target.value)}
                     />
