@@ -39,45 +39,13 @@ export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfTok
 // token used for login
 export async function getServerSideProps(context: CtxOrReq | undefined) {
 
-    // const res = await fetch("", {
-    //     method: "GET",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     }
-    // });
-    // const subjects = res.json();
-
-    const subjects: {_id: string, name: string, tutors: string[], icon: any}[] = [];
-
-    // plc test
-    const plc1 = {
-        _id: "0", 
-        name: "Mathematics",
-        tutors: ["lena", "nadezda"],
-        icon: 0
-    };
-    const plc2 = {
-        _id: "1", 
-        name: "History",
-        tutors: ["bob", "rob"],
-        icon: 5
-    };
-    const plc3 = {
-        _id: "2", 
-        name: "Biology",
-        tutors: ["bob", "rob"],
-        icon: 5
-    };
-    const plc4 = {
-        _id: "3", 
-        name: "Physics",
-        tutors: ["bob", "rob"],
-        icon: 5
-    };
-    subjects.push(plc1);
-    subjects.push(plc2);
-    subjects.push(plc3);
-    subjects.push(plc4);
+    const res = await fetch("http://localhost:3000/api/subjects", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    const subjects = await res.json();
 
     return {
         props: {
