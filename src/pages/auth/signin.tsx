@@ -45,12 +45,11 @@ export async function getServerSideProps(context: CtxOrReq | undefined) {
             "Content-Type": "application/json",
         }
     });
-    const subjects = await res.json();
 
     return {
         props: {
             csrfToken: await getCsrfToken(context),
-            subjects
+            subjects: await res.json(),
         },
     };
 }
