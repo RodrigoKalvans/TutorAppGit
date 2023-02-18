@@ -16,9 +16,6 @@ export default function SignUp({ csrfToken, subjects }: {csrfToken: any, subject
     const [price, setPrice] = useState<string>('');
     const [chosenSubjects, setSubjects] = useState<string[]>();
 
-    // agree to terms
-    const [check, setCheck] = useState<any>();
-
     // change roll on button clicks
     const [role, setRole] = useState<string>("student");
     const setStudent = () => {
@@ -307,7 +304,6 @@ export default function SignUp({ csrfToken, subjects }: {csrfToken: any, subject
                         id="check" 
                         value="check"
                         className="checkbox-xs" 
-                        onChange={(e: any) => setCheck(e)}
                         required
                         />
 
