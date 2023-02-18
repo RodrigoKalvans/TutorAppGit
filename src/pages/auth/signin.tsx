@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfToken: any}) {
 
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(true);
 
     return (
         <>
