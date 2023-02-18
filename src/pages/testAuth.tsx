@@ -1,5 +1,7 @@
 import {signIn, signOut, useSession} from "next-auth/react";
 
+import Link from "next/link";
+
 /**
  * Page for testing authentication
  * @return {JSX} page to be displayed
@@ -12,7 +14,7 @@ const testAuth = () => {
       <p>fakeAuth</p>
 
       {!session && (
-        <button onClick={async () => await signIn()}>Sign In</button>
+        <Link href="/auth/signin">Sign in</Link>
       )}
       {session && (
         <div>
