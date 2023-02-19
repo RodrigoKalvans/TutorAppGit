@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Add check property
   const reqUser = req.body;
-  console.log(reqUser)
+  console.log(reqUser);
 
   if (!reqUser.firstName || !reqUser.lastName ||
         !reqUser.role || !reqUser.email || !reqUser.password ||
