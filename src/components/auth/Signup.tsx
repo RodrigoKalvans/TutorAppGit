@@ -47,8 +47,10 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
      */
   const getArrayOfChosenSubjectIds = () => {
     const placeholder: string[] = [];
-    for (let i = 0; i < chosenSubjects.length; i++) {
-      placeholder.push(chosenSubjects[i]);
+    if (chosenSubjects) {
+      for (let i = 0; i < chosenSubjects.length; i++) {
+        placeholder.push(chosenSubjects[i]);
+      }
     }
     return placeholder;
   };
