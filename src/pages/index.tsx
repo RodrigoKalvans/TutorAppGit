@@ -10,14 +10,14 @@
 //   TbMathSymbols,
 // } from "react-icons";
 
-import Button from "@/components/button";
-import Carousel from "@/components/landingPage/carousel";
-import Footer from "@/components/footer";
+import Button from "@/components/Button";
+import Carousel from "@/components/landingPage/Carousel";
+import Footer from "@/components/Footer";
 import Head from "next/head";
-import LandingPageBlurBox from "@/components/landingPage/landingPageBlurBox";
-import LandingPageContainer from "@/components/landingPage/landingPageContainer";
-import Navbar from "@/components/navbar";
-import SubjectBox from "@/components/landingPage/subjectBox";
+import LandingPageBlurBox from "@/components/landingPage/LandingPageBlurBox";
+import LandingPageContainer from "@/components/landingPage/LandingPageContainer";
+import Navbar from "@/components/Navbar";
+import SubjectBox from "@/components/landingPage/SubjectBox";
 
 // TODO: Add subject images
 // TODO: Get tutors that will be displayed
@@ -48,7 +48,7 @@ export default function Home() {
 
           <div className="ml-24">
             <Button style="bg-orange-500 text-lg mx-5" >Browse</Button>
-            <Button style="bg-blue-600 text-lg mx-5" link="/testSignUp">Join us</Button>
+            <Button style="bg-blue-600 text-lg mx-5" link="/auth/signin">Join us</Button>
           </div>
         </div>
 

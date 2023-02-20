@@ -1,11 +1,12 @@
-import db from "../../../utils/db";
-import {StatusCodes} from "http-status-codes";
-import {NextApiResponse, NextApiRequest} from "next";
-import {hash} from "argon2";
+import {NextApiRequest, NextApiResponse} from "next";
 import crypto, {CipherKey} from "crypto";
+
+import {StatusCodes} from "http-status-codes";
 import Student from "../../../models/Student";
 import Tutor from "../../../models/Tutor";
+import db from "../../../utils/db";
 import {getToken} from "next-auth/jwt";
+import {hash} from "argon2";
 
 /**
  * Sign up route
@@ -28,6 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Add check property
   const reqUser = req.body;
+  console.log(reqUser);
 
   if (!reqUser.firstName || !reqUser.lastName ||
         !reqUser.role || !reqUser.email || !reqUser.password ||

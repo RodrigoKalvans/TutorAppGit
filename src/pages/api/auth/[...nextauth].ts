@@ -1,10 +1,11 @@
 import NextAuth, {NextAuthOptions} from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import db from "../../../utils/db";
 import crypto, {CipherKey} from "crypto";
-import {verify} from "argon2";
+
+import CredentialsProvider from "next-auth/providers/credentials";
 import Student from "../../../models/Student";
 import Tutor from "@/models/Tutor";
+import db from "../../../utils/db";
+import {verify} from "argon2";
 
 /**
  * Authentication options that are going to be used by NextAuth
@@ -109,9 +110,9 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  // pages: {
-  //   signIn: "/auth/signIn",
-  // },
+  pages: {
+    signIn: "/auth/signup",
+  },
 };
 
 export default NextAuth(authOptions);
