@@ -5,7 +5,7 @@ import {FormEventHandler, useState} from "react";
 
 import Link from "next/link";
 import Select from "react-tailwindcss-select";
-import YupPassword from 'yup-password';
+import YupPassword from "yup-password";
 import {signIn} from "next-auth/react";
 
 YupPassword(Yup);
@@ -133,10 +133,10 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
       }
     } catch (e) {
       // TODO: redirect to error page
-      console.log(e)
+      console.log(e);
       setError(e);
     }
-  }
+  };
 
   return (
     <>
@@ -153,10 +153,10 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
               .required("Please enter your email"),
           password: Yup.string()
               .min(10, "Password must be at least 10 characters")
-              .minLowercase(1, 'Password must contain at least 1 lower case letter')
-              .minUppercase(1, 'Password must contain at least 1 upper case letter')
-              .minNumbers(1, 'Password must contain at least 1 number')
-              .minSymbols(1, 'Password must contain at least 1 special character')
+              .minLowercase(1, "Password must contain at least 1 lower case letter")
+              .minUppercase(1, "Password must contain at least 1 upper case letter")
+              .minNumbers(1, "Password must contain at least 1 number")
+              .minSymbols(1, "Password must contain at least 1 special character")
               .required("Please enter your password"),
           firstName: Yup.string()
               .max(30, "Must be 30 characters or less")
