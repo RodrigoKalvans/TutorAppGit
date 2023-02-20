@@ -5,7 +5,10 @@ import {FormEventHandler, useState} from "react";
 
 import Link from "next/link";
 import Select from "react-tailwindcss-select";
+import YupPassword from 'yup-password';
 import {signIn} from "next-auth/react";
+
+YupPassword(Yup);
 
 export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects: any}) {
   const [error, setError] = useState<any>(null);
@@ -55,6 +58,86 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
     return placeholder;
   };
 
+  const submit = async (values: any) => {
+    try {
+      // define object to be sent via HTTP
+      const user: {
+                  firstName: string,
+                  lastName: string,
+                  email: string,
+                  password: string,
+                  role: string,
+                  priceForLessons?: {}
+              } = {
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                password: values.password,
+                role: role,
+              };
+
+      // changes entered prices to proper format
+      if (role === "tutor") {
+        const temp = new Map();
+        temp.set(minutes, price);
+
+        // what type is this shit?
+        const map: any = {};
+        temp.forEach((val: string, key: string) => {
+          map[key] = val;
+        });
+
+        user.priceForLessons = map;
+      }
+
+      // post new user to the database
+      const res = await fetch("http://localhost:3000/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      // sign the user is and redirect
+      if (res.ok) {
+        const res = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          callbackUrl: "/testAuth",
+        });
+        if (res?.error) {
+          setError(res.error);
+        } else {
+          setError(null);
+        }
+      } else {
+        console.log(res);
+      }
+
+      // if user is a tutor, send patch request to update subjects
+      if (role === "tutor") {
+        const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
+          method: "PUT",
+          body: JSON.stringify({
+            subjectIds: getArrayOfChosenSubjectIds(),
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          throw res;
+        }
+      }
+    } catch (e) {
+      // TODO: redirect to error page
+      console.log(e)
+      setError(e);
+    }
+  }
+
   return (
     <>
       <div className="btn-group w-full">
@@ -69,8 +152,12 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
               .email("Invalid email address")
               .required("Please enter your email"),
           password: Yup.string()
-              .required("Please enter your password")
-              .min(10, "Must be at least 10 characters"),
+              .min(10, "Password must be at least 10 characters")
+              .minLowercase(1, 'Password must contain at least 1 lower case letter')
+              .minUppercase(1, 'Password must contain at least 1 upper case letter')
+              .minNumbers(1, 'Password must contain at least 1 number')
+              .minSymbols(1, 'Password must contain at least 1 special character')
+              .required("Please enter your password"),
           firstName: Yup.string()
               .max(30, "Must be 30 characters or less")
               .required("Please enter your name"),
@@ -78,85 +165,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
               .max(20, "Must be 20 characters or less")
               .required("Please enter your last name"),
         })}
-        onSubmit={async (values: { firstName: string; lastName: string; email: string; password: string; }, {setSubmitting}: any) => {
-          try {
-            // define object to be sent via HTTP
-            const user: {
-                        firstName: string,
-                        lastName: string,
-                        email: string,
-                        password: string,
-                        role: string,
-                        priceForLessons?: {}
-                    } = {
-                      firstName: values.firstName,
-                      lastName: values.lastName,
-                      email: values.email,
-                      password: values.password,
-                      role: role,
-                    };
-
-            // changes entered prices to proper format
-            if (role === "tutor") {
-              const temp = new Map();
-              temp.set(minutes, price);
-
-              // what type is this shit?
-              const map: any = {};
-              temp.forEach((val: string, key: string) => {
-                map[key] = val;
-              });
-
-              user.priceForLessons = map;
-            }
-
-            // post new user to the database
-            const res = await fetch("http://localhost:3000/api/auth/signup", {
-              method: "POST",
-              body: JSON.stringify(user),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-
-            // sign the user is and redirect
-            if (res.ok) {
-              const res = await signIn("credentials", {
-                email: values.email,
-                password: values.password,
-                callbackUrl: "/testAuth",
-              });
-              if (res?.error) {
-                setError(res.error);
-              } else {
-                setError(null);
-              }
-            } else {
-              console.log(res);
-            }
-
-            // if user is a tutor, send patch request to update subjects
-            if (role === "tutor") {
-              const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
-                method: "PUT",
-                body: JSON.stringify({
-                  subjectIds: getArrayOfChosenSubjectIds(),
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-
-              if (!res.ok) {
-                throw res;
-              }
-            }
-          } catch (e) {
-            // TODO: redirect to error page
-            console.log(e)
-            setError(e);
-          }
-        }}
+        onSubmit={async (values: { firstName: string; lastName: string; email: string; password: string; }, {setSubmitting}: any) => submit(values)}
       >
         {(formik: { handleSubmit: FormEventHandler<HTMLFormElement> | undefined; isSubmitting: any; }) => (
           <>
