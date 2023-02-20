@@ -13,7 +13,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
   // only for tutors
   const [minutes, setMinutes] = useState<string>("");
   const [price, setPrice] = useState<string>("");
-  const [chosenSubjects, setSubjects] = useState<string[]>();
+  const [chosenSubjects, setSubjects] = useState<any>();
 
   // change roll on button clicks
   const [role, setRole] = useState<string>("student");
@@ -49,7 +49,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
     const placeholder: string[] = [];
     if (chosenSubjects) {
       for (let i = 0; i < chosenSubjects.length; i++) {
-        placeholder.push(chosenSubjects[i]);
+        placeholder.push(chosenSubjects[i].value);
       }
     }
     return placeholder;
@@ -69,7 +69,8 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
               .email("Invalid email address")
               .required("Please enter your email"),
           password: Yup.string()
-              .required("Please enter your password"),
+              .required("Please enter your password")
+              .min(10, "Must be at least 10 characters"),
           firstName: Yup.string()
               .max(30, "Must be 30 characters or less")
               .required("Please enter your name"),
@@ -139,7 +140,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
               const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
                 method: "PUT",
                 body: JSON.stringify({
-                  subjects: getArrayOfChosenSubjectIds(),
+                  subjectIds: getArrayOfChosenSubjectIds(),
                 }),
                 headers: {
                   "Content-Type": "application/json",
@@ -152,7 +153,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
             }
           } catch (e) {
             // TODO: redirect to error page
-            alert("An error has occured in try/catch");
+            console.log(e)
             setError(e);
           }
         }}
