@@ -1,7 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import NavbarSearch from "./NavbarSearch";
 
 export default function Navbar() {
+  const search = () => {
+
+  }
+
   return (
     <nav className="navbar px-10 p-3 w-4/5 p-1 content-center flex justify-between rounded-full bg-transparent text-white">
       <span className="">
@@ -17,19 +22,9 @@ export default function Navbar() {
       </span>
 
       {/** search field */}
-      <form className="form-control w-1/4 flex-row relative text-black-800">
-        <div className="relative flex items-center">
-          <button type="submit" className="absolute inset-y-0 left-3">
-            <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="grey" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </button>
-          <input type="search" id="search" className="block z-4 w-4/5 p-3 pl-10 rounded-full bg-white-200 text-black" placeholder="Search" required></input>
-          <select className="select max-w-fit text-black">
-            <option selected>Both</option>
-            <option>Tutors</option>
-            <option>Students</option>
-          </select>
-        </div>
-      </form>
+      <div className="w-1/4">
+        <NavbarSearch />
+      </div>
 
       <span className="p-1 w-2/5 flex justify-between">
         <Link href="/" className="btn btn-ghost normal-case text-xl p-2">Feed</Link>
