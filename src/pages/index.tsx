@@ -36,9 +36,9 @@ export default function Home() {
 
         {/* Top part of page (everything in front of bg image) */}
         <div className="h-screen">
-          <div className="m-5 p-3 ml-20 mt-20 text-white">
-            <h1 className="p-1 m-1 text-6xl">Connect with <br/> <div className="mb-8 text-orange-400">Expert Tutors Now</div></h1>
-            <p className="p max-w-md text-lg ml-4">
+          <div className="m-5 p-3 ml-20 mt-20">
+            <h1 className="p-1 m-1 text-6xl text-white font-black">Connect with <br/> <div className="mb-8 text-orange-400">Expert Tutors Now</div></h1>
+            <p className="p max-w-md text-lg ml-4 text-white">
               Find the perfect tutor to help you excel in your studies.
               Our platform connects you with qualified and experienced tutors who can assist you with a variety of subjects,
               from math and science to English and history.
@@ -53,7 +53,7 @@ export default function Home() {
         </div>
 
         {/* Top subjects */}
-        <h1 className="mt-80 p-20 text-bold text-5xl flex justify-center ">Browse tutors by&nbsp;<div className="text-orange-500 ">Subject</div></h1>
+        <h1 className="mt-80 p-20 text-bold text-5xl flex justify-center font-medium">Browse tutors by&nbsp;<div className="text-orange-500 ">Subject</div></h1>
         <div className="flex justify-center">
           <div className="w-4/5 px-10 flex-wrap justify-center">
             <SubjectBox />
@@ -71,7 +71,7 @@ export default function Home() {
         {/* Top tutors */}
         <LandingPageContainer>
           <LandingPageBlurBox style="bg-blue-200">
-            <div className="text-5xl pl-10 py-10 w-full flex justify-center">Take a look at our&nbsp;<span className="text-orange-500">Trending Tutors</span></div>
+            <div className="text-5xl pl-10 py-10 w-full flex justify-center font-medium">Take a look at our&nbsp;<span className="text-orange-500">Trending Tutors</span></div>
             <div className="flex items-center justify-around">
               <Carousel />
             </div>
@@ -82,7 +82,7 @@ export default function Home() {
         <LandingPageContainer>
           <LandingPageBlurBox style="bg-blue-200 ">
             <div className=" pl-10 py-10 ml-auto mr-0 flex-col justify-end ">
-              <h1 className="text-5xl text-right px-5">Discover more <br/><div className="text-blue-900">about us</div></h1>
+              <h1 className="text-5xl text-right px-5 font-medium">Discover more <br/><div className="text-blue-900">about us</div></h1>
               <div className="w-full flex justify-end">
                 <p className="w-1/2 text-2xl my-10 text-right ">
                   We are so excited to connect you with the best tutors to help you excel in your studies.
@@ -101,7 +101,7 @@ export default function Home() {
         <LandingPageContainer style="">
           <LandingPageBlurBox style="bg-blue-200">
             <div className="pl-10 py-10">
-              <h1 className="text-5xl mt-5">Support our mission <br/>to provide <br/><div className="text-blue-900">quality education</div></h1>
+              <h1 className="text-5xl mt-5 font-medium">Support our mission <br/>to provide <br/><div className="text-blue-900">quality education</div></h1>
               <p className="w-3/5 text-2xl my-10">
                 At our platform, we are committed to providing quality education to students of all ages by
                 connecting them with highly qualified and experienced tutors.
