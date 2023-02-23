@@ -1,65 +1,39 @@
+import BoxContainer from "@/components/profilePage/helpingComponents/BoxContainer";
+import ProfileSection from "@/components/profilePage/ProfileSection";
+import Subject from "@/models/Subject";
 import Tutor from "@/models/Tutor";
 import db from "@/utils/db";
-import {NextPageContext} from "next";
-import {useRouter} from "next/router";
-import {useState} from "react";
+import {ObjectId} from "mongoose";
+import {GetServerSidePropsContext} from "next";
+import {getServerSession, Session} from "next-auth";
+import Head from "next/head";
+import {authOptions} from "../api/auth/[...nextauth]";
 
-const TutorPage = ({tutor}: {tutor: any}) => {
-  const router = useRouter();
-  const {id} = router.query;
-
-  const [followers, setFollowers] = useState(tutor.followers.length);
-  const handleFollow = async () => {
-    const res = await fetch(`http://localhost:3000/api/tutors/${id}/follow`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-    const json = await res.json();
-
-    if (json.message) {
-      console.log(json.message);
-    } else {
-      console.log(json);
-      setFollowers(followers+1);
-    }
-  };
-
-  const handleUnfollow = async () => {
-    const res = await fetch(`http://localhost:3000/api/tutors/${id}/unfollow`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-    const json = await res.json();
-
-    if (json.message) {
-      console.log(json.message);
-    } else {
-      console.log(json);
-      setFollowers(followers-1);
-    }
-  };
-
+const TutorPage = ({tutor, isFollowing, subjects}: {tutor: any, isFollowing: boolean, subjects: Array<any>}) => {
   return (
     <>
       {tutor && (
-        <div>
-          <h1>{tutor.firstName} {tutor.lastName}</h1>
-          <p>Followers: {followers}</p>
-          <div>
-            <button onClick={async () => await handleFollow()}>Follow</button>
-          </div>
-          <div>
-            <button onClick={async () => await handleUnfollow()}>Unfollow</button>
-          </div>
-        </div>
+        <>
+          <Head>
+            <title>{tutor.firstName} {tutor.lastName}</title>
+          </Head>
+
+          <main className="w-full h-screen px-28">
+            <div className="w-full flex justify-around">
+
+              <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} />
+
+              <BoxContainer >
+                <p>Hello world</p>
+              </BoxContainer>
+
+            </div>
+
+
+          </main>
+
+        </>
+
       )}
 
       {!tutor && (
@@ -72,14 +46,23 @@ const TutorPage = ({tutor}: {tutor: any}) => {
 export default TutorPage;
 
 
-export const getServerSideProps = async (context: NextPageContext) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   await db.connect();
   let tutor = await Tutor.findById(context.query.id);
   tutor = JSON.parse(JSON.stringify(tutor));
+  const session: Session | null = await getServerSession(context.req, context.res, authOptions);
+  const isFollowing = tutor.followers.findIndex((follower: {_id: ObjectId, userId: String, accountType: String}) => follower.userId === session?.user.id.toString()) > -1;
+  const subjects = await Subject.find({
+    _id: {
+      $in: tutor.subjectsOfSpecialty,
+    },
+  });
 
   return {
     props: {
       tutor,
+      isFollowing,
+      subjects: JSON.parse(JSON.stringify(subjects)),
     },
   };
 };
