@@ -2,9 +2,8 @@ import * as Yup from "yup";
 
 import { Field, Formik } from "formik";
 import { FormEventHandler, useEffect, useState } from "react";
-import { getSubjectOptions, setSelectedSubjects } from "@/utils/subjects";
 
-import Select from "react-tailwindcss-select";
+// TODO: figure out how to filter for subjects and languages
 
 export default function Filter({storeState, buttonAction, passedRole = "both"}: {storeState: any, buttonAction: any, passedRole?: string | undefined}) {
 
