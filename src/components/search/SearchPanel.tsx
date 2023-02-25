@@ -11,13 +11,6 @@ import SearchProfile from "./SearchProfile";
  */
 export default function SearchPanel({props, users}: {props: {query?: string, role?: string}, users: any}) {
 
-    useEffect(() => {
-
-    }, [])
-
-    // placeholder for fetched data
-    const data = "lol"
-
     // errors should be display if they exist
     const [error, setError] = useState<any>(null);
 
@@ -50,23 +43,22 @@ export default function SearchPanel({props, users}: {props: {query?: string, rol
                     </div>
                 ):(null)}
                 <div className="flex p-2">
-                    <div className="w-2/5 m-3 bord rounded-xl shadow bg-white">
+                    <div className="w-2/5 m-3 rounded-xl shadow bg-white">
                         {/** filter */}
                         <Filter storeState={setQuery} buttonAction={search} passedRole={role} />
                     </div>
-                    <div className="w-4/5 m-3 bord">
+                    <div className="w-4/5 m-3">
 
                         {/** loading */}
-                        {!data ? (
+                        {users.length == 0 ? (
                             <div className="uppercase font-bold text-white">
-                                ...Loading
+                                No results
                             </div>
-                        ) : (null)}
-
-                        {/** profiles */}
-                        {(users.map((element: any) => {
-                            return <SearchProfile user={element} />
-                        }))}
+                        ) : (
+                            (users.map((element: any) => {
+                                return <SearchProfile user={element} />
+                            }))
+                        )}
                     </div>
                 </div>
             </div>
