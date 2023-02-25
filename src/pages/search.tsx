@@ -27,15 +27,9 @@ export default function Search({tutors}: {tutors:any}) {
             <title>Search</title>
         </Head>
         <main className="flex-col justify-center min-h-screen"> 
-            <div className="flex justify-center">
-                <Navbar black={true} />
-            </div>
-
+            <Navbar black={true} />
             <SearchPanel props={navProps} users={tutors} />
-
-            <div className=" b-0">
-                <Footer />
-            </div>
+            <Footer />
         </main>
         </>
     )
