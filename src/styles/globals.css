@@ -19,7 +19,7 @@
 }
 
 .bord {
-  border: 2px black solid;
+  outline-style: solid;
 }
 
 * {
