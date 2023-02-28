@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import SearchPanel from "@/components/search/SearchPanel";
 import { useRouter } from "next/router";
 
-export default function Search({tutors}: {tutors:any}) {
+export default function Search({subjects}: {subjects: any}) {
 
     // get search queries 
     const router = useRouter()
@@ -19,8 +19,6 @@ export default function Search({tutors}: {tutors:any}) {
         role: roleFromNav,
     }
 
-    console.log(tutors)
-
     return (
         <>
         <Head>
@@ -28,30 +26,24 @@ export default function Search({tutors}: {tutors:any}) {
         </Head>
         <main className="flex-col justify-center min-h-screen"> 
             <Navbar black={true} />
-            <SearchPanel props={navProps} users={tutors} />
+            <SearchPanel props={navProps} filterSubjects={subjects} />
             <Footer />
         </main>
         </>
     )
 }
 
-/**
- *  this is here just for initial testing purposes, later this functionality should be changed to fetch elsewhere
- * @returns {{tutor}[]} all tutors
- */
 export async function getStaticProps() {
-
-    const res = await fetch("http://localhost:3000/api/tutors", {
-        method: "GET",
-        headers: {
+    const res = await fetch("http://localhost:3000/api/subjects", {
+      method: "GET",
+      headers: {
         "Content-Type": "application/json",
-        },
-    })
-
+      },
+    });
+  
     return {
-        props: {
-            tutors: await res.json()
-        }
-    }
-
-}
+      props: {
+        subjects: await res.json(),
+      },
+    };
+  }
