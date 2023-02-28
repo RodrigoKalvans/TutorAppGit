@@ -29,8 +29,8 @@ export default function NavbarSearch() {
                     </input>
                     <select onChange={(e) => setRole(e.target.value)} defaultValue={"both"} className="select rounded-l-none rounded-r-full max-w-fit text-black">
                         <option value={"both"}>Both</option>
-                        <option value={"tutor"}>Tutors</option>
-                        <option value={"student"}>Students</option>
+                        <option value={"tutors"}>Tutors</option>
+                        <option value={"students"}>Students</option>
                     </select>
                 </div>
             </form>
