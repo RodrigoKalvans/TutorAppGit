@@ -10,6 +10,11 @@ import {signIn} from "next-auth/react";
 
 YupPassword(Yup);
 
+/**
+ * TODO: fill this in
+ * @param param0 
+ * @returns 
+ */
 export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects: any}) {
   const [error, setError] = useState<any>(null);
 

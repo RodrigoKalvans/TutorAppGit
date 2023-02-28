@@ -4,6 +4,11 @@ import Navbar from "@/components/Navbar";
 import SearchPanel from "@/components/search/SearchPanel";
 import { useRouter } from "next/router";
 
+/**
+ * TODO: fill this in
+ * @param param0 
+ * @returns 
+ */
 export default function Search({subjects}: {subjects: any}) {
 
     // get search queries 
