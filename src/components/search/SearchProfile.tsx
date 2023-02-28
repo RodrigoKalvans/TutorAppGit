@@ -11,15 +11,30 @@ export default function SearchProfile({user}: {user: any}) {
     
     const [subjects, setSubjects] = useState<any>([])
 
-    // TODO: need to fix this shit! does not appear on first load because data is displayed before fetch
-    // is complete
-    user.subjectsOfSpecialty.map(async (subjectid: string) => {
-        const res = await fetch(`http://localhost:3000/api/subjects/${subjectid}`)
+    // TODO: this needs to be changed when fields in db are renamed
+    const subjectsFieldName = user.role == "student" ? user.subjectsStudied : user.subjectsOfSpecialty
+
+    // TODO: replace with a single get that takes an array of subject ids
+    const getSubjects = async () => {
+        const res = await fetch(`http://localhost:3000/api/subjects`)
         const json = await res.json();
-        const temp: any = subjects
-        temp.push(json.name)
-        setSubjects(temp)
-    })
+
+        let subs: string[] = []
+        for (let i = 0; i < subjectsFieldName.length; i++) {
+            for (let j = 0; j < json.length; j++) {
+                if (json.at(j)._id == subjectsFieldName.at(i)) {
+                    subs.push(json.at(i).name);
+                    
+                }
+            }
+        }
+        setSubjects(subs);
+        console.log('subs', subjects)
+    }
+
+    useEffect(() => {
+        getSubjects();
+    }, [])
 
     return (
         <>
@@ -31,13 +46,13 @@ export default function SearchProfile({user}: {user: any}) {
                     {/** TODO: replace with profile image */}
                     <div className="">
                         image
-                    </div>
+                    </div> 
                 </div>
 
                 <div className="flex p-2 w-3/4">
 
                     {/** name and such */}
-                    <div className="p-1 flex-col w-1/2 ">
+                    <div className="p-1 flex-col w-1/2">
                         <div className="flex-col space-between">
                             {/** name */}
                             <div className="text-xl">
@@ -72,13 +87,13 @@ export default function SearchProfile({user}: {user: any}) {
                             )) : null}
                         </div>
                         {/** subjects */}
-                        {/** fix displaying before data is fetched */}
+                        {/** TODO fix displaying before data is fetched */}
                         <div className="">
-                            {subjects.length > 0 ? subjects.map((subject: any) => (
-                                <div className="">
+                            {subjects.length > 0 && subjects.map((subject: any) => (
+                                <div className="">  
                                     {subject}
                                 </div>
-                            )): null}
+                            ))}
                         </div>
                     </div>
                 </div>
