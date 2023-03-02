@@ -23,9 +23,16 @@ const TutorPage = ({tutor, isFollowing, subjects}: {tutor: any, isFollowing: boo
 
               <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} />
 
-              <BoxContainer >
-                <p>Hello world</p>
-              </BoxContainer>
+              <div className="w-9/20">
+                <BoxContainer >
+                  <p>Hello world</p>
+                </BoxContainer>
+                <BoxContainer >
+                  <p>Hello world</p>
+                </BoxContainer>
+
+              </div>
+
 
             </div>
 
@@ -44,7 +51,6 @@ const TutorPage = ({tutor, isFollowing, subjects}: {tutor: any, isFollowing: boo
 };
 
 export default TutorPage;
-
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   await db.connect();

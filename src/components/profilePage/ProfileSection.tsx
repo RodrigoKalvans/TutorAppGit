@@ -3,12 +3,14 @@ import BoxContainer from "./helpingComponents/BoxContainer";
 import FollowersSection from "./helpingComponents/FollowersSection";
 import ProfilePicture from "./helpingComponents/ProfilePicture";
 import Rating from "./helpingComponents/Rating";
+import Price from "./helpingComponents/Price";
+import ContactDetails from "./helpingComponents/ContactDetails";
+import Languages from "./helpingComponents/Languages";
+import Subjects from "./helpingComponents/Subjects";
 
 const ProfileSection = ({user, isFollowing, subjects}: {user: any, isFollowing: boolean, subjects: Array<any>}) => {
   const [followers, setFollowers] = useState(user.followers.length);
   const [isFollowed, setIsFollowed] = useState(isFollowing);
-  user.location = "Deventer, Overijssel, Netherlands";
-  user.languages = ["English", "Chinese"];
 
   return (
     <BoxContainer>
@@ -35,31 +37,24 @@ const ProfileSection = ({user, isFollowing, subjects}: {user: any, isFollowing: 
         </div>
       </div>
 
-      <div className="grid grid-cols-2 grid-rows-2">
-        <div>
-          <h2>Subjects</h2>
-          {subjects.map((subject) =>
-            <p key={subject._id}>{subject.name}</p>,
-          )}
-        </div>
-        <div>
-          <h2>Languages</h2>
-          {user.languages.map((language: string) =>
-            <p>{language}</p>,
-          )}
-        </div>
-        <div>
-          <h2>Subjects</h2>
-          {subjects.map((subject) =>
-            <p key={subject._id}>{subject.name}</p>,
-          )}
-        </div>
-        <div>
-          <h2>Subjects</h2>
-          {subjects.map((subject) =>
-            <p key={subject._id}>{subject.name}</p>,
-          )}
-        </div>
+      <div className="grid grid-cols-2 gap-8 my-8">
+        <Subjects subjects={subjects} />
+
+        <Languages languages={user.languages} />
+
+        {user.role === "tutor" && (
+          <>
+            <ContactDetails email={user.email} phoneNumber={user.phoneNumber} />
+
+            <Price priceForLessons={user.priceForLessons} />
+          </>
+        )}
+
+      </div>
+
+      <div>
+        <h2 className="text-xl font-medium pb-2">About</h2>
+        <p className="m-0 text-base">{user.description}</p>
       </div>
 
     </BoxContainer>

@@ -15,44 +15,6 @@ const StudentPage = ({student, isFollowing}: {student: any, isFollowing: boolean
 
   const [followers, setFollowers] = useState(student.followers.length);
 
-  const handleFollow = async () => {
-    const res = await fetch(`http://localhost:3000/api/students/${id}/follow`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-    const json = await res.json();
-
-    if (json.message) {
-      console.log(json.message);
-    } else {
-      console.log(json);
-      setFollowers(followers+1);
-    }
-  };
-
-  const handleUnfollow = async () => {
-    const res = await fetch(`http://localhost:3000/api/students/${id}/unfollow`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-    const json = await res.json();
-
-    if (json.message) {
-      console.log(json.message);
-    } else {
-      console.log(json);
-      setFollowers(followers-1);
-    }
-  };
-
   const fullName = `${student.firstName} ${student.lastName}`;
 
   return (
@@ -66,7 +28,7 @@ const StudentPage = ({student, isFollowing}: {student: any, isFollowing: boolean
           <main className="w-full h-screen px-28">
             <div className="w-full flex justify-around">
 
-              <ProfileSection user={student} role="tutor"></ProfileSection>
+              <ProfileSection user={student}></ProfileSection>
 
               <BoxContainer >
                 <p>Hello world</p>

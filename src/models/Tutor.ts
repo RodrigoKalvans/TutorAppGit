@@ -10,9 +10,8 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       role: {type: String, required: true, default: "tutor"},
       picture: {type: Buffer},
       description: {type: String},
-      language: [{type: String}],
+      languages: [{type: String}],
       phoneNumber: {type: String},
-      emailAddress: {type: String},
       location: {type: String},
       isOnlineAvailable: {type: Boolean},
       subjectsOfSpecialty: [{type: String}],
@@ -35,7 +34,6 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
           }},
         },
       ],
-      subjects: [{type: String}],
       rating: {
         number: {type: Number, default: 0},
         ratingCount: {type: Number, default: 0},
