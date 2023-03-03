@@ -24,12 +24,10 @@ export default function SearchProfile({user}: {user: any}) {
             for (let j = 0; j < json.length; j++) {
                 if (json.at(j)._id == subjectsFieldName.at(i)) {
                     subs.push(json.at(i).name);
-                    
                 }
             }
         }
         setSubjects(subs);
-        console.log('subs', subjects)
     }
 
     useEffect(() => {
