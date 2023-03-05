@@ -3,7 +3,6 @@ import Link from "next/link";
 import NavbarSearch from "./NavbarSearch";
 
 export default function Navbar({black = false}: {black?: boolean}) {
-
   return (
     <div className="w-full flex justify-center">
       <nav className={`navbar px-10 p-3 w-4/5 p-1 content-center flex justify-between rounded-full bg-transparent text-white ${black ? "text-black" : "text-white"} `}>

@@ -30,7 +30,7 @@ export default function Home() {
       </Head>
       <main className="bg-landing bgimage z-0 w-full flex-wrap justify-center absolute">
 
-          <Navbar />
+        <Navbar />
 
         {/* Top part of page (everything in front of bg image) */}
         <div className="h-screen">
