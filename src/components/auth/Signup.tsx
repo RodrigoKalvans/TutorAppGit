@@ -12,8 +12,8 @@ YupPassword(Yup);
 
 /**
  * TODO: fill this in
- * @param param0 
- * @returns 
+ * @param {any} param0
+ * @return {any} yo
  */
 export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects: any}) {
   const [error, setError] = useState<any>(null);
@@ -40,10 +40,10 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
     const placeholder: string[] = [];
     if (chosenSubjects) {
       for (let i = 0; i < chosenSubjects.length; i++) {
-          placeholder.push(chosenSubjects.at(i).value);
+        placeholder.push(chosenSubjects.at(i).value);
       }
     }
-    console.log(placeholder)
+    console.log(placeholder);
     return placeholder;
   };
 
