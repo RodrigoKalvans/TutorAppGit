@@ -29,6 +29,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
     "react-tailwindcss-select": "^1.6.0",
+    "swr": "^2.0.3",
     "yup": "^1.0.0",
     "yup-password": "^0.2.2"
   },

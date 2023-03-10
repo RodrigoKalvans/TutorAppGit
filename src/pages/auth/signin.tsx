@@ -5,6 +5,9 @@ import SignUp from "@/components/auth/Signup";
 import {getCsrfToken} from "next-auth/react";
 import {useState} from "react";
 
+/** Login page
+ * @return {any} yo
+ */
 export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfToken: any}) {
   const [login, setLogin] = useState(true);
 
@@ -35,7 +38,11 @@ export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfTok
   );
 }
 
-// token used for login
+/**
+ * yo
+ * @param {any} context a
+ * @return {any}
+ */
 export async function getServerSideProps(context: CtxOrReq | undefined) {
   const res = await fetch("http://localhost:3000/api/subjects", {
     method: "GET",

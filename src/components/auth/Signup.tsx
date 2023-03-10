@@ -4,12 +4,17 @@ import {ErrorMessage, Field, Formik} from "formik";
 import {FormEventHandler, useState} from "react";
 
 import Link from "next/link";
-import Select from "react-tailwindcss-select";
+import SubjectSelect from "../SubjectSelect";
 import YupPassword from "yup-password";
 import {signIn} from "next-auth/react";
 
 YupPassword(Yup);
 
+/**
+ * TODO: fill this in
+ * @param {any} param0
+ * @return {any} yo
+ */
 export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects: any}) {
   const [error, setError] = useState<any>(null);
 
@@ -27,38 +32,22 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
     setRole("tutor");
   };
 
-  /** turn subjects into parsable data by Select element
-     * is called when subject Select element is initialized
-     * @return {{}[]} parsable options
-     */
-  const getSubjectOptions = () => {
-    const options: { value: string; label: string; }[] = [];
-    subjects.map((subject: any) => options.push({value: `${subject._id}`, label: `${subject.name}`}));
-    return options;
-  };
-
-  /** is called onChange in subject Select element
-   * @param {string[]} value is the new string[] containing subject ids
-  */
-  const setSelectedSubjects = (value: any) => {
-    setSubjects(value);
-  };
-
   /** called when sending PUT request to update tutor subjects
-     * condense subjects down to id[]
-     * @return {string[]} reference to string[] with subject ids
-     */
+ * condense subjects down to id[]
+ * @return {string[]} reference to string[] with subject ids
+ */
   const getArrayOfChosenSubjectIds = () => {
     const placeholder: string[] = [];
     if (chosenSubjects) {
       for (let i = 0; i < chosenSubjects.length; i++) {
-        placeholder.push(chosenSubjects[i].value);
+        placeholder.push(chosenSubjects.at(i).value);
       }
     }
+    console.log(placeholder);
     return placeholder;
   };
 
-  const submit = async (values: any) => {
+  const onSubmit = async (values: any) => {
     try {
       // define object to be sent via HTTP
       const user: {
@@ -165,7 +154,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
               .max(20, "Must be 20 characters or less")
               .required("Please enter your last name"),
         })}
-        onSubmit={async (values: { firstName: string; lastName: string; email: string; password: string; }, {setSubmitting}: any) => submit(values)}
+        onSubmit={async (values: { firstName: string; lastName: string; email: string; password: string; }) => onSubmit(values)}
       >
         {(formik: { handleSubmit: FormEventHandler<HTMLFormElement> | undefined; isSubmitting: any; }) => (
           <>
@@ -262,17 +251,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
                     className="uppercase text-sm text-gray-600 font-bold"
                   >
                     Subjects
-                    <Select
-                      onChange={setSelectedSubjects}
-                      options={getSubjectOptions()}
-                      primaryColor={""}
-                      isMultiple={true}
-                      isSearchable={true}
-                      value={chosenSubjects}
-                      classNames={{
-                        tagItemText: "text-sm m-1",
-                      }}
-                    />
+                    <SubjectSelect setFunction={setSubjects} subjects={subjects}/>
                   </label>
                   <div className="text-red-600 text-sm">
                     <ErrorMessage name="subjects" />

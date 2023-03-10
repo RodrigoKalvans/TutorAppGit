@@ -1,17 +1,17 @@
 // import Navbar from "@/components/Navbar";
 import Activity from "@/components/profilePage/Activity";
+import {Session, getServerSession} from "next-auth";
+import {GetServerSidePropsContext} from "next";
+import Head from "next/head";
+import {ObjectId} from "mongoose";
 import ProfileSection from "@/components/profilePage/ProfileSection";
 import ReviewsSection from "@/components/profilePage/ReviewsSection";
 import Review from "@/models/Review";
 import Student from "@/models/Student";
 import Subject from "@/models/Subject";
 import Tutor from "@/models/Tutor";
-import db from "@/utils/db";
-import {ObjectId} from "mongoose";
-import {GetServerSidePropsContext} from "next";
-import {getServerSession, Session} from "next-auth";
-import Head from "next/head";
 import {authOptions} from "../api/auth/[...nextauth]";
+import db from "@/utils/db";
 
 const TutorPage = ({tutor, isFollowing, subjects, reviews}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>}) => {
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
