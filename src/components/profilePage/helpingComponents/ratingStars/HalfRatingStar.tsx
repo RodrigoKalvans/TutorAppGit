@@ -1,6 +1,6 @@
 const HalfRatingStar = ({title}: {title: string}) => {
   return (
-    <svg aria-hidden="true" className="mask mask-star-2 w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <svg aria-hidden="true" className="mask mask-star-2 w-2/12 h-2/12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
       <title>{title}</title>
       <defs>
         <linearGradient id="grad">

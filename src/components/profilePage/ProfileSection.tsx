@@ -13,7 +13,7 @@ const ProfileSection = ({user, isFollowing, subjects}: {user: any, isFollowing: 
   const [isFollowed, setIsFollowed] = useState(isFollowing);
 
   return (
-    <BoxContainer>
+    <BoxContainer style={""}>
       <div className="flex justify-between">
         <div className="w-9/20">
           <ProfilePicture/>
