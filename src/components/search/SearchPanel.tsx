@@ -53,11 +53,9 @@ const requestUsers = () => {
 export default function SearchPanel({subjects}: {subjects: any}) {
   // errors should be display if they exist
   const [err, setError] = useState<any>();
-  setError("temp");
 
   // TODO: types
   const [loading, setLoading] = useState<boolean>();
-  setLoading(undefined);
   const [users, setUsers] = useState<any>();
 
   const [role, setRole] = useState<string>("both");
@@ -110,7 +108,7 @@ export default function SearchPanel({subjects}: {subjects: any}) {
   return (
     <>
       <div className="w-full flex justify-center min-h-screen ">
-        <div className="w-4/5 shadow-xl rounded-xl bg-white-500 mt-5 flex-col justify-center bg-orange-200">
+        <div className="w-4/5 rounded-xl bg-white-500 mt-5 flex-col justify-center">
           <div className="w-full flex justify-center">
             <h1 className="text-red-500 font-bold">
               {err && ("Error")}

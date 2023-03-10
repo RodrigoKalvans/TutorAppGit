@@ -47,7 +47,7 @@ export default function Filter({buttonAction, passedRole = "both", subjects}: {b
 
   return (
     <>
-      <div className="w-full rounded-2xl shadow-2xl bg-white flex justify-center p-2">
+      <div className="w-full rounded-2xl shadow-xl bg-white flex justify-center p-2">
         <div className="flex justify-center">
           <Formik
             initialValues={{
