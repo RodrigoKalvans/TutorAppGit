@@ -1,6 +1,11 @@
 // import Navbar from "@/components/Navbar";
 
+import {Session, getServerSession} from "next-auth";
+
 import Activity from "@/components/profilePage/Activity";
+import {GetServerSidePropsContext} from "next";
+import Head from "next/head";
+import {ObjectId} from "mongoose";
 import ProfileSection from "@/components/profilePage/ProfileSection";
 import Review from "@/models/Review";
 import ReviewsSection from "@/components/profilePage/ReviewsSection";
