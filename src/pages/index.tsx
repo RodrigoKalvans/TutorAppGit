@@ -22,6 +22,10 @@ import SubjectBox from "@/components/landingPage/SubjectBox";
 // TODO: Add subject images
 // TODO: Get tutors that will be displayed
 
+/**
+ * placeholder docs
+ * @return {any} JSX landing page
+ */
 export default function Home() {
   return (
     <>
