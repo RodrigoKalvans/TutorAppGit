@@ -30,6 +30,9 @@ module.exports = {
         "subtitle": "#505050",
         "current": "#282828",
       },
+      backgroundColor: {
+        "container": "#F2F2F2",
+      },
     },
 
   },

@@ -8,7 +8,7 @@ const Rating = ({rating}: {rating: {number: number, ratingCount: number}}) => {
 
   return (
     <div className="flex items-center">
-      <div className="flex">
+      <div className="flex items-center">
         {[...Array(fullStars)].map((o, i) =>
           <RatingStar key={i} colorStyle="text-orange-500" title="i" />,
         )}
@@ -16,10 +16,10 @@ const Rating = ({rating}: {rating: {number: number, ratingCount: number}}) => {
           <HalfRatingStar title={`${fullStars+1}`} />
         )}
         {[...Array(emptyStars)].map((o, i) =>
-          <RatingStar key={i} colorStyle="text-gray-400" title="i" />,
+          <RatingStar key={i} colorStyle="text-gray-300" title="i" />,
         )}
+        <div>({rating.ratingCount})</div>
       </div>
-      <div>({rating.ratingCount})</div>
 
     </div>
   );

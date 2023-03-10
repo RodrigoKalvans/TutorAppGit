@@ -17,6 +17,7 @@
     "@types/react-dom": "18.0.10",
     "argon2": "^0.30.3",
     "daisyui": "^2.47.0",
+    "date-fns": "^2.29.3",
     "eslint-config-next": "13.1.4",
     "formik": "^2.2.9",
     "http-status-codes": "^2.2.0",
