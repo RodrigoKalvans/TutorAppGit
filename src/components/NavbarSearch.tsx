@@ -2,7 +2,7 @@ import {useRouter} from "next/router";
 import {useState} from "react";
 
 type TQueryForSearch = {
-  query: string,
+  query: string | undefined,
   role: string,
 }
 

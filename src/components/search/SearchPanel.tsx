@@ -1,16 +1,16 @@
 import {NextRouter, useRouter} from "next/router";
 import {useEffect, useState} from "react";
-import useSWR, {SWRResponse} from "swr";
 
 import Filter from "./Filter";
 import SearchProfile from "./SearchProfile";
+import useSWR from "swr";
 
 type TQuery = {
   role: string,
-  firstName: string,
-  lastName: string,
-  rating: number,
-  subjects: string[],
+  firstName: string | undefined,
+  lastName: string | undefined,
+  rating: number | undefined,
+  subjects: string[] | undefined,
 }
 
 const requestUsers = () => {
@@ -53,9 +53,11 @@ const requestUsers = () => {
 export default function SearchPanel({subjects}: {subjects: any}) {
   // errors should be display if they exist
   const [err, setError] = useState<any>();
+  setError("temp");
 
   // TODO: types
   const [loading, setLoading] = useState<boolean>();
+  setLoading(undefined);
   const [users, setUsers] = useState<any>();
 
   const [role, setRole] = useState<string>("both");
@@ -70,7 +72,6 @@ export default function SearchPanel({subjects}: {subjects: any}) {
   const search = async (filter: TQuery) => {
     setRole(filter.role);
     console.log("search called");
-    console.log("search filter", filter.subjects);
 
     router.push({
       query: filter,
@@ -78,6 +79,7 @@ export default function SearchPanel({subjects}: {subjects: any}) {
 
     console.log("router query", router.query);
     console.log("router path", router.asPath);
+    console.log("users", users);
 
     setUsers(requestUsers());
 
