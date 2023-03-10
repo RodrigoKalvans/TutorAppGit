@@ -1,3 +1,4 @@
+// import Navbar from "@/components/Navbar";
 import BoxContainer from "@/components/profilePage/helpingComponents/BoxContainer";
 import ProfileSection from "@/components/profilePage/ProfileSection";
 import Review from "@/models/Review";
@@ -23,6 +24,7 @@ const StudentPage = ({student, isFollowing, subjects, reviews}: {student: any, i
             <title>{fullName}</title>
           </Head>
 
+          {/* <Navbar black={true} /> */}
           <main className="w-full h-screen px-28">
             <div className="w-full flex justify-around">
 
