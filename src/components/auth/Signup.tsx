@@ -95,7 +95,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
         const res = await signIn("credentials", {
           email: values.email,
           password: values.password,
-          callbackUrl: `/${role}s/${userJson._id}`,
+          // callbackUrl: `/${role}s/${userJson._id}`,
         });
         if (res?.error) {
           setError(res.error);
