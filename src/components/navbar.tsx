@@ -2,6 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import NavbarSearch from "./NavbarSearch";
 
+/**
+ *
+ * @param {any} param0 plc
+ * @return {any} plc
+ */
 export default function Navbar({black = false}: {black?: boolean}) {
   return (
     <div className="w-full flex justify-center">
