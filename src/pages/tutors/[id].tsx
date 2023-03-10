@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+// import Navbar from "@/components/Navbar";
 import Activity from "@/components/profilePage/Activity";
 import ProfileSection from "@/components/profilePage/ProfileSection";
 import ReviewsSection from "@/components/profilePage/ReviewsSection";
