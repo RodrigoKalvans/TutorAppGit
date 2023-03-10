@@ -130,8 +130,8 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
   return (
     <>
       <div className="btn-group w-full">
-        <button onClick={setStudent} className="btn w-1/2 bg-orange-600 hover:bg-orange-500" >Student</button>
-        <button onClick={setTutor} className="btn w-1/2 bg-orange-600 hover:bg-orange-500">Tutor</button>
+        <button onClick={setStudent} className="btn w-1/2 bg-orange-400 hover:bg-orange-500" >Student</button>
+        <button onClick={setTutor} className="btn w-1/2 bg-orange-400 hover:bg-orange-500">Tutor</button>
       </div>
       <Formik
         initialValues={{firstName: "", lastName: "", email: "", password: "", tenantKey: ""}}
@@ -313,7 +313,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
                 <div className="flex items-center justify-center">
                   <button
                     type="submit"
-                    className="bg-orange-500 text-gray-100 p-3 rounded-lg w-full"
+                    className="bg-orange-400 hover:bg-orange-500 w-full text-gray-100 p-3 rounded-lg w-full"
                   >
                     {formik.isSubmitting ? "Please wait..." : "Sign Up"}
                   </button>
