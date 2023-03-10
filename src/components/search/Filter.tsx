@@ -1,29 +1,28 @@
 import * as Yup from "yup";
 
-import {ErrorMessage, Field, Formik} from "formik";
-import {FormEventHandler, useEffect, useState} from "react";
+import {ErrorMessage, Field, Form, Formik} from "formik";
 
 import SubjectSelect from "../SubjectSelect";
+import {useState} from "react";
 
 // TODO: figure out how to filter for subjects and languages
+
+type Values = {
+  role: string,
+  firstName: string,
+  lastName: string,
+  rating: number,
+};
 
 /**
  * TODO: fill this in
  * @param {any} param0
  * @return {any} yo
  */
-export default function Filter({storeQueryStateFunction, buttonAction, passedRole = "both", subjects}: {storeQueryStateFunction: any, buttonAction: any, passedRole?: string | undefined, subjects: any}) {
-  const [role, setRole] = useState<string>();
-  const [firstName, setFirstName] = useState<string>();
-  const [lastName, setLastName] = useState<string>();
-  const [rating, setRating] = useState<number>();
+export default function Filter({buttonAction, passedRole = "both", subjects}: {buttonAction: any, passedRole?: string | undefined, subjects: any}) {
   const [chosenSubjects, setSubjects] = useState<any>();
   // const [chosenLanguages, setLanguages] = useState<any>();
-
-  // triggers only once
-  useEffect(() => {
-    if (passedRole) setRole(passedRole);
-  }, []);
+  const [role, setRole] = useState<string>(passedRole);
 
   const getArrayOfChosenSubjectIds = () => {
     const placeholder: string[] = [];
@@ -32,22 +31,18 @@ export default function Filter({storeQueryStateFunction, buttonAction, passedRol
         placeholder.push(chosenSubjects.at(i).value);
       }
     }
-    console.log(placeholder);
     return placeholder;
   };
 
-  const submit = () => {
+  const handleSubmit = (values: any) => {
     const query = {
       role: role,
-      firstName: firstName,
-      lastName: lastName,
-      rating: rating,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      rating: values.rating,
       subjects: getArrayOfChosenSubjectIds(),
     };
-    alert(`submit() in filter || ${query}`);
-    storeQueryStateFunction(query);
-    buttonAction();
-    console.log("filter submitted", query);
+    buttonAction(query);
   };
 
   return (
@@ -56,29 +51,29 @@ export default function Filter({storeQueryStateFunction, buttonAction, passedRol
         <div className="flex justify-center">
           <Formik
             initialValues={{
-              role: "",
+              role: passedRole,
               firstName: "",
               lastName: "",
               rating: 0,
             }}
             validationSchema={Yup.object({
+              role: Yup
+                  .string(),
               firstName: Yup
                   .string(),
               lastName: Yup
                   .string(),
               rating: Yup
                   .number(),
-              subjects: Yup
-                  .array(),
-              languages: Yup
-                  .array(),
             })}
-            onSubmit={() => {
-              console.log("onSubmit");
-              submit();
-            }}>
-            {(formik: { handleSubmit: FormEventHandler<HTMLFormElement> | undefined; isSubmitting: any; }) => (
-              <form className="w-4/5 flex-col justify-center ">
+            onSubmit={async (values: Values) => {
+              handleSubmit(values);
+            }}
+          >
+            {(formik: {
+              isSubmitting: boolean | undefined;
+            }) => (
+              <Form className="w-4/5 flex-col justify-center ">
                 <h2 className="uppercase w-full flex justify-center my-3 font-bold text-lg">filter</h2>
                 <label
                   htmlFor="role"
@@ -88,10 +83,9 @@ export default function Filter({storeQueryStateFunction, buttonAction, passedRol
                   <select
                     className="p-2 w-fit ml-3 rounded-xl bg-gray-300 mt-0  text-gray-900"
                     name="role"
-                    defaultValue={"both"}
-                    onChange={(e: any) => setRole(e.target.value)}
+                    onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value="both">Both</option>
+                    <option value="both" selected>Both</option>
                     <option value="tutors">Tutors</option>
                     <option value="students">Students</option>
                   </select>
@@ -105,9 +99,9 @@ export default function Filter({storeQueryStateFunction, buttonAction, passedRol
                   <Field
                     name="firstName"
                     aria-label="First name"
+                    aria-required="false"
                     type="text"
-                    className="w-full bg-gray-300 mt-0  text-gray-900 p-2 ml-0"
-                    onChange={(e: any) => setFirstName(e.target.value)}
+                    className="w-full bg-gray-300 mt-0 text-gray-900 p-2 ml-0"
                   />
                 </label>
                 <label
@@ -118,9 +112,9 @@ export default function Filter({storeQueryStateFunction, buttonAction, passedRol
                   <Field
                     name="lastName"
                     aria-label="Last name"
+                    aria-required="false"
                     type="text"
                     className="w-full bg-gray-300 mt-0  text-gray-900 p-2 ml-0"
-                    onChange={(e: any) => setLastName(e.target.value)}
                   />
                 </label>
                 <label
@@ -131,9 +125,9 @@ export default function Filter({storeQueryStateFunction, buttonAction, passedRol
                   <Field
                     name="rating"
                     aria-label="Rating"
+                    aria-required="false"
                     type="numeric"
                     className="w-full bg-gray-300 mt-0 text-gray-900 p-2 ml-0"
-                    onChange={(e: any) => setRating(e.target.value)}
                   />
                 </label>
                 <label
@@ -153,10 +147,10 @@ export default function Filter({storeQueryStateFunction, buttonAction, passedRol
                     type="submit"
                     className="bg-orange-500 text-gray-100 p-3 rounded-lg w-full"
                   >
-                    {formik.isSubmitting ? "Please wait..." : "Sign Up"}
+                    {formik.isSubmitting ? "Please wait..." : "Search"}
                   </button>
                 </div>
-              </form>
+              </Form>
             )}
           </Formik>
         </div>

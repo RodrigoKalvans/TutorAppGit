@@ -47,7 +47,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
     return placeholder;
   };
 
-  const submit = async (values: any) => {
+  const onSubmit = async (values: any) => {
     try {
       // define object to be sent via HTTP
       const user: {
@@ -154,7 +154,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
               .max(20, "Must be 20 characters or less")
               .required("Please enter your last name"),
         })}
-        onSubmit={async (values: { firstName: string; lastName: string; email: string; password: string; }, {setSubmitting}: any) => submit(values)}
+        onSubmit={async (values: { firstName: string; lastName: string; email: string; password: string; }) => onSubmit(values)}
       >
         {(formik: { handleSubmit: FormEventHandler<HTMLFormElement> | undefined; isSubmitting: any; }) => (
           <>

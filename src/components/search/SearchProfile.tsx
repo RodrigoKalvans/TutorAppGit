@@ -2,37 +2,39 @@ import {useEffect, useState} from "react";
 
 import Languages from "../profilePage/helpingComponents/Languages";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
-import Subject from "@/models/Subject";
 import Subjects from "../profilePage/helpingComponents/Subjects";
-import db from "@/utils/db";
 
+// TODO: types
 /**
  * Card that displays user info on search page
  * @param {{any}}} user object to be displayed in the component
  * @return {any} yo
  */
-export default function SearchProfile({user}: {user: any}) {
-  const name: string = user.secondName ? `${user.firstName} ${user.secondName} ${user.lastName}` : `${user.firstName} ${user.lastName}`;
+export default function SearchProfile({user, subjects}: {user: any, subjects: any}) {
+  const fullName: string = user.secondName ? `${user.firstName} ${user.secondName} ${user.lastName}` : `${user.firstName} ${user.lastName}`;
 
-  const [subjects, setSubjects] = useState<any>([]);
+  // TODO: type
+  const [userSubjects, setUserSubjects] = useState<Array<{}>>([]);
 
   // TODO: this needs to be changed when fields in db are renamed
-  const subjectsFieldName = user.role == "student" ? user.subjectsStudied : user.subjectsOfSpecialty;
+  const subjectsFieldInUserObject: Array<string> = user.role == "student" ? user.subjectsStudied : user.subjectsOfSpecialty;
 
-  // TODO: replace with a single get that takes an array of subject ids
-  const getSubjects = async () => {
-    await db.connect();
-    const fetched = async () => await Subject.find({
-      _id: {
-        // this is for tutors
-        $in: subjectsFieldName,
-      },
-    });
-    setSubjects(fetched);
+  // TODO: types
+  // TODO: if we use pictures, handle those too
+  const filterSubjects: any = () => {
+    for (let i: number = 0; i < subjectsFieldInUserObject.length; i++) {
+      for (let j: number = 0; j < subjects.length; j++) {
+        if (subjectsFieldInUserObject.at(i) == subjects.at(j)._id) {
+          setUserSubjects((userSubjects: any) => [...userSubjects, subjects.at(j)]);
+        }
+      }
+    }
   };
 
+  // prep data on mount
   useEffect(() => {
-    getSubjects();
+    filterSubjects();
+    return () => setUserSubjects([]);
   }, []);
 
   return (
@@ -53,7 +55,7 @@ export default function SearchProfile({user}: {user: any}) {
               <div className="flex-col space-between">
                 {/** name */}
                 <div className="text-xl">
-                  {name}
+                  {fullName}
                 </div>
                 {/** tutor or student */}
                 <div className="font-bold">
@@ -61,6 +63,7 @@ export default function SearchProfile({user}: {user: any}) {
                 </div>
                 {/** rating */}
                 <div className="text-xs">
+                  {/** TODO: Round to decimal */}
                   {user.rating.number}/5
                 </div>
                 {/** location */}
@@ -81,7 +84,7 @@ export default function SearchProfile({user}: {user: any}) {
               </div>
               {/** subjects */}
               <div className="">
-                <Subjects subjects={subjects} />
+                <Subjects subjects={userSubjects} />
               </div>
             </div>
           </div>

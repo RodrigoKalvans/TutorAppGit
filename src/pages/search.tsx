@@ -2,7 +2,6 @@ import Footer from "@/components/Footer";
 import Head from "next/head";
 import Navbar from "@/components/Navbar";
 import SearchPanel from "@/components/search/SearchPanel";
-import {useRouter} from "next/router";
 
 /**
  * TODO: fill this in
@@ -10,19 +9,6 @@ import {useRouter} from "next/router";
  * @return {any} search page
  */
 export default function Search({subjects}: {subjects: any}) {
-  // get search queries
-  const router = useRouter();
-
-  const {query: {queryFromNav, roleFromNav}}: any = router;
-
-  const navProps: {
-        query: string,
-        role: string,
-    } = {
-      query: queryFromNav,
-      role: roleFromNav,
-    };
-
   return (
     <>
       <Head>
@@ -30,13 +16,17 @@ export default function Search({subjects}: {subjects: any}) {
       </Head>
       <main className="flex-col justify-center min-h-screen">
         <Navbar black={true} />
-        <SearchPanel props={navProps} filterSubjects={subjects} />
+        <SearchPanel subjects={subjects} />
         <Footer />
       </main>
     </>
   );
 }
 
+/**
+ * plc jsdoc
+ * @return {any} props
+ */
 export async function getStaticProps() {
   const res = await fetch("http://localhost:3000/api/subjects", {
     method: "GET",

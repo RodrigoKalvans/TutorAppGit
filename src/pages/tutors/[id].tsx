@@ -1,13 +1,14 @@
+import {Session, getServerSession} from "next-auth";
+
 import BoxContainer from "@/components/profilePage/helpingComponents/BoxContainer";
+import {GetServerSidePropsContext} from "next";
+import Head from "next/head";
+import {ObjectId} from "mongoose";
 import ProfileSection from "@/components/profilePage/ProfileSection";
 import Subject from "@/models/Subject";
 import Tutor from "@/models/Tutor";
-import db from "@/utils/db";
-import {ObjectId} from "mongoose";
-import {GetServerSidePropsContext} from "next";
-import {getServerSession, Session} from "next-auth";
-import Head from "next/head";
 import {authOptions} from "../api/auth/[...nextauth]";
+import db from "@/utils/db";
 
 const TutorPage = ({tutor, isFollowing, subjects}: {tutor: any, isFollowing: boolean, subjects: Array<any>}) => {
   return (

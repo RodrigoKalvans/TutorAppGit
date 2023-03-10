@@ -1,16 +1,31 @@
-import Router from "next/router";
+import {useRouter} from "next/router";
 import {useState} from "react";
 
+type TQueryForSearch = {
+  query: string,
+  role: string,
+}
+
+/**
+ * yo
+ * @return {any} yo
+ */
 export default function NavbarSearch() {
   const [query, setQuery] = useState<string>("");
   const [role, setRole] = useState<string>("both");
 
+  const router = useRouter();
+
   const search = (e: any) => {
-    Router.push({
+    const queryForSearch: TQueryForSearch = {
+      query: query,
+      role: role,
+    };
+    router.push({
       pathname: "/search",
       query: {
-        query,
-        role,
+        query: queryForSearch.query,
+        role: queryForSearch.role,
       },
     });
   };
