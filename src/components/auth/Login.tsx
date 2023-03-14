@@ -5,11 +5,17 @@ import {FormEventHandler, useState} from "react";
 
 import {signIn} from "next-auth/react";
 
+/**
+ * TODO: fill this in
+ * @param {any} param0
+ * @return {any}
+ */
 export default function Login({csrfToken}: {csrfToken: any}) {
   const [error, setError] = useState(null);
 
   return (
     <>
+      {/** abstract onSubmit to a function */}
       <Formik
         initialValues={{email: "", password: "", tenantKey: ""}}
         validationSchema={Yup.object({

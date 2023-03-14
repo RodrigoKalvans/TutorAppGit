@@ -92,7 +92,7 @@ export const followUser = async (req: NextApiRequest, res: NextApiResponse, id: 
   const exists = followedUser.followers.findIndex((follower: {_id: ObjectId, userId: String, accountType: String}, index: number) => follower.userId === followingUser._id.toString()) > -1;
 
   if (exists) {
-    res.status(StatusCodes.CONFLICT).send("You already follow the user!");
+    res.status(StatusCodes.CONFLICT).send({message: "You already follow the user!"});
     return;
   }
 

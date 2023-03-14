@@ -8,23 +8,33 @@ module.exports = {
   darkMode: false,
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)"],
+      },
       backgroundImage: {
-        'landing': "url('../public/images/landing-background-image.jpg')",
+        "landing": "url('../public/images/landing-background-image.jpg')",
       },
       width: {
-        '9/10': "90%",
-        '3/5': "60%",
-        '9/20': "45%",
-        '1/3': "33%",
+        "9/10": "90%",
+        "3/5": "60%",
+        "9/20": "45%",
+        "1/3": "33%",
       },
       borderRadius: {
-        '4xl': "2rem",
+        "4xl": "2rem",
       },
       colors: {
 
-      }
+      },
+      textColor: {
+        "subtitle": "#505050",
+        "current": "#282828",
+      },
+      backgroundColor: {
+        "container": "#F2F2F2",
+      },
     },
-    
+
   },
   plugins: [require("daisyui")],
   daisyui: {
@@ -37,4 +47,4 @@ module.exports = {
     prefix: "",
     darkTheme: "light",
   },
-}
+};
