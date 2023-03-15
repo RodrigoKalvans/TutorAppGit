@@ -1,12 +1,14 @@
 // import Navbar from "@/components/Navbar";
-import Activity from "@/components/profilePage/Activity";
+
 import {Session, getServerSession} from "next-auth";
+
+import Activity from "@/components/profilePage/Activity";
 import {GetServerSidePropsContext} from "next";
 import Head from "next/head";
 import {ObjectId} from "mongoose";
 import ProfileSection from "@/components/profilePage/ProfileSection";
-import ReviewsSection from "@/components/profilePage/ReviewsSection";
 import Review from "@/models/Review";
+import ReviewsSection from "@/components/profilePage/ReviewsSection";
 import Student from "@/models/Student";
 import Subject from "@/models/Subject";
 import Tutor from "@/models/Tutor";

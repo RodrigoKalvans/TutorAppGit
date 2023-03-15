@@ -23,7 +23,7 @@ export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfTok
         </div>
 
         <div className=" flex justify-center">
-          <div className="flex-col justify-center shadow-xl bg-orange-100 rounded-xl px-8 pt-6 pb-8 mb-4">
+          <div className="flex-col justify-center w-1/4 shadow-xl bg-gray-100 rounded-xl px-8 pt-6 pb-8 mb-4">
 
             {(login ? <Login csrfToken={csrfToken} /> : <SignUp csrfToken={csrfToken} subjects={subjects} />)}
 

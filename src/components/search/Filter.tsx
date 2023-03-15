@@ -1,7 +1,9 @@
 import * as Yup from "yup";
 
 import {ErrorMessage, Field, Form, Formik} from "formik";
+import {NextRouter, useRouter} from "next/router";
 
+import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
 import {useState} from "react";
 
@@ -19,10 +21,14 @@ type Values = {
  * @param {any} param0
  * @return {any} yo
  */
-export default function Filter({buttonAction, passedRole = "both", subjects}: {buttonAction: any, passedRole?: string | undefined, subjects: any}) {
-  const [chosenSubjects, setSubjects] = useState<any>();
-  // const [chosenLanguages, setLanguages] = useState<any>();
-  const [role, setRole] = useState<string>(passedRole);
+export default function Filter({subjects, action}: {subjects: any, action: any}) {
+  const router: NextRouter = useRouter();
+
+  const [chosenSubjects, setChosenSubjects] = useState<any>();
+  const [chosenLanguages, setChosenLanguages] = useState<any>();
+
+  // TODO: types
+  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "both");
 
   const getArrayOfChosenSubjectIds = () => {
     const placeholder: string[] = [];
@@ -41,17 +47,20 @@ export default function Filter({buttonAction, passedRole = "both", subjects}: {b
       lastName: values.lastName,
       rating: values.rating,
       subjects: getArrayOfChosenSubjectIds(),
+      languages: chosenLanguages,
     };
-    buttonAction(query);
+    router.query = query;
+    console.log("filter component", router.query);
+    action();
   };
 
   return (
     <>
-      <div className="w-full rounded-2xl shadow-2xl bg-white flex justify-center p-2">
+      <div className="w-full rounded-2xl shadow-xl bg-white flex justify-center p-2">
         <div className="flex justify-center">
           <Formik
             initialValues={{
-              role: passedRole,
+              role: role,
               firstName: "",
               lastName: "",
               rating: 0,
@@ -135,12 +144,21 @@ export default function Filter({buttonAction, passedRole = "both", subjects}: {b
                   className="uppercase text-sm text-gray-600 font-bold"
                 >
                                 Subjects
-                  <SubjectSelect setFunction={setSubjects} subjects={subjects}/>
+                  <SubjectSelect setFunction={setChosenSubjects} subjects={subjects}/>
                 </label>
                 <div className="text-red-600 text-sm">
                   <ErrorMessage name="subjects" />
                 </div>
-                {/** TODO: add language filter */}
+                <label
+                  htmlFor="languages"
+                  className="uppercase text-sm text-gray-600 font-bold"
+                >
+                                Languages
+                  <LanguageSelect setFunction={setChosenLanguages} />
+                </label>
+                <div className="text-red-600 text-sm">
+                  <ErrorMessage name="languages" />
+                </div>
                 <br/>
                 <div className="w-full flex items-center justify-center mb-3">
                   <button

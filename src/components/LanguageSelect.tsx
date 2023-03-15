@@ -1,29 +1,34 @@
 import Select from "react-tailwindcss-select";
 import {useState} from "react";
 
+const langs: string[] = [
+  "english",
+  "latvian",
+  "ukrainian",
+];
+
 /**
- * TODO: fill this in
- * @param {any} param0
- * @return {any} yo
+ * yo
+ * @return {JSX} component
  */
-export default function SubjectSelect({setFunction, subjects}: {setFunction: any, subjects: string[]}) {
-  const [chosenSubjects, setChosenSubjects] = useState<any>();
+export default function LanguageSelect({setFunction, languages = langs}: {setFunction: any, languages?: string[]}) {
+  const [chosenLanguages, setChosenLanguages] = useState<any>();
 
   /** turn subjects into parsable data by Select element
      * is called when subject Select element is initialized
      * @return {JSX} component
      */
-  const getSubjectOptions = () => {
+  const getLanguageOptions = () => {
     const options: { value: string; label: string; }[] = [];
-    subjects.map((subject: any) => options.push({value: `${subject._id}`, label: `${subject.name}`}));
+    languages.map((subject: any) => options.push({value: `${subject}`, label: `${subject}`}));
     return options;
   };
 
   /** is called onChange in subject Select element
      * @param {string[]} value is the new string[] containing subject ids
      */
-  const setSelectedSubjects = (value: any) => {
-    setChosenSubjects(value);
+  const setSelectedLanguages = (value: any) => {
+    setChosenLanguages(value);
     setFunction(value);
   };
 
@@ -31,12 +36,12 @@ export default function SubjectSelect({setFunction, subjects}: {setFunction: any
     <>
       <div>
         <Select
-          onChange={setSelectedSubjects}
-          options={getSubjectOptions()}
+          onChange={setSelectedLanguages}
+          options={getLanguageOptions()}
           primaryColor={""}
           isMultiple={true}
           isSearchable={true}
-          value={chosenSubjects}
+          value={chosenLanguages}
           classNames={{
             tagItemText: "text-sm m-1",
           }}
