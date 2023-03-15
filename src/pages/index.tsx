@@ -1,15 +1,3 @@
-// import {
-//   AiOutlineCode,
-//   BiBook,
-//   FaHistory,
-//   GiMaterialsScience,
-//   GiPlantsAndAnimals,
-//   IoEarth,
-//   MdOutlineScience,
-//   TbLanguage,
-//   TbMathSymbols,
-// } from "react-icons";
-
 import Button from "@/components/Button";
 import Carousel from "@/components/landingPage/Carousel";
 import Footer from "@/components/Footer";
