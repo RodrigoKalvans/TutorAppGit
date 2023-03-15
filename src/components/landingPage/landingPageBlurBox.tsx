@@ -1,6 +1,10 @@
 import React from "react";
 
-// TODO: Make sure types are correct
+/**
+ * Blur boxes from landing page
+ * @param {stlye} styles and children
+ * @return {JSX} component
+ */
 export default function LandingPageBlurBox({children, style = ""}: { children: React.ReactNode, style?: string }) {
   return (
     <>

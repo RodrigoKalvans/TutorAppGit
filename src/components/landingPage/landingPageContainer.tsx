@@ -1,9 +1,14 @@
 import React from "react";
 
-export default function LandingPageContainer({children, style = ""}: { children: React.ReactNode, style?: string }) {
+/**
+ *
+ * @param {JSX} children
+ * @return {JSX} component with children
+ */
+export default function LandingPageContainer({children}: {children: React.ReactNode}) {
   return (
     <>
-      <div className={`${style} flex justify-center w-full`}>
+      <div className={" w-full"}>
         {children}
       </div>
     </>
