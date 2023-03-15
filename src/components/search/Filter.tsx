@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {NextRouter, useRouter} from "next/router";
 
+import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
 import {useState} from "react";
 
@@ -23,8 +24,8 @@ type Values = {
 export default function Filter({subjects, action}: {subjects: any, action: any}) {
   const router: NextRouter = useRouter();
 
-  const [chosenSubjects, setSubjects] = useState<any>();
-  // const [chosenLanguages, setLanguages] = useState<any>();
+  const [chosenSubjects, setChosenSubjects] = useState<any>();
+  const [chosenLanguages, setChosenLanguages] = useState<any>();
 
   // TODO: types
   const [role, setRole] = useState<any>(router.query.role ? router.query.role : "both");
@@ -46,6 +47,7 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
       lastName: values.lastName,
       rating: values.rating,
       subjects: getArrayOfChosenSubjectIds(),
+      languages: chosenLanguages,
     };
     router.query = query;
     console.log("filter component", router.query);
@@ -142,12 +144,21 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
                   className="uppercase text-sm text-gray-600 font-bold"
                 >
                                 Subjects
-                  <SubjectSelect setFunction={setSubjects} subjects={subjects}/>
+                  <SubjectSelect setFunction={setChosenSubjects} subjects={subjects}/>
                 </label>
                 <div className="text-red-600 text-sm">
                   <ErrorMessage name="subjects" />
                 </div>
-                {/** TODO: add language filter */}
+                <label
+                  htmlFor="languages"
+                  className="uppercase text-sm text-gray-600 font-bold"
+                >
+                                Languages
+                  <LanguageSelect setFunction={setChosenLanguages} />
+                </label>
+                <div className="text-red-600 text-sm">
+                  <ErrorMessage name="languages" />
+                </div>
                 <br/>
                 <div className="w-full flex items-center justify-center mb-3">
                   <button
