@@ -88,8 +88,6 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
         },
       });
 
-      const userJson = await res.json();
-
       // sign the user is and redirect
       if (res.ok) {
         const res = await signIn("credentials", {

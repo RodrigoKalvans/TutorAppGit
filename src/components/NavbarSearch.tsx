@@ -1,9 +1,12 @@
 import {useRouter} from "next/router";
 import {useState} from "react";
 
-type TQueryForSearch = {
-  query: string | undefined,
+type TQuery = {
   role: string,
+  firstName: string | undefined,
+  lastName: string | undefined,
+  rating: number | undefined,
+  subjects: string[] | undefined,
 }
 
 /**
@@ -11,22 +14,22 @@ type TQueryForSearch = {
  * @return {any} yo
  */
 export default function NavbarSearch() {
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>(""); // currently this is assumed to be first name
   const [role, setRole] = useState<string>("both");
 
   const router = useRouter();
 
   const search = (e: any) => {
-    const queryForSearch: TQueryForSearch = {
-      query: query,
+    const toSearch: TQuery = {
       role: role,
+      firstName: query,
+      lastName: undefined,
+      rating: undefined,
+      subjects: undefined,
     };
     router.push({
-      pathname: "/search",
-      query: {
-        query: queryForSearch.query,
-        role: queryForSearch.role,
-      },
+      pathname: `/search/${router.asPath}`,
+      query: toSearch,
     });
   };
 

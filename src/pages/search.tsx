@@ -8,7 +8,7 @@ import SearchPanel from "@/components/search/SearchPanel";
  * @param {any} param0
  * @return {any} search page
  */
-export default function Search({subjects}: {subjects: any}) {
+export default function Search({subjects, students, tutors}: {subjects: any, students: any, tutors: any}) {
   return (
     <>
       <Head>
@@ -16,7 +16,7 @@ export default function Search({subjects}: {subjects: any}) {
       </Head>
       <main className="flex-col justify-center min-h-screen">
         <Navbar black={true} />
-        <SearchPanel subjects={subjects} />
+        <SearchPanel subjects={subjects} students={students} tutors={tutors} />
         <Footer />
       </main>
     </>
@@ -28,16 +28,37 @@ export default function Search({subjects}: {subjects: any}) {
  * @return {any} props
  */
 export async function getStaticProps() {
-  const res = await fetch("http://localhost:3000/api/subjects", {
+  const subjectsRes = await fetch("http://localhost:3000/api/subjects", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
 
+  const studentsRes = await fetch("http://localhost:3000/api/students", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const tutorsRes = await fetch("http://localhost:3000/api/tutors", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const subjects = await subjectsRes.json();
+  const students = await studentsRes.json();
+  const tutors = await tutorsRes.json();
+
   return {
     props: {
-      subjects: await res.json(),
+      subjects,
+      students,
+      tutors,
     },
+    revalidate: 10,
   };
 }

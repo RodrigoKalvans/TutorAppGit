@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 import {ErrorMessage, Field, Form, Formik} from "formik";
+import {NextRouter, useRouter} from "next/router";
 
 import SubjectSelect from "../SubjectSelect";
 import {useState} from "react";
@@ -19,10 +20,14 @@ type Values = {
  * @param {any} param0
  * @return {any} yo
  */
-export default function Filter({buttonAction, passedRole = "both", subjects}: {buttonAction: any, passedRole?: string | undefined, subjects: any}) {
+export default function Filter({subjects, action}: {subjects: any, action: any}) {
+  const router: NextRouter = useRouter();
+
   const [chosenSubjects, setSubjects] = useState<any>();
   // const [chosenLanguages, setLanguages] = useState<any>();
-  const [role, setRole] = useState<string>(passedRole);
+
+  // TODO: types
+  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "both");
 
   const getArrayOfChosenSubjectIds = () => {
     const placeholder: string[] = [];
@@ -42,7 +47,9 @@ export default function Filter({buttonAction, passedRole = "both", subjects}: {b
       rating: values.rating,
       subjects: getArrayOfChosenSubjectIds(),
     };
-    buttonAction(query);
+    router.query = query;
+    console.log("filter component", router.query);
+    action();
   };
 
   return (
@@ -51,7 +58,7 @@ export default function Filter({buttonAction, passedRole = "both", subjects}: {b
         <div className="flex justify-center">
           <Formik
             initialValues={{
-              role: passedRole,
+              role: role,
               firstName: "",
               lastName: "",
               rating: 0,

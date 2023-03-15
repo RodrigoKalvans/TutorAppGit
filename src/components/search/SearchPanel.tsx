@@ -3,106 +3,69 @@ import {useEffect, useState} from "react";
 
 import Filter from "./Filter";
 import SearchProfile from "./SearchProfile";
-import useSWR from "swr";
 
-type TQuery = {
-  role: string,
-  firstName: string | undefined,
-  lastName: string | undefined,
-  rating: number | undefined,
-  subjects: string[] | undefined,
-}
-
-const requestUsers = () => {
-
-
-  //   if (router.query.role == "both") {
-  //     console.log("yo");
-  //     const tempUsers = [];
-  //     const resTutors: SWRResponse = useSWR("/api/tutors", fetcher);
-  //     if (resTutors.data) tempUsers.push(resTutors.data);
-  //     if (resTutors.error) setError(resTutors.error);
-  //     if (resTutors.isLoading) setLoading(resTutors.isLoading);
-
-  //     const resStudents: SWRResponse = useSWR("/api/students", fetcher);
-  //     if (resStudents.data) tempUsers.push(resStudents.data);
-  //     if (resStudents.error) setError(resStudents.error);
-  //     if (resStudents.isLoading) setLoading(resStudents.isLoading);
-  //     console.log(resStudents);
-
-//     setUsers(tempUsers);
-//   } else if (filter.role === "students" || filter.role === "tutors") {
-//     console.log("ye");
-//     const resUsers: SWRResponse = useSWR(`/api/${filter.role}`, fetcher);
-//     if (resUsers.data) setUsers(resUsers.data);
-//     if (resUsers.error) setError(resUsers.error);
-//     if (resUsers.isLoading) setLoading(resUsers.isLoading);
-//   } else {
-//     throw Error("Unknown role in filter object");
-//   }
-// } catch (e: any) {
-//   setError(e);
+// this should be moved to a 'types' file or something
+// type TQuery = {
+//   role: string,
+//   firstName: string | undefined,
+//   lastName: string | undefined,
+//   rating: number | undefined,
+//   subjects: string[] | undefined,
 // }
-};
 
 /** TODO: correct this
  * @param {string} props.query query input by the user
  * @param {string} props.role either 'student', 'tutor' or 'both'
  * @return {any} plc
  */
-export default function SearchPanel({subjects}: {subjects: any}) {
-  // errors should be display if they exist
-  const [err, setError] = useState<any>();
-
+export default function SearchPanel({subjects, students, tutors}: {subjects: any, students: any, tutors: any}) {
   // TODO: types
-  const [loading, setLoading] = useState<boolean>();
-  const [users, setUsers] = useState<any>();
+  const [profiles, setProfiles] = useState<any>();
 
-  const [role, setRole] = useState<string>("both");
+  const [error, setError] = useState<any>();
 
-  // used for SWR
   const router: NextRouter = useRouter();
 
-  const fetcher = (url: string) => fetch(url, {}).then((res) => res.json());
-  const resUsers = useSWR("/api/tutors", fetcher);
-
   // this will be called by the filter to reload the results
-  const search = async (filter: TQuery) => {
-    setRole(filter.role);
-    console.log("search called");
+  const filter = async () => {
+    // TODO: type
+    let filteredUsers: any[] = [];
 
-    router.push({
-      query: filter,
-    });
+    // filter users
+    switch (router.query.role) {
+      // must end with 's': 'students' or 'tutors'
+      case "students": {
+        console.log("students");
+        filteredUsers = filterArrayBasedOnQuery(students, router.query);
+        break;
+      }
+      case "tutors": {
+        console.log("tutors");
+        filteredUsers = filterArrayBasedOnQuery(tutors, router.query);
+        break;
+      }
+      case "both": {
+        console.log("both");
+        const temp = tutors;
+        temp.push(...students);
+        filteredUsers = filterArrayBasedOnQuery(temp, router.query);
+        break;
+      }
+      default: {
+        setError(Error("Invalid role"));
+      }
+    }
 
-    console.log("router query", router.query);
-    console.log("router path", router.asPath);
-    console.log("users", users);
-
-    setUsers(requestUsers());
-
-    // TODO: make this into something that is not shit
-  };
-
-  const handleFilterSubmit = (filterQuery: TQuery) => {
-    search(filterQuery);
+    setProfiles(filteredUsers);
   };
 
   useEffect(() => {
-    const temp: TQuery = {
-      role: role,
-      firstName: "",
-      lastName: "",
-      rating: 0,
-      subjects: [],
+    console.log("search panel useEffect");
+    filter();
+    return () => {
+      setError(null);
+      setProfiles(null);
     };
-    if (router.query.query !== undefined || router.query.role !== undefined) {
-      // in case the nav search was used ---- assume query is firstName
-      temp.firstName = router.query.query;
-      temp.role = router.query.role;
-      console.log("nav has a query");
-    }
-    search(temp);
   }, []);
 
   return (
@@ -111,22 +74,27 @@ export default function SearchPanel({subjects}: {subjects: any}) {
         <div className="w-4/5 rounded-xl bg-white-500 mt-5 flex-col justify-center">
           <div className="w-full flex justify-center">
             <h1 className="text-red-500 font-bold">
-              {err && ("Error")}
+              {!profiles && error && `${error}`}
             </h1>
           </div>
-          <div className="flex p-2 overflow-auto">
+          <div className="flex p-2">
             <div className="w-2/5 m-3">
               {/** filter */}
-              <Filter buttonAction={handleFilterSubmit} passedRole={role} subjects={subjects} />
+              <Filter subjects={subjects} action={filter} />
             </div>
 
             <div className="w-4/5 min-h-fit m-3 ">
               <div className="overflow-auto max-h-screen rounded-3xl p-0">
-                {loading && ("Loading...")}
                 {/** profiles */}
-                {resUsers.data && resUsers.data.map((user: any) => (
-                  <SearchProfile user={user} subjects={subjects} />
-                ))}
+                {profiles ? (profiles.map((item: any) => (
+                  <SearchProfile user={item} subjects={subjects} />
+                ))) : (
+                  <div className="w-full flex justify-center">
+                    <div className="w-fit m-2 mt-5 uppercase text-xl">
+                      Not found
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -134,4 +102,45 @@ export default function SearchPanel({subjects}: {subjects: any}) {
       </div>
     </>
   );
+}
+
+// TODO: types
+/**
+ * This is called when searching via the filter or nav bar
+ * @param {user[]} arr array to be filtered
+ * @param {user} query filter to apply to array
+ * @return {user[]} filtered array
+ */
+function filterArrayBasedOnQuery(arr: any[], query: any) {
+  console.log("filter function called", arr, query);
+
+  // TODO: type
+  const filteredArr: any = [];
+
+  // filter arr using query
+  try {
+    for (let i = 0; i < arr.length; i++) { // make this dynamic
+      if (query.firstName && query.firstName !== "" && arr.at(i).firstName.toLowerCase().includes(query.firstName.toLowerCase())) filteredArr.push(arr.at(i));
+      else if (query.lastName && query.lastName !== "" && arr.at(i).lastName.toLowerCase().includes(query.lastName.toLowerCase())) filteredArr.push(arr.at(i));
+      else if (query.rating && arr.at(i).rating.number == query.rating) filteredArr.push(arr.at(i));
+
+      // add this in when field names are corrected in db
+      // else if (query.subjects && query.subjects.length > 0) {
+      //   for (let j = 0; j < query.subjects.length; j++) {
+      //     for (let k = 0; k < arr.at(i).subjects.length; k++) {
+      //       if (query.subjects.at(j) == arr.at(i).subjects.at(k)) filteredArr.push(arr.at(i));
+      //     }
+      //   }
+      // }
+      // else if (query.languages && query.languages.length > 0) {
+
+      // }
+    }
+  } catch (e) {
+    throw Error(`error ${e}`);
+  }
+
+  if (filteredArr.length == 0) return null; // in case no results are found
+
+  return filteredArr;
 }
