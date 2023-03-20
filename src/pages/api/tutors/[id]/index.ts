@@ -15,11 +15,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
   const {id} = req.query;
   // GET request
-  if (req.method === "GET") await getTutorById(res, id as String);
+  if (req.method === "GET") await getTutorById(res, id as string);
   // PUT request
-  if (req.method === "PUT") await updateTutorById(req, res, id as String);
+  if (req.method === "PUT") await updateTutorById(req, res, id as string);
   // DELETE request
-  if (req.method === "DELETE") await deleteTutorById(req, res, id as String);
+  if (req.method === "DELETE") await deleteTutorById(req, res, id as string);
 
   await db.disconnect();
   return;
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
  * @param {String} id tutor id from dynamic page
  * @return {null} returns null in case the method of request is incorrect
  */
-const getTutorById = async (res: NextApiResponse, id: String) => {
+const getTutorById = async (res: NextApiResponse, id: string) => {
   const foundTutors = await Tutor.findById(id, {password: 0});
 
   res.status(StatusCodes.OK).send(foundTutors);
