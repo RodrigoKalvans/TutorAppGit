@@ -8,13 +8,13 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       secondName: {types: String},
       lastName: {type: String, required: true},
       role: {type: String, required: true, default: "tutor"},
-      picture: {type: Buffer},
+      picture: {type: String},
       description: {type: String},
       languages: [{type: String}],
       phoneNumber: {type: String},
       location: {type: String},
       isOnlineAvailable: {type: Boolean},
-      subjectsOfSpecialty: [{type: String}],
+      subjects: [{type: String}],
       priceForLessons: {type: Map, of: String},
       followers: [
         {

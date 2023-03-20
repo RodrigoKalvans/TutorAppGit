@@ -8,9 +8,9 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
       secondName: {types: String},
       lastName: {type: String, required: true},
       role: {type: String, required: true, default: "student"},
-      picture: {type: Buffer},
+      picture: {type: String},
       description: {type: String},
-      language: [{type: String}],
+      languages: [{type: String}],
       followers: [
         {
           userId: {type: String},
@@ -23,7 +23,7 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
           accountType: {type: String},
         },
       ],
-      subjectsStudied: [{type: String}],
+      subjects: [{type: String}],
       rating: {
         number: {type: Number, default: 0},
         ratingCount: {type: Number, default: 0},
