@@ -3,10 +3,10 @@ import db from "@/utils/db";
 import {NextApiRequest, NextApiResponse} from "next/types";
 
 /**
- * Dynamic student route
+ * Follow user route
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
- * @return {null} returns null in case the method of request is incorrect
+ * @return {null} returns null
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
