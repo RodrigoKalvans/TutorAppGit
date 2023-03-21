@@ -28,7 +28,7 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
   const [chosenLanguages, setChosenLanguages] = useState<any>();
 
   // TODO: types
-  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "both");
+  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "tutors");
 
   const getArrayOfChosenSubjectIds = () => {
     const placeholder: string[] = [];
@@ -94,8 +94,8 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
                     name="role"
                     onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value="both" selected>Both</option>
-                    <option value="tutors">Tutors</option>
+                    <option value="both">Both</option>
+                    <option value="tutors" selected>Tutors</option>
                     <option value="students">Students</option>
                   </select>
                   <br/>

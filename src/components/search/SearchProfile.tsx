@@ -42,7 +42,7 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
       {/** TODO: add Link to user's profile */}
       <div className="w-full p-2">
         {user && (
-          <div className="w-full min-w-40 max-h-40 bg-gray-200 rounded-2xl shadow flex inline-block align-middle p-2">
+          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex inline-block align-middle p-2">
             {/** profile image */}
             <div className="w-1/4 flex justify-center inline-block align-middle">
               {/** TODO: replace with profile image */}

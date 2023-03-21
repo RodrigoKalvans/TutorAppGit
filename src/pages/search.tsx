@@ -28,26 +28,9 @@ export default function Search({subjects, students, tutors}: {subjects: any, stu
  * @return {any} props
  */
 export async function getStaticProps() {
-  const subjectsRes = await fetch("http://localhost:3000/api/subjects", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const studentsRes = await fetch("http://localhost:3000/api/students", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const tutorsRes = await fetch("http://localhost:3000/api/tutors", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const subjectsRes = await fetch("http://localhost:3000/api/subjects");
+  const studentsRes = await fetch("http://localhost:3000/api/students");
+  const tutorsRes = await fetch("http://localhost:3000/api/tutors");
 
   const subjects = await subjectsRes.json();
   const students = await studentsRes.json();

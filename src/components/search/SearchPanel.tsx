@@ -26,6 +26,10 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
 
   const router: NextRouter = useRouter();
 
+  const clearError = () => {
+    setError(undefined);
+  };
+
   // this will be called by the filter to reload the results
   const filter = async () => {
     // TODO: type
@@ -37,11 +41,13 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
       case "students": {
         console.log("students");
         filteredUsers = filterArrayBasedOnQuery(students, router.query);
+        clearError();
         break;
       }
       case "tutors": {
         console.log("tutors");
         filteredUsers = filterArrayBasedOnQuery(tutors, router.query);
+        clearError();
         break;
       }
       case "both": {
@@ -49,6 +55,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
         const temp = tutors;
         temp.push(...students);
         filteredUsers = filterArrayBasedOnQuery(temp, router.query);
+        clearError();
         break;
       }
       default: {
@@ -140,7 +147,7 @@ function filterArrayBasedOnQuery(arr: any[], query: any) {
     throw Error(`error ${e}`);
   }
 
-  if (filteredArr.length == 0) return null; // in case no results are found
+  if (filteredArr.length == 0) return arr; // in case no results are found
 
   return filteredArr;
 }
