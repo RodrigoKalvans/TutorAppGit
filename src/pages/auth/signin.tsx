@@ -44,12 +44,7 @@ export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfTok
  * @return {any}
  */
 export async function getServerSideProps(context: CtxOrReq | undefined) {
-  const res = await fetch("http://localhost:3000/api/subjects", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const res = await fetch("http://localhost:3000/api/subjects");
 
   return {
     props: {

@@ -15,7 +15,7 @@ type TQuery = {
  */
 export default function NavbarSearch() {
   const [query, setQuery] = useState<string>(""); // currently this is assumed to be first name
-  const [role, setRole] = useState<string>("both");
+  const [role, setRole] = useState<string>("tutors");
 
   const router = useRouter();
 
@@ -44,7 +44,7 @@ export default function NavbarSearch() {
             <input onChange={(e) => setQuery(e.target.value)} type="search" id="search" className="w-full mr-0 pl-10 rounded-l-full bg-white-200 text-black" placeholder="Search" required>
 
             </input>
-            <select onChange={(e) => setRole(e.target.value)} defaultValue={"both"} className={"select rounded-l-none rounded-r-full max-w-fit text-black"}>
+            <select onChange={(e) => setRole(e.target.value)} defaultValue={"tutors"} className={"select rounded-l-none rounded-r-full max-w-fit text-black"}>
               <option value={"both"}>Both</option>
               <option value={"tutors"}>Tutors</option>
               <option value={"students"}>Students</option>
