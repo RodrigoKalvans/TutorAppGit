@@ -19,7 +19,7 @@ import PostManager from "@/components/posts/PostManager";
 
 const TutorPage = ({tutor, isFollowing, subjects, reviews, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, posts: Array<any>}) => {
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
-  console.log(posts)
+
   return (
     <>
       {tutor && (
