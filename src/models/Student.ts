@@ -36,7 +36,7 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
           message: "{VALUE} is not supported as an activity type!",
         }},
       }],
-      posts: [{postId: {type: String}}],
+      posts: [{type: String}],
       isSuspended: {type: Boolean, default: false},
     },
     {timestamps: true},
