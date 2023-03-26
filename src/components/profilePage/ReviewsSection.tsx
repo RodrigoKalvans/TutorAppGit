@@ -8,7 +8,7 @@ const ReviewsSection = ({reviews}: {reviews: Array<any>}) => {
       <div className="overflow-y-auto h-[75vh]">
 
         {reviews.map((review: any) =>
-          <Review review={review} ></Review>,
+          <Review review={review} key={review}></Review>,
         )}
       </div>
 
