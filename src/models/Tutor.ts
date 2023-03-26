@@ -46,7 +46,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
           message: "{VALUE} is not supported as an activity type!",
         }},
       }],
-      posts: [{postId: {type: String}}],
+      posts: [{type: String}],
       isPromoted: {type: Boolean, default: false},
       promotedDue: {type: Date, default: undefined},
       isSuspended: {type: Boolean, default: false},
