@@ -6,7 +6,7 @@ const Subjects = ({subjects}: {subjects: Array<any>}) => {
       <h2 className="text-xl font-medium pb-2">Subjects</h2>
       {subjects.map((subject) =>
         <div className="flex gap-2 items-center">
-          <MathIcon size={25} color="#F97316" />
+          <MathIcon size={25} color="#F97316" key={subject._id}/>
           <p className="m-0 text-base" key={subject._id}>{subject.name}</p>
         </div>,
       )}

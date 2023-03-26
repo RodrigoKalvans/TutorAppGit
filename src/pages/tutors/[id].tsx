@@ -14,10 +14,11 @@ import Subject from "@/models/Subject";
 import Tutor from "@/models/Tutor";
 import {authOptions} from "../api/auth/[...nextauth]";
 import db from "@/utils/db";
+import Post from "@/models/Post";
+import PostManager from "@/components/posts/PostManager";
 
-const TutorPage = ({tutor, isFollowing, subjects, reviews}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>}) => {
+const TutorPage = ({tutor, isFollowing, subjects, reviews, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, posts: Array<any>}) => {
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
-
 
   return (
     <>
@@ -30,27 +31,34 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews}: {tutor: any, isFollo
           {/* <Navbar black={true} /> */}
 
           <main className="w-full px-28">
-            <section className="">
+            <section className="m-2">
               <div className="w-full h-max flex justify-around">
 
                 <div className="w-9/20 h-max">
                   <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} />
                 </div>
 
-
                 <div className="w-9/20 flex flex-col">
 
                   <Activity fullName={fullName} activity={tutor.activity} />
-
                   <ReviewsSection reviews={reviews} />
 
                 </div>
 
               </div>
             </section>
+
+            <section className="m-2 p-3">
+              <div className="w-full h-10 flex justify-between items-center">
+                <div className="uppercase font-bold text-xl">posts</div>
+                <div className="btn ">button</div>
+              </div>
+              <div>
+                <PostManager posts={posts} />
+              </div>
+            </section>
           </main>
         </>
-
       )}
 
       {!tutor && (
@@ -76,7 +84,14 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   // Get subjects
   const subjects = await Subject.find({
     _id: {
-      $in: tutor.subjectsOfSpecialty,
+      $in: tutor.subjects,
+    },
+  });
+
+  // get posts
+  const posts = await Post.find({
+    _id: {
+      $in: tutor.posts,
     },
   });
 
@@ -102,6 +117,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       isFollowing,
       subjects: JSON.parse(JSON.stringify(subjects)),
       reviews: JSON.parse(JSON.stringify(newArr)),
+      posts: JSON.parse(JSON.stringify(posts)),
     },
   };
 };

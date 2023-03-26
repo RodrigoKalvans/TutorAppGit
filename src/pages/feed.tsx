@@ -1,10 +1,10 @@
-
+import PostManager from "@/components/posts/PostManager";
 
 const Feed = () => {
   return (
     <>
-      <div>
-              feed
+      <div className="bord h-screen w-full flex justify-center">
+        <PostManager posts={[]} />
       </div>
     </>
   );
@@ -12,3 +12,10 @@ const Feed = () => {
 
 export default Feed;
 
+export const getServerSideProp = () => {
+  return {
+    props: {
+
+    },
+  };
+};

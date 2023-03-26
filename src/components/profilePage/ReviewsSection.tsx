@@ -6,12 +6,10 @@ const ReviewsSection = ({reviews}: {reviews: Array<any>}) => {
     <BoxContainer style="h-full mt-4 flex flex-col justify-around">
       <h2 className="text-xl font-medium">Reviews</h2>
       <div className="overflow-y-auto h-[75vh]">
-
         {reviews.map((review: any) =>
-          <Review review={review} ></Review>,
+          <Review review={review} key={review._id}></Review>,
         )}
       </div>
-
     </BoxContainer>
   );
 };
