@@ -2,20 +2,20 @@ import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import useSWR from "swr";
 
 /**
- * 
+ * Post component
  * @param {Post} post
- * @param {Tutor || Student} user
- * @return JSX
+ * @param {any} user tutor or student
+ * @return {JSX} component
  */
 const Post = ({post}: {post: any}) => {
   // TODO: convert post.date into a better format
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json())
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${post.role}s/${post.userId}`, fetcher);
 
   return (
     <>
-      {post && user && 
+      {post && user &&
         <main className="flex-col w-full my-5 bg-white text-sm rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-500">
           <div className="flex justify-between p-3 h-10 shadow-lg items-center">
             <div className="flex gap-5 items-center">
@@ -38,7 +38,7 @@ const Post = ({post}: {post: any}) => {
       {error && "Error"}
       {isLoading && "Loading..."}
     </>
-  )
-}
+  );
+};
 
 export default Post;

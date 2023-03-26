@@ -4,7 +4,7 @@ const Feed = () => {
   return (
     <>
       <div className="bord h-screen w-full flex justify-center">
-          {/* <PostManager /> */}
+        <PostManager posts={[]} />
       </div>
     </>
   );
@@ -12,3 +12,10 @@ const Feed = () => {
 
 export default Feed;
 
+export const getServerSideProp = () => {
+  return {
+    props: {
+
+    },
+  };
+};

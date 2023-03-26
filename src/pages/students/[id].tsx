@@ -73,7 +73,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       $in: student.subjectsOfSpecialty,
     },
   });
-  
+
   // get posts
   const posts = await Post.find({
     _id: {
