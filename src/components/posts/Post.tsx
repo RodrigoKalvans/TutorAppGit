@@ -13,6 +13,14 @@ const Post = ({post}: {post: any}) => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${post.role}s/${post.userId}`, fetcher);
 
+  // placeholder
+  const pics: any = [
+    <Picture />,
+    <Picture />,
+    <Picture />,
+    <Picture />,
+  ]
+
   return (
     <>
       {post && user &&
@@ -29,9 +37,10 @@ const Post = ({post}: {post: any}) => {
               <div className="text-xs flex">likes: <div className="font-bold text-sm">&nbsp;{post.likes.length}</div></div>
             </div>
           </div>
-          <div className="p-3 text-sm max-h-60 h-fit">
+          <div className="p-3 text-sm max-h-80 h-fit flex-col">
             <div className="w-full max-h-40 p-1 overflow-hidden">{post.description}</div>
-            <div className="w-full p-1 flex justify-end">{post.date}</div>
+            <div className="flex gap-2 w-full h-10 items-center mt-2">{pics.map((pic: any) => pic)}</div>
+            <div className="w-full px-1 flex justify-end">{post.date}</div>
           </div>
         </main>
       }
@@ -42,3 +51,19 @@ const Post = ({post}: {post: any}) => {
 };
 
 export default Post;
+
+/**
+ * 
+ * @return {JSX} component
+ */
+const Picture = () => {
+  return (
+    <>
+      <div className="aspect-square w-10 bord">
+        <div>
+          pic
+        </div>
+      </div>
+    </>
+  )
+}

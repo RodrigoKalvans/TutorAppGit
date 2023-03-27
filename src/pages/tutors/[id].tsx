@@ -49,7 +49,7 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, posts}: {tutor: any, 
             </section>
 
             <section className="m-2 p-3">
-              <div className="w-full h-10 flex justify-between items-center">
+              <div className="w-full h-10 flex justify-between items-center px-8">
                 <div className="uppercase font-bold text-xl">posts</div>
                 <div className="btn ">button</div>
               </div>
@@ -76,6 +76,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   // Get tutor
   let tutor = await Tutor.findById(context.query.id);
   tutor = JSON.parse(JSON.stringify(tutor));
+
+  console.log(tutor.languages)
 
   // Check if logged in user already follows the tutor
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
