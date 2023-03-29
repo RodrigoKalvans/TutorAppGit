@@ -13,7 +13,7 @@ import SubjectBox from "@/components/landingPage/SubjectBox";
  * placeholder docs
  * @return {any} JSX landing page
  */
-export default function Home() {
+export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: Array<any>}) {
   return (
     <>
       <Head>
@@ -45,16 +45,7 @@ export default function Home() {
         <h1 className="mt-80 p-20 text-bold text-5xl flex justify-center font-medium">Browse tutors by&nbsp;<div className="text-orange-500 ">Subject</div></h1>
         <div className="flex justify-center">
           <div className="w-4/5 px-10 flex-wrap justify-center">
-            {/** TODO: make this dynamic and add photos */}
-            <SubjectBox />
-            <SubjectBox subject="Mathematics" />
-            <SubjectBox />
-            <SubjectBox />
-            <SubjectBox />
-            <SubjectBox subject="Mathematics" />
-            <SubjectBox />
-            <SubjectBox />
-            <SubjectBox />
+            {subjects && subjects.map((subject) => <SubjectBox subject={subject} key={subject._id}/>)}
           </div>
         </div>
 
@@ -63,7 +54,7 @@ export default function Home() {
           <LandingPageBlurBox style="bg-blue-200">
             <div className="text-5xl pl-10 py-10 w-full flex justify-center font-medium">Take a look at our&nbsp;<span className="text-orange-500">Trending Tutors</span></div>
             <div className="flex items-center justify-around">
-              <Carousel />
+              <Carousel tutors={tutors}/>
             </div>
           </LandingPageBlurBox>
         </div>
@@ -109,4 +100,23 @@ export default function Home() {
       </main>
     </>
   );
+}
+
+/**
+ * Get 2 tutors and 9 subjects
+ * @return {any} props
+ */
+export async function getStaticProps() {
+  const reqSubjects = await fetch("http://localhost:3000/api/subjects");
+  const subjects = await reqSubjects.json();
+
+  const reqTutors = await fetch("http://localhost:3000/api/tutors/getTopFiveTutorsByFollowers");
+  const tutors = await reqTutors.json();
+
+  return {
+    props: {
+      subjects: subjects.slice(0, 9),
+      tutors,
+    },
+  };
 }
