@@ -77,7 +77,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   let tutor = await Tutor.findById(context.query.id);
   tutor = JSON.parse(JSON.stringify(tutor));
 
-  console.log(tutor.languages)
+  console.log(tutor.languages);
 
   // Check if logged in user already follows the tutor
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);

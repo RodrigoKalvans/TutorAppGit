@@ -3,6 +3,8 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 
+const NUMBER_OF_TUTORS: number = 5;
+
 /**
  * Used to get the top 2 tutors by follow count for the landing page
  * @param {NextApiRequest} req HTTP request received from client side
@@ -36,7 +38,7 @@ const getTwoTutors = async (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: check data type
   const sortedTutors = quickSort(allTutors, 0, allTutors.length - 1);
 
-  res.status(StatusCodes.OK).send(sortedTutors.slice(0, 2));
+  res.status(StatusCodes.OK).send(sortedTutors.slice(0, NUMBER_OF_TUTORS));
   return;
 };
 
