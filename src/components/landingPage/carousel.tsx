@@ -14,18 +14,6 @@ export default function Carousel({tutors}: {tutors: Array<any>}) {
             <TutorCard tutor={tutor} key={tutor._id} />
           </div>,
         )}
-        {/* <div id="slide2" className="carousel-item relative w-1/2">
-          <TutorCard />
-        </div>
-        <div id="slide3" className="carousel-item relative w-1/2">
-          <TutorCard />
-        </div>
-        <div id="slide4" className="carousel-item relative w-1/2">
-          <TutorCard />
-        </div>
-        <div id="slide5" className="carousel-item relative w-1/2">
-          <TutorCard />
-        </div> */}
       </div>
     </>
   );
