@@ -53,7 +53,7 @@ const Post = ({post}: {post: any}) => {
 export default Post;
 
 /**
- * 
+ * placeholder for image
  * @return {JSX} component
  */
 const Picture = () => {

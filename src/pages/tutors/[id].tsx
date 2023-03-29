@@ -48,8 +48,8 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, posts}: {tutor: any, 
               </div>
             </section>
 
-            <section className="m-2 p-3">
-              <div className="w-full h-10 flex justify-between items-center px-8">
+            <section className="m-2 p-3 mt-10">
+              <div className="w-full h-10 flex justify-between items-center px-24">
                 <div className="uppercase font-bold text-xl">posts</div>
                 <div className="btn ">button</div>
               </div>
