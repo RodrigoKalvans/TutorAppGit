@@ -40,11 +40,11 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
   return (
     <>
       {/** TODO: add Link to user's profile */}
-      <div className="w-full p-2">
+      <div className="w-full p-2 hov">
         {user && (
-          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex inline-block align-middle p-2">
+          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2">
             {/** profile image */}
-            <div className="w-1/4 flex justify-center inline-block align-middle">
+            <div className="w-1/4 flex justify-center align-middle">
               {/** TODO: replace with profile image */}
               <ProfilePicture />
             </div>
