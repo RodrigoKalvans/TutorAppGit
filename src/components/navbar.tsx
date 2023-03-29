@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import NavbarSearch from "./NavbarSearch";
+import logo from "@/public/images/tcorvus-logo-transparent.png";
+import profile from "@/public/images/profile-icon-transparent.png";
 
 /**
  *
@@ -9,16 +11,16 @@ import NavbarSearch from "./NavbarSearch";
  */
 export default function Navbar({black = false}: {black?: boolean}) {
   return (
-    <div className="w-full flex justify-center">
-      <nav className={`navbar px-10 p-3 w-4/5 p-1 content-center flex justify-between rounded-full bg-transparent text-white ${black ? "text-black" : "text-white"} `}>
+    <div className="w-full flex justify-center max-h-20">
+      <nav className={`px-10 p-3 w-4/5 flex items-center justify-between bg-transparen ${black ? "text-black" : "text-white"} `}>
         <span className="">
-          <Link href="/" className="">
+          <Link href="/">
             <Image
               priority
-              src="/images/logo.png"
+              src={logo}
               alt="logo"
-              width={20}
-              height={20}
+              width={85}
+              height={85}
             />
           </Link>
         </span>
@@ -32,12 +34,12 @@ export default function Navbar({black = false}: {black?: boolean}) {
           <Link href="/" className="btn btn-ghost normal-case text-xl p-2">Support us</Link>
         </span>
         <span className="avatar">
-          <Link href="/" className="w-24 rounded-full items-center justify-center overflow-hidden">
+          <Link href="/" className="w-8 rounded-full items-center justify-center overflow-hidden">
             <Image
-              src="/images/profile-icon.png"
-              alt="P"
-              width={16}
-              height={16}
+              src={profile}
+              alt="profile"
+              width={1}
+              height={1}
             />
           </Link>
         </span>
