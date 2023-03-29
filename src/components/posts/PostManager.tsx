@@ -8,8 +8,10 @@ import Post from "./Post";
 const PostManager = ({posts}: {posts: Array<any>}) => {
   return (
     <>
-      <main className="w-full h-fit p-1">
-        {posts.map((post: any) => <Post post={post} key={post._id} />)}
+      <main className="w-full h-fit p-1 flex justify-center">
+        <div className="w-9/10">
+          {posts.map((post: any) => <Post post={post} key={post._id} />)}
+        </div>
       </main>
     </>
   );

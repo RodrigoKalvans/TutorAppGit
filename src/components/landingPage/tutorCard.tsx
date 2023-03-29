@@ -1,21 +1,19 @@
 import Button from "../Button";
 
-export default function TutorCard({id, style}: { id?: number, style?: string }) {
-  // get tutor from id
-
-  const name: string = "Placeholder name";
-  const bio: string = "Lorem ipsum bio Lorem ipsum bio Lorem ipsum bio Lorem ipsum bio Lorem ipsum bio Lorem ipsum bio Lorem ipsum bio ";
+/**
+ * @param {any} tutor
+ * @param {string} styles
+ * @return {JSX}
+ */
+export default function TutorCard({tutor}: {tutor: any}) {
   const subject: string = "Subject";
-
-  const followers: number = 1000;
-  const following: number = 1000;
 
   const email: string = "example@example.com";
   const facebook: string = "examplefacebook";
   const twitter: string = "exampletwitter";
 
   return (
-    <div className={`${style} bg-blue-900 w-9/10 text-white rounded-xl`}>
+    <div className="bg-blue-900 w-9/10 text-white rounded-xl">
       <div className="w-full flex-wrap">
 
         <div className="w-full flex justify-content pb-5">
@@ -23,16 +21,17 @@ export default function TutorCard({id, style}: { id?: number, style?: string }) 
           <span className="w-1/2">
             <div className="h-64">picture</div>
             <div className="flex items-center justify-around">
-              <span className="p-1">Followers: {followers}</span>
-              <span className="p-1">Follwing: {following}</span>
+              <span className="p-1">Followers: {tutor.followers.length}</span>
+              <span className="p-1">Follwing: {tutor.following.length}</span>
             </div>
           </span>
 
           {/** description */}
           <span className="w-1/2 flex-col px-5 justify-center shadow-lg bg-blue-800 rounded-xl">
-            <div className="font-bold py-4 text-xl">{name}</div>
-            <div className="">{bio}</div>
-            <Button style="bg-orange-600 hover:bg-orange-700 m-5">View Profile</Button>
+            <div className="font-bold py-4 text-xl w-full flex justify-center">{tutor.firstName}</div>
+            <div className="max-h-10 overflow-hidden">{tutor.description}</div>
+            <Button style="bg-orange-600 m-5
+            hover:bg-orange-700">View Profile</Button>
           </span>
         </div>
 
@@ -48,12 +47,13 @@ export default function TutorCard({id, style}: { id?: number, style?: string }) 
                 <div className="text-md"><span>icon</span>{twitter}</div>
               </div>
             </div>
-            <Button style="bg-blue-600 hover:bg-blue-700 m-5 mb-8">Follow</Button>
+            <Button style="btn bg-blue-600 m-5 mb-8 w-fit
+            hover:bg-blue-700">Follow</Button>
           </span>
 
           {/** reviews */}
           <span className="w-1/2 ">
-
+            reviews
           </span>
         </div>
       </div>

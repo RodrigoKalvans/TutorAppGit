@@ -10,7 +10,10 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       role: {type: String, required: true, default: "tutor"},
       picture: {type: String},
       description: {type: String},
-      languages: [{type: String}],
+      languages: [{
+        code: {type: String},
+        name: {type: String},
+      }],
       phoneNumber: {type: String},
       location: {type: String},
       isOnlineAvailable: {type: Boolean},

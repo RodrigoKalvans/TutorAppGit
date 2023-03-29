@@ -32,8 +32,14 @@
 
 }
 
-.bord {
-  outline-style: solid;
+@layer utilities {
+  .hov {
+    @apply shadow-sm hover:shadow-xl transition-all duration-500
+  }
+  
+  .bord {
+    outline-style: solid;
+  }
 }
 
 * {
