@@ -25,12 +25,6 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
 
   // change roll on button clicks
   const [role, setRole] = useState<string>("student");
-  const setStudent = () => {
-    setRole("student");
-  };
-  const setTutor = () => {
-    setRole("tutor");
-  };
 
   /** called when sending PUT request to update tutor subjects
  * condense subjects down to id[]
@@ -130,8 +124,8 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
   return (
     <>
       <div className="btn-group w-full">
-        <button onClick={setStudent} className="btn w-1/2 bg-orange-400 hover:bg-orange-500" >Student</button>
-        <button onClick={setTutor} className="btn w-1/2 bg-orange-400 hover:bg-orange-500">Tutor</button>
+        <button onClick={() => setRole("student")} className="btn w-1/2 bg-orange-400 hover:bg-orange-500" >Student</button>
+        <button onClick={() => setRole("tutor")} className="btn w-1/2 bg-orange-400 hover:bg-orange-500">Tutor</button>
       </div>
       <Formik
         initialValues={{firstName: "", lastName: "", email: "", password: "", tenantKey: ""}}
