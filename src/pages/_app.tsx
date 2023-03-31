@@ -8,6 +8,11 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+/**
+ * App
+ * @param {any} props
+ * @return {JSX} App
+ */
 export default function App({
   Component, pageProps: {session, ...pageProps},
 }: AppProps) {
