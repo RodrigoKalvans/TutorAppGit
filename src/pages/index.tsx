@@ -37,7 +37,7 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
 
           <div className="ml-24">
             <Button style="bg-orange-500 text-lg mx-5 normal-case" link="/feed">Browse</Button>
-            <Button style="bg-blue-600 text-lg mx-5 normal-case" link="/auth/signin">Join us</Button>
+            <Button style="bg-blue-600 text-lg mx-5 normal-case" link="/signin">Join us</Button>
           </div>
         </div>
 

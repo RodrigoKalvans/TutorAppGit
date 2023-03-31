@@ -54,7 +54,7 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, posts}: {tutor: any, 
                 <div className="btn ">button</div>
               </div>
               <div>
-                <PostManager posts={posts} />
+                {posts.length === 0 ? <div className="m-5 mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
               </div>
             </section>
           </main>

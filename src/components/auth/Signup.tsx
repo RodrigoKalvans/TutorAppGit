@@ -82,12 +82,14 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
         },
       });
 
-      // sign the user is and redirect
+      const userJson = await res.json();
+
+      // sign the user in and redirect
       if (res.ok) {
         const res = await signIn("credentials", {
           email: values.email,
           password: values.password,
-          // callbackUrl: `/${role}s/${userJson._id}`,
+          callbackUrl: `/${role}s/${userJson._id}`,
         });
         if (res?.error) {
           setError(res.error);

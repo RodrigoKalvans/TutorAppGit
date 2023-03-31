@@ -1,17 +1,17 @@
 import PostManager from "@/components/posts/PostManager";
-import { Session, getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { GetServerSidePropsContext } from "next";
+import {Session, getServerSession} from "next-auth";
+import {authOptions} from "./api/auth/[...nextauth]";
+import {GetServerSidePropsContext} from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/footer";
-import { useState } from "react";
+import {useState} from "react";
 
 /**
  * Feed page
  * @param {Array<any>} posts
  * @return {JSX}
  */
-const Feed = ({allPosts, followedPosts, session}: {allPosts: Array<any>, followedPosts: Array<any>, session: any}) => {
+const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, followedPosts: Array<any>, loggedIn: boolean}) => {
   const [general, setGeneral] = useState<boolean>(true);
 
   return (
@@ -27,8 +27,9 @@ const Feed = ({allPosts, followedPosts, session}: {allPosts: Array<any>, followe
         <div className="w-full flex justify-center ">
           <div className="w-4/5 ">
             {general && <PostManager posts={allPosts} />}
-            {!general && session && <PostManager posts={followedPosts} />}
-            {!general && !session && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
+            {!general && loggedIn && followedPosts.length > 0 && <PostManager posts={followedPosts} />}
+            {!general && loggedIn && followedPosts.length === 0 && <div className="m-5 mt-10 flex justify-center text-xl">Follow other users in order to see their posts in this feed</div>}
+            {!general && !loggedIn && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
           </div>
         </div>
       </div>
@@ -51,7 +52,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     props: {
       allPosts,
       followedPosts,
-      session,
+      loggedIn: (session ? true : false),
     },
   };
 };
