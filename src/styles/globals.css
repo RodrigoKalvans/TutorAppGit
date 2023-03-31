@@ -34,7 +34,7 @@
 
 @layer utilities {
   .hov {
-    @apply shadow-sm hover:shadow-xl transition-all duration-500
+    @apply hover:shadow-xl transition-all duration-500
   }
   
   .bord {

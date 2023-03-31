@@ -11,8 +11,6 @@ import Subjects from "../profilePage/helpingComponents/Subjects";
  * @return {any} yo
  */
 export default function SearchProfile({user, subjects}: {user: any, subjects: any}) {
-  const fullName: string = user.secondName ? `${user.firstName} ${user.secondName} ${user.lastName}` : `${user.firstName} ${user.lastName}`;
-
   // TODO: type
   const [userSubjects, setUserSubjects] = useState<Array<{}>>([]);
 
@@ -40,9 +38,9 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
   return (
     <>
       {/** TODO: add Link to user's profile */}
-      <div className="w-full p-2 hov">
+      <div className="w-full p-2 hov shadow-sm">
         {user && (
-          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2">
+          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2 ">
             {/** profile image */}
             <div className="w-1/4 flex justify-center align-middle">
               {/** TODO: replace with profile image */}
@@ -56,7 +54,7 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
                 <div className="flex-col space-between">
                   {/** name */}
                   <div className="text-xl">
-                    {fullName}
+                    {user.firstName + " " + user.lastName}
                   </div>
                   {/** tutor or student */}
                   <div className="font-bold">

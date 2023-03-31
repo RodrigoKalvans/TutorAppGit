@@ -24,8 +24,7 @@ const Post = ({post}: {post: any}) => {
   return (
     <>
       {post && user &&
-        <main className="flex-col w-full my-5 bg-white text-sm rounded-2xl shadow-md
-        hover:shadow-xl transition-all duration-500">
+        <main className="flex-col w-full my-5 bg-white text-sm rounded-2xl shadow-md hov">
           <div className="flex justify-between p-3 h-10 shadow-lg items-center">
             <div className="flex gap-5 items-center">
               <div className="h-full w-8"><ProfilePicture /></div>
@@ -39,7 +38,7 @@ const Post = ({post}: {post: any}) => {
             </div>
           </div>
           <div className="p-3 text-sm max-h-80 h-fit flex-col">
-            <div className="w-full max-h-40 p-1 overflow-hidden">{post.description}</div>
+            <div className="w-full max-h-40 p-1 overflow-hidden">+{post.description}</div>
             <div className="flex gap-2 w-full h-10 items-center mt-2">{pics.map((pic: any) => pic)}</div>
             <div className="w-full px-1 flex justify-end">{post.date}</div>
           </div>
