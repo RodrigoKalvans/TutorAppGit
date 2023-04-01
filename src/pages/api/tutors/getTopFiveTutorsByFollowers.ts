@@ -66,7 +66,7 @@ function partition(items: Array<any>, left: number, right: number) {
   let i = left; // left pointer
   let j = right; // right pointer
   while (i <= j) {
-    while (items[i].followers.length < pivot.followers.length) {
+    while (items[i].followers.length < pivot.followers.length) { // currently we sort by follower count
       i++;
     }
     while (items[j].followers.length > pivot.followers.length) {
