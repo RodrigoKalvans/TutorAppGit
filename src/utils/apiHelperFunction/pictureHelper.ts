@@ -46,7 +46,7 @@ export const uploadPostPicture = async (req: NextApiRequest, res: NextApiRespons
             const key = `${i}-${Date.now()}-${postId}`;
 
             const command = new PutObjectCommand({
-              Bucket: "tcorvus-development-bucket",
+              Bucket: "tcorvus-post-images-bucket",
               Key: key,
               Body: optimizedImageBuffer,
               ContentType: "image/png",
@@ -76,7 +76,6 @@ export const uploadPostPicture = async (req: NextApiRequest, res: NextApiRespons
 
 export const uploadProfilePicture = async (req: NextApiRequest, res: NextApiResponse, id: string, role: string) => {
   try {
-    console.log("post req 1");
     let user: any;
 
     switch (role) {
@@ -97,17 +96,15 @@ export const uploadProfilePicture = async (req: NextApiRequest, res: NextApiResp
 
     await new Promise<any>((resolve, reject) => {
       upload.single("image")(req as any, res as any, async (err: any) => {
-        console.log("post req 2");
-
         if (err) {
           reject(err);
         } else {
           const file = (req as any).file;
-          const optimizedImageBuffer = await sharp(file.buffer).resize({width: 1024}).png({quality: 80}).toBuffer();
+          const optimizedImageBuffer = await sharp(file.buffer).resize({width: 600}).png({quality: 80}).toBuffer();
           const key = `${Date.now()}-${id}`;
 
           const command = new PutObjectCommand({
-            Bucket: "tcorvus-development-bucket",
+            Bucket: "tcorvus-profile-images-bucket",
             Key: key,
             Body: optimizedImageBuffer,
             ContentType: "image/png",
@@ -115,8 +112,6 @@ export const uploadProfilePicture = async (req: NextApiRequest, res: NextApiResp
 
           try {
             const response = await client.send(command);
-
-            console.log(response);
 
             if (response.$metadata.httpStatusCode !== 200) {
               reject(new Error("The upload of the image to AWS S3 failed."));
@@ -142,7 +137,7 @@ export const uploadProfilePicture = async (req: NextApiRequest, res: NextApiResp
 
 export const getProfilePicture = async (res: NextApiResponse, key: string) => {
   const command = new GetObjectCommand({
-    Bucket: "tcorvus-development-bucket",
+    Bucket: "tcorvus-profile-images-bucket",
     Key: key as string,
   });
 
@@ -162,7 +157,7 @@ export const getProfilePicture = async (res: NextApiResponse, key: string) => {
 export const getPostPictures = async (res: NextApiResponse, keys: Array<string>) => {
   const commands = keys.map((key: string) => {
     return new GetObjectCommand({
-      Bucket: "tcorvus-development-bucket",
+      Bucket: "tcorvus-post-images-bucket",
       Key: key,
     });
   });

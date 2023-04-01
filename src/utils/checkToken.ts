@@ -7,7 +7,7 @@ import {NextApiRequest} from "next/types";
  * @param {NextApiRequest} req request received from client
  * @return {JWT} returns jwt when the checks are passed, otherwise returns undefined
  */
-const checkTokenForUsers = async (req: NextApiRequest) => {
+const validateUser = async (req: NextApiRequest) => {
   const token = await getToken({req});
 
   if (!token || token?.id !== req.query.id) {
@@ -17,4 +17,4 @@ const checkTokenForUsers = async (req: NextApiRequest) => {
   return token;
 };
 
-export default checkTokenForUsers;
+export default validateUser;

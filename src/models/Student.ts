@@ -5,12 +5,14 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
       email: {type: String, required: true, unique: true},
       password: {type: String, required: true},
       firstName: {type: String, required: true},
-      secondName: {types: String},
       lastName: {type: String, required: true},
       role: {type: String, required: true, default: "student"},
       picture: {type: String},
       description: {type: String},
-      languages: [{type: String}],
+      languages: [{
+        code: {type: String},
+        name: {type: String},
+      }],
       followers: [
         {
           userId: {type: String},

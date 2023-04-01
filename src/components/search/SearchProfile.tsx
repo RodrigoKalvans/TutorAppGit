@@ -44,7 +44,7 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
             {/** profile image */}
             <div className="w-1/4 flex justify-center align-middle">
               {/** TODO: replace with profile image */}
-              <ProfilePicture />
+              <ProfilePicture user={user} />
             </div>
 
             <div className="flex p-2 w-3/4">

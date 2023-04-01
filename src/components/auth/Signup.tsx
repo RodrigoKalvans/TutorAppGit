@@ -26,20 +26,21 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
   // change roll on button clicks
   const [role, setRole] = useState<string>("student");
 
-  /** called when sending PUT request to update tutor subjects
- * condense subjects down to id[]
- * @return {string[]} reference to string[] with subject ids
- */
-  const getArrayOfChosenSubjectIds = () => {
-    const placeholder: string[] = [];
-    if (chosenSubjects) {
-      for (let i = 0; i < chosenSubjects.length; i++) {
-        placeholder.push(chosenSubjects.at(i).value);
-      }
-    }
-    console.log(placeholder);
-    return placeholder;
-  };
+  /** DEPRECATED
+  * called when sending PUT request to update tutor subjects
+  * condense subjects down to id[]
+  * @return {string[]} reference to string[] with subject ids
+  */
+  // const getArrayOfChosenSubjectIds = () => {
+  //   const placeholder: string[] = [];
+  //   if (chosenSubjects) {
+  //     for (let i = 0; i < chosenSubjects.length; i++) {
+  //       placeholder.push(chosenSubjects.at(i).value);
+  //     }
+  //   }
+  //   console.log(placeholder);
+  //   return placeholder;
+  // };
 
   const onSubmit = async (values: any) => {
     try {
@@ -105,7 +106,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
         const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
           method: "PUT",
           body: JSON.stringify({
-            subjectIds: getArrayOfChosenSubjectIds(),
+            subjectIds: chosenSubjects,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -309,7 +310,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
                 <div className="flex items-center justify-center">
                   <button
                     type="submit"
-                    className="bg-orange-400 hover:bg-orange-500 w-full text-gray-100 p-3 rounded-lg w-full"
+                    className="bg-orange-400 hover:bg-orange-500 w-full text-gray-100 p-3 rounded-lg"
                   >
                     {formik.isSubmitting ? "Please wait..." : "Sign Up"}
                   </button>
