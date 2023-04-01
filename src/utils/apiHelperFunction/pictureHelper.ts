@@ -1,7 +1,7 @@
 import Post from "@/models/Post";
 import Student from "@/models/Student";
 import Tutor from "@/models/Tutor";
-import {S3Client, PutObjectCommand, GetObjectCommand} from "@aws-sdk/client-s3";
+import {S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand} from "@aws-sdk/client-s3";
 import {StatusCodes} from "http-status-codes";
 import multer, {Multer} from "multer";
 import {NextApiRequest, NextApiResponse} from "next";
@@ -172,5 +172,35 @@ export const getPostPictures = async (res: NextApiResponse, keys: Array<string>)
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error);
     return;
+  }
+};
+
+export const deleteProfilePicture = async (req: NextApiRequest, res: NextApiResponse, key: string) => {
+  const command = new DeleteObjectCommand({
+    Bucket: "tcorvus-profile-images-bucket",
+    Key: key,
+  });
+
+  try {
+    const response = await client.send(command);
+    res.status(StatusCodes.OK).send("Profile picture with key " + key + " has been deleted.");
+    console.log(response);
+  } catch (err) {
+    res.status(StatusCodes.BAD_REQUEST).send(err);
+  }
+};
+
+export const deletePostPicture = async (req: NextApiRequest, res: NextApiResponse, key: string) => {
+  const command = new DeleteObjectCommand({
+    Bucket: "tcorvus-post-images-bucket",
+    Key: key,
+  });
+
+  try {
+    const response = await client.send(command);
+    res.status(StatusCodes.OK).send("Profile picture with key " + key + " has been deleted.");
+    console.log(response);
+  } catch (err) {
+    res.status(StatusCodes.BAD_REQUEST).send(err);
   }
 };
