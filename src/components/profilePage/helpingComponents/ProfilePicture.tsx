@@ -17,17 +17,16 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
     setModalOpen(true);
   };
 
-  const getImageFromApi = async (userId: string, fileKey: string) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/${user.role}s/${userId}/picture?key=${fileKey}`);
-      const blob = await response.blob();
-      setImageSrc(URL.createObjectURL(blob));
-    } catch (error) {
-      console.error("Error retrieving image from API:", error);
-    }
-  };
-
   useEffect(() => {
+    const getImageFromApi = async (userId: string, fileKey: string) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/${user.role}s/${userId}/picture?key=${fileKey}`);
+        const blob = await response.blob();
+        setImageSrc(URL.createObjectURL(blob));
+      } catch (error) {
+        console.error("Error retrieving image from API:", error);
+      }
+    };
     if (user.picture) getImageFromApi(user._id.toString(), user.picture);
   }, []);
 

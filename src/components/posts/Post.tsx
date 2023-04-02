@@ -27,7 +27,7 @@ const Post = ({post}: {post: any}) => {
         <main className="flex-col w-full my-5 bg-white text-sm rounded-2xl shadow-md hov">
           <div className="flex justify-between p-3 h-10 shadow-lg items-center">
             <div className="flex gap-5 items-center">
-              <div className="h-full w-8"><ProfilePicture /></div>
+              <div className="h-full w-8"><ProfilePicture user={user}/></div>
               <div className="text-xl">{user.firstName + " " + user.lastName}</div>
               |
               <div className="uppercase">{user.role}</div>

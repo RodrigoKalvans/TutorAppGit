@@ -10,7 +10,6 @@ import Subjects from "./helpingComponents/Subjects";
 import {Session} from "next-auth";
 import {EditIcon} from "@/utils/icons";
 import EditProfileModal from "./EditProfileModal";
-import {ObjectId} from "mongoose";
 
 const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {user: any, isFollowing: boolean, subjects: Array<any>, session: Session | null, allSubjects: Array<any>}) => {
   const [followers, setFollowers] = useState(user.followers.length);
@@ -66,7 +65,7 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
       <div className="grid grid-cols-2 gap-8 my-8">
         <Subjects subjects={subjects} />
 
-        <Languages languages={user.languages.map((languageObj: {code: string, name: string, _id: ObjectId}) => languageObj.name)} />
+        <Languages languages={user.languages} />
 
         {user.role === "tutor" && (
           <>

@@ -57,7 +57,9 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any}) => {
   return (
     <BoxContainer style={""}>
       <div>
-        <h2 className="text-xl font-medium">Activity</h2>
+        <div className="pb-2 border-b-2">
+          <h2 className="text-xl font-medium ">Activity</h2>
+        </div>
 
         {renderActivity(firstActivity)}
       </div>
