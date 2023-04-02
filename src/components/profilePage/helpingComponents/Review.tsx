@@ -10,7 +10,7 @@ const Review = ({review}: {review: any}) => {
       <div className="flex justify-between items-start">
         <div className="flex w-2/3 items-start">
           <div className="w-1/6 -translate-y-6">
-            <ProfilePicture />
+            <ProfilePicture user={reviewerUser} />
           </div>
           <div>
             <p className="font-medium text-base m-0 ml-2">{reviewerUser.firstName} {reviewerUser.lastName}</p>

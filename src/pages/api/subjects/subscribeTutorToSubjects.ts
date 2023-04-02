@@ -48,14 +48,36 @@ const addTutorToSubjects = async (req: NextApiRequest, res: NextApiResponse, id:
     const tutor = await Tutor.findById(token.id);
 
     if (!tutor) {
-      res.status(StatusCodes.NOT_FOUND).send({message: "Tutor does not exist!"});
+      res.setHeader("Set-Cookie", "next-auth.session-token=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;");
+      res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "The user you are logged in as cannot be found! Your account was either deleted or blocked. Please, update the page."});
       return;
     }
 
-    // Update all subjects from the array with tutor id
+    const newSubjectIds = [];
+    const subjectSubscriptionsToDelete = [];
+
+    // Add subject ids to tutor. Prevent duplicates
+    for (let i = 0; i < subjectIds.length; i++) {
+      if (!tutor.subjects.includes(subjectIds[i])) {
+        tutor.subjects.push(subjectIds[i]);
+        newSubjectIds.push(subjectIds[i]);
+      }
+    }
+
+    // Check what subscription need to be deleted
+    for (let i = 0; i < tutor.subjects.length; i++) {
+      if (!subjectIds.includes(tutor.subjects[i])) {
+        tutor.subjects.splice(i, 1);
+        subjectSubscriptionsToDelete.push(tutor.subjects[i]);
+      }
+    }
+
+    await tutor.save();
+
+    // Add the tutor to new subjects
     await Subject.updateMany({
       _id: {
-        $in: subjectIds,
+        $in: newSubjectIds,
       },
     },
     {
@@ -64,14 +86,15 @@ const addTutorToSubjects = async (req: NextApiRequest, res: NextApiResponse, id:
       },
     });
 
-    // Add subject ids to tutor. Prevent duplicates
-    for (let i = 0; i < subjectIds.length; i++) {
-      if (!tutor.subjectsOfSpecialty.includes(subjectIds[i])) {
-        tutor.subjectsOfSpecialty.push(subjectIds[i]);
-      }
-    }
-
-    await tutor.save();
+    // Delete tutor from unsubscribed subjects
+    await Subject.updateMany({
+      _id: {
+        $in: subjectSubscriptionsToDelete,
+      },
+    },
+    {
+      $pull: {tutors: token.id},
+    });
 
     res.status(StatusCodes.OK).send({message: "Successfully added!", tutor: tutor});
   } catch (error) {

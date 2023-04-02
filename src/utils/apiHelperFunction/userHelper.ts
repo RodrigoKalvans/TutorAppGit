@@ -87,7 +87,13 @@ export const followUser = async (req: NextApiRequest, res: NextApiResponse, id: 
   if (!followedUser) {
     res.status(StatusCodes.NOT_FOUND).send({message: "User to follow was not found!"});
     return;
+  } else if (followingUser._id.toString() === followedUser._id.toString()) {
+    res.status(StatusCodes.FORBIDDEN).send({message: "You cannot follow yourself!"});
+    return;
   }
+
+  console.log("logged in user: " + followingUser._id + "   followed user: " + followedUser._id);
+  console.log(followingUser._id.toString() === followedUser._id.toString());
 
   const exists = followedUser.followers.findIndex((follower: {_id: ObjectId, userId: String, accountType: String}, index: number) => follower.userId === followingUser._id.toString()) > -1;
 

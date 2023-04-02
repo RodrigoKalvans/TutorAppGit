@@ -1,5 +1,5 @@
 import Student from "../../../../models/Student";
-import checkTokenForUsers from "../../../../utils/checkToken";
+import validateUser from "../../../../utils/checkToken";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
@@ -46,7 +46,7 @@ const getStudentById = async (res: NextApiResponse, id: String) => {
  * @return {null} returns null in case the method of request is incorrect
  */
 const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await checkTokenForUsers(req);
+  const check = await validateUser(req);
 
   if (!check) {
     res.status(StatusCodes.UNAUTHORIZED)
@@ -81,7 +81,7 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
  * @return {null} returns null in case the method of request is incorrect
  */
 const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await checkTokenForUsers(req);
+  const check = await validateUser(req);
 
   if (!check) {
     res.status(StatusCodes.FORBIDDEN)

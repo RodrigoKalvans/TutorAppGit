@@ -8,7 +8,7 @@ import {useState} from "react";
 import {authOptions} from "./api/auth/[...nextauth]";
 
 const uploadTest = ({tutor}: {tutor: any}) => {
-  const {data: session} = useSession(tutor.picture);
+  const {data: session} = useSession();
   const [file, setFile] = useState(null);
   const [fileKey, setFileKey] = useState(tutor.picture);
 
