@@ -28,7 +28,7 @@ export default function NavbarSearch() {
       subjects: undefined,
     };
     router.push({
-      pathname: `/search/${router.asPath}`,
+      pathname: "/search",
       query: toSearch,
     });
   };

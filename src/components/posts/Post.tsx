@@ -1,5 +1,9 @@
+import Link from "next/link";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import useSWR from "swr";
+import comment from "@/public/icons/commentsIcon.png";
+import like from "@/public/icons/likesIcon.png";
+import Image from "next/image";
 
 /**
  * Post component
@@ -24,22 +28,41 @@ const Post = ({post}: {post: any}) => {
   return (
     <>
       {post && user &&
-        <main className="flex-col w-full my-5 bg-white text-sm rounded-2xl shadow-md hov">
+        <main className="flex-col w-3/5 my-5 bg-white text-sm rounded-2xl shadow-md hov">
           <div className="flex justify-between p-3 h-10 shadow-lg items-center">
+            <Link href={`/${user.role}s/${user._id}`}>
+              <div className="flex gap-5 items-center">
+                <div className="h-full w-8"><ProfilePicture /></div>
+                <div className="text-xl">{user.firstName + " " + user.lastName}</div>
+                |
+                <div className="uppercase">{user.role}</div>
+              </div>
+            </Link>
             <div className="flex gap-5 items-center">
-              <div className="h-full w-8"><ProfilePicture user={user}/></div>
-              <div className="text-xl">{user.firstName + " " + user.lastName}</div>
-              |
-              <div className="uppercase">{user.role}</div>
-            </div>
-            <div className="flex gap-5 items-center">
-              <div className="text-xs flex">comments: <div className="font-bold text-sm">&nbsp;{post.comments.length}</div></div>
-              <div className="text-xs flex">likes: <div className="font-bold text-sm">&nbsp;{post.likes.length}</div></div>
+              <div className="text-xs flex items-center">
+                <Image
+                  src={comment}
+                  alt={"comment"}
+                  width={18}
+                />&nbsp;:
+                <div className="font-bold text-xs">&nbsp;{post.comments.length}</div>
+              </div>
+              <div className="text-xs flex items-center">
+                <Image
+                  src={like}
+                  alt={"like"}
+                  width={18}
+                />&nbsp;:
+                <div className="font-bold text-xs">&nbsp;{post.likes.length}</div></div>
             </div>
           </div>
-          <div className="p-3 text-sm max-h-80 h-fit flex-col">
-            <div className="w-full max-h-40 p-1 overflow-hidden">+{post.description}</div>
-            <div className="flex gap-2 w-full h-10 items-center mt-2">{pics.map((pic: any) => pic)}</div>
+          <div className="p-3 text-sm flex-col">
+            <div className="w-full max-h-40 p-1 overflow-scroll">+{post.description}</div>
+            <div className="w-full flex justify-center">
+              <div className="carousel w-1/2 rounded-box">
+                {pics.map((pic: any) => <div className="carousel-item w-full">{pic}</div>)}
+              </div>
+            </div>
             <div className="w-full px-1 flex justify-end">{post.date}</div>
           </div>
         </main>
@@ -59,7 +82,7 @@ export default Post;
 const Picture = () => {
   return (
     <>
-      <div className="aspect-square w-10 bord">
+      <div className="aspect-square w-full bord">
         <div>
           pic
         </div>

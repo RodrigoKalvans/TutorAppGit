@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import Carousel from "@/components/landingPage/Carousel";
+import Carousel from "@/components/landingPage/TutorCarousel";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import LandingPageBlurBox from "@/components/landingPage/LandingPageBlurBox";

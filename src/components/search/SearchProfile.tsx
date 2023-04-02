@@ -14,15 +14,12 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
   // TODO: type
   const [userSubjects, setUserSubjects] = useState<Array<{}>>([]);
 
-  // TODO: this needs to be changed when fields in db are renamed
-  const subjectsFieldInUserObject: Array<string> = user.role === "student" ? user.subjectsStudied : user.subjectsOfSpecialty;
-
   // TODO: types
   // TODO: if we use pictures, handle those too
   const filterSubjects: any = () => {
-    for (let i: number = 0; i < subjectsFieldInUserObject.length; i++) {
+    for (let i: number = 0; i < user.subjects.length; i++) {
       for (let j: number = 0; j < subjects.length; j++) {
-        if (subjectsFieldInUserObject.at(i) == subjects.at(j)._id) {
+        if (user.subjects.at(i) == subjects.at(j)._id) {
           setUserSubjects((userSubjects: any) => [...userSubjects, subjects.at(j)]);
         }
       }
@@ -38,9 +35,9 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
   return (
     <>
       {/** TODO: add Link to user's profile */}
-      <div className="w-full p-2 hov shadow-sm">
+      <div className="w-full p-2">
         {user && (
-          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2 ">
+          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2 hov">
             {/** profile image */}
             <div className="w-1/4 flex justify-center align-middle">
               {/** TODO: replace with profile image */}
