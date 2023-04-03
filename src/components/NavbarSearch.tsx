@@ -1,13 +1,5 @@
 import {NextRouter, useRouter} from "next/router";
-import {useRef, useState} from "react";
-
-type TQuery = {
-  role: string,
-  firstName: string | undefined,
-  lastName: string | undefined,
-  rating: number | undefined,
-  subjects: string[] | undefined,
-}
+import {useState} from "react";
 
 /**
  * yo
