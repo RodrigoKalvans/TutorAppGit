@@ -1,18 +1,25 @@
 import Select from "react-tailwindcss-select";
 import {useState} from "react";
-
-const langs: string[] = [
-  "english",
-  "latvian",
-  "ukrainian",
-];
+import languages from "@/utils/languages.json";
+import {ObjectId} from "mongoose";
 
 /**
  * yo
  * @return {JSX} component
  */
-export default function LanguageSelect({setFunction, languages = langs}: {setFunction: any, languages?: string[]}) {
-  const [chosenLanguages, setChosenLanguages] = useState<any>();
+export default function LanguageSelect({setFunction, userLanguages}: {
+    setFunction: any,
+    userLanguages?: {
+      code: string, name: string, _id: ObjectId
+    }[]
+  }) {
+  // Create the state and populate it with languages of the user if exist.
+  // Will make the user's languages display as chosen by default
+  const [chosenLanguages, setChosenLanguages] = useState<any>(userLanguages?.map(
+      (languageObj: {code: string, name: string, _id: ObjectId}) => {
+        return {value: languageObj.code, label: languageObj.name};
+      },
+  ));
 
   /** turn subjects into parsable data by Select element
      * is called when subject Select element is initialized
@@ -20,16 +27,20 @@ export default function LanguageSelect({setFunction, languages = langs}: {setFun
      */
   const getLanguageOptions = () => {
     const options: { value: string; label: string; }[] = [];
-    languages.map((subject: any) => options.push({value: `${subject}`, label: `${subject}`}));
+    languages.map((language: any) => options.push({value: `${language.code}`, label: `${language.name}`}));
     return options;
   };
 
   /** is called onChange in subject Select element
-     * @param {string[]} value is the new string[] containing subject ids
+     * @param {string[]} value is the new string[] containing chosen options objects
      */
   const setSelectedLanguages = (value: any) => {
-    setChosenLanguages(value);
-    setFunction(value);
+    if (value.length <= 3) {
+      setChosenLanguages(value);
+      setFunction(value.map((option: {value: string, label: string, disabled: boolean}) => {
+        return {code: option.value, name: option.label};
+      }));
+    }
   };
 
   return (

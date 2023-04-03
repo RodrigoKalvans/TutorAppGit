@@ -1,7 +1,7 @@
 // import Navbar from "@/components/Navbar";
 
 import {Session, getServerSession} from "next-auth";
-
+import {useSession} from "next-auth/react";
 import Activity from "@/components/profilePage/Activity";
 import {GetServerSidePropsContext} from "next";
 import Head from "next/head";
@@ -17,7 +17,13 @@ import db from "@/utils/db";
 import Post from "@/models/Post";
 import PostManager from "@/components/posts/PostManager";
 
-const TutorPage = ({tutor, isFollowing, subjects, reviews, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, posts: Array<any>}) => {
+const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, allSubjects: Array<any>, posts: Array<any>}) => {
+  if (!tutor) {
+    return (
+      <p>No tutor was found!</p>
+    );
+  }
+  const {data: session} = useSession();
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
 
   return (
@@ -35,7 +41,7 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, posts}: {tutor: any, 
               <div className="w-full h-max flex justify-around">
 
                 <div className="w-9/20 h-max">
-                  <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} />
+                  <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
                 </div>
 
                 <div className="w-9/20 flex flex-col">
@@ -75,13 +81,18 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   // Get tutor
   let tutor = await Tutor.findById(context.query.id);
+  if (!tutor) {
+    return {
+      props: {},
+    };
+  }
   tutor = JSON.parse(JSON.stringify(tutor));
 
   // Check if logged in user already follows the tutor
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
   const isFollowing = tutor.followers.findIndex((follower: {_id: ObjectId, userId: String, accountType: String}) => follower.userId === session?.user.id.toString()) > -1;
 
-  // Get subjects
+  // Get subjects (all)
   const subjects = await Subject.find({
     _id: {
       $in: tutor.subjects,
@@ -94,6 +105,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       $in: tutor.posts,
     },
   });
+
+  const allSubjects = await Subject.find();
 
   // Get reviews
   const arr: Array<string> = [];
@@ -116,6 +129,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       tutor,
       isFollowing,
       subjects: JSON.parse(JSON.stringify(subjects)),
+      allSubjects: JSON.parse(JSON.stringify(allSubjects)),
       reviews: JSON.parse(JSON.stringify(newArr)),
       posts: JSON.parse(JSON.stringify(posts)),
     },

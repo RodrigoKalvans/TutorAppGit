@@ -32,7 +32,7 @@ const Post = ({post}: {post: any}) => {
           <div className="flex justify-between p-3 h-10 shadow-lg items-center">
             <Link href={`/${user.role}s/${user._id}`}>
               <div className="flex gap-5 items-center">
-                <div className="h-full w-8"><ProfilePicture /></div>
+                <div className="h-full w-8"><ProfilePicture user={user} /></div>
                 <div className="text-xl">{user.firstName + " " + user.lastName}</div>
                 |
                 <div className="uppercase">{user.role}</div>

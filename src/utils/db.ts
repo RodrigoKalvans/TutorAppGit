@@ -6,7 +6,6 @@ const connection: {isConnected: number} = {
 
 const connect = async () => {
   if (connection.isConnected === 1) {
-    console.log("Already connected!");
     return;
   }
 

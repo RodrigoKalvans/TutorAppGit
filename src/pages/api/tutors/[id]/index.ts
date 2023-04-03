@@ -1,5 +1,5 @@
 import Tutor from "../../../../models/Tutor";
-import checkTokenForUsers from "../../../../utils/checkToken";
+import validateUser from "../../../../utils/checkToken";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
@@ -46,7 +46,7 @@ const getTutorById = async (res: NextApiResponse, id: string) => {
  * @return {null} returns null in case the method of request is incorrect
  */
 const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await checkTokenForUsers(req);
+  const check = await validateUser(req);
 
   if (!check) {
     res.status(StatusCodes.UNAUTHORIZED)
@@ -57,6 +57,7 @@ const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
   }
 
   try {
+    // Will have to be replaced by tutor.save(), as the current implementation does not use Mongoose validation
     const updatedTutors = await Tutor
         .findByIdAndUpdate(id,
             {
@@ -81,7 +82,7 @@ const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
  * @return {null} returns null in case the method of request is incorrect
  */
 const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await checkTokenForUsers(req);
+  const check = await validateUser(req);
 
   if (!check) {
     res.status(StatusCodes.UNAUTHORIZED)
