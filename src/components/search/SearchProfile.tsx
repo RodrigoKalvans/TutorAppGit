@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import Languages from "../profilePage/helpingComponents/Languages";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import Subjects from "../profilePage/helpingComponents/Subjects";
+import Link from "next/link";
 
 // TODO: types
 /**
@@ -36,56 +37,61 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
     <>
       {/** TODO: add Link to user's profile */}
       <div className="w-full p-2">
-        {user && (
-          <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2 hov">
-            {/** profile image */}
-            <div className="w-1/4 flex justify-center align-middle">
-              {/** TODO: replace with profile image */}
-              <ProfilePicture user={user} />
-            </div>
+        <Link href={`/${user.role}s/${user._id}`}>
+          {user && (
+            <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2 hov">
+              {/** profile image */}
+              <div className="w-1/4 flex justify-center align-middle">
+                {/** TODO: replace with profile image */}
+                <ProfilePicture user={user} />
+              </div>
 
-            <div className="flex p-2 w-3/4">
+              <div className="flex p-2 w-3/4">
 
-              {/** name and such */}
-              <div className="p-1 flex-col w-1/2">
-                <div className="flex-col space-between">
-                  {/** name */}
-                  <div className="text-xl">
-                    {user.firstName + " " + user.lastName}
+
+                {/** name and such */}
+                <div className="p-1 flex-col w-1/2">
+                  <div className="flex-col space-between">
+                    {/** name */}
+                    <div className="text-xl">
+                      <Link href={`/${user.role}s/${user._id}`}>
+                        {user.firstName + " " + user.lastName}
+                      </Link>
+                    </div>
+                    {/** tutor or student */}
+                    <div className="font-bold">
+                      {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                    </div>
+                    {/** rating */}
+                    <div className="text-xs">
+                      {/** TODO: Round to decimal */}
+                      {user.rating.number}/5
+                    </div>
+                    {/** location */}
+                    <div className="text-xs">
+                      {user.location}
+                    </div>
+                    {/** followers */}
+                    <div className="text-xs">
+                      {user.followers.length} followers
+                    </div>
                   </div>
-                  {/** tutor or student */}
-                  <div className="font-bold">
-                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                </div>
+
+                <div className="flex justify-around w-1/2 text-lg">
+                  {/** languages */}
+                  <div className="">
+                    <Languages languages={user.language} />
                   </div>
-                  {/** rating */}
-                  <div className="text-xs">
-                    {/** TODO: Round to decimal */}
-                    {user.rating.number}/5
-                  </div>
-                  {/** location */}
-                  <div className="text-xs">
-                    {user.location}
-                  </div>
-                  {/** followers */}
-                  <div className="text-xs">
-                    {user.followers.length} followers
+                  {/** subjects */}
+                  <div className="">
+                    <Subjects subjects={userSubjects} />
                   </div>
                 </div>
               </div>
-
-              <div className="flex justify-around w-1/2 text-lg">
-                {/** languages */}
-                <div className="">
-                  <Languages languages={user.language} />
-                </div>
-                {/** subjects */}
-                <div className="">
-                  <Subjects subjects={userSubjects} />
-                </div>
-              </div>
             </div>
-          </div>
-        )}
+          )}
+        </Link>
       </div>
     </>
   );
