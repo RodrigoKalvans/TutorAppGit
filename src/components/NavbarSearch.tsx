@@ -1,5 +1,5 @@
-import {useRouter} from "next/router";
-import {useState} from "react";
+import {NextRouter, useRouter} from "next/router";
+import {useRef, useState} from "react";
 
 type TQuery = {
   role: string,
@@ -14,18 +14,16 @@ type TQuery = {
  * @return {any} yo
  */
 export default function NavbarSearch() {
-  const [query, setQuery] = useState<string>(""); // currently this is assumed to be first name
-  const [role, setRole] = useState<string>("tutors");
+  const [role, setRole] = useState<string>("tutor");
 
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   const search = (e: any) => {
-    const toSearch: TQuery = {
+    e.preventDefault();
+    if (!e.target[1].value) e.target[1].value = ""; // just in case something goes wrong, pass empty string
+    const toSearch: any = {
       role: role,
-      firstName: query,
-      lastName: undefined,
-      rating: undefined,
-      subjects: undefined,
+      firstName: e.target[1].value,
     };
     router.push({
       pathname: "/search",
@@ -41,13 +39,13 @@ export default function NavbarSearch() {
             <button type="submit" className="absolute inset-y-0">
               <svg aria-hidden="true" className="ml-3 w-5 h-5" fill="none" stroke="grey" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </button>
-            <input onChange={(e) => setQuery(e.target.value)} type="search" id="search" className="w-full mr-0 pl-10 rounded-l-full bg-white-200 text-black" placeholder="Search" required>
+            <input type="search" id="search" className="w-full mr-0 pl-10 rounded-l-full bg-white-200 text-black" placeholder="Search" required>
 
             </input>
             <select onChange={(e) => setRole(e.target.value)} defaultValue={"tutors"} className={"select rounded-l-none rounded-r-full max-w-fit text-black"}>
+              <option value={"tutor"}>Tutors</option>
+              <option value={"student"}>Students</option>
               <option value={"both"}>Both</option>
-              <option value={"tutors"}>Tutors</option>
-              <option value={"students"}>Students</option>
             </select>
           </div>
         </form>

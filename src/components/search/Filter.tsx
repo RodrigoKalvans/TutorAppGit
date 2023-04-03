@@ -11,9 +11,9 @@ import {useState} from "react";
 
 type Values = {
   role: string,
-  firstName: string,
-  lastName: string,
-  rating: number,
+  firstName: string | undefined,
+  lastName: string | undefined,
+  rating: number | undefined,
 };
 
 /**
@@ -28,7 +28,14 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
   const [chosenLanguages, setChosenLanguages] = useState<any>();
 
   // TODO: types
-  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "tutors");
+  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "tutor");
+
+  const initValues = { // for the form
+    role: role,
+    firstName: "",
+    lastName: "",
+    rating: undefined,
+  };
 
   const getArrayOfChosenSubjectIds = () => {
     const placeholder: string[] = [];
@@ -37,6 +44,7 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
         placeholder.push(chosenSubjects.at(i).value);
       }
     }
+    if (placeholder.length === 0) return undefined;
     return placeholder;
   };
 
@@ -49,9 +57,7 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
       subjects: getArrayOfChosenSubjectIds(),
       languages: chosenLanguages,
     };
-    router.query = query;
-    console.log("filter component", router.query);
-    action();
+    action(query);
   };
 
   return (
@@ -59,12 +65,7 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
       <div className="w-full rounded-2xl shadow-xl bg-white flex justify-center p-2">
         <div className="flex justify-center">
           <Formik
-            initialValues={{
-              role: role,
-              firstName: "",
-              lastName: "",
-              rating: 0,
-            }}
+            initialValues={initValues}
             validationSchema={Yup.object({
               role: Yup
                   .string(),
@@ -95,8 +96,8 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
                     onChange={(e) => setRole(e.target.value)}
                   >
                     <option value="both">Both</option>
-                    <option value="tutors" selected>Tutors</option>
-                    <option value="students">Students</option>
+                    <option value="tutor" selected>Tutors</option>
+                    <option value="student">Students</option>
                   </select>
                   <br/>
                 </label>
