@@ -24,7 +24,7 @@ module.exports = {
         "4xl": "2rem",
       },
       colors: {
-
+        "light": "#F7F7F7",
       },
       textColor: {
         "subtitle": "#505050",

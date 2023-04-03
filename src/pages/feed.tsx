@@ -3,7 +3,7 @@ import {Session, getServerSession} from "next-auth";
 import {authOptions} from "./api/auth/[...nextauth]";
 import {GetServerSidePropsContext} from "next";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 import {useState} from "react";
 
 /**

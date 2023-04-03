@@ -1,5 +1,4 @@
-// import Navbar from "@/components/Navbar";
-
+import Navbar from "@/components/Navbar";
 import {Session, getServerSession} from "next-auth";
 import {useSession} from "next-auth/react";
 import Activity from "@/components/profilePage/Activity";
@@ -34,7 +33,7 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
             <title>{fullName}</title>
           </Head>
 
-          {/* <Navbar black={true} /> */}
+          <Navbar black={true} />
 
           <main className="w-full px-28">
             <section className="m-2">

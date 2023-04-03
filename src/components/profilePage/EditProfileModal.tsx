@@ -68,6 +68,21 @@ const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}
         const json = await response.json();
         console.log(json);
       }
+    } else {
+      const response = await fetch(`http://localhost:3000/api/students/${session!.user.id}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedUser),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        const json = await response.json();
+        console.log(json);
+      }
     }
   };
 
