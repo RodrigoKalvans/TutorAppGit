@@ -13,17 +13,15 @@ export default function Navbar({black = false}: {black?: boolean}) {
   return (
     <div className="w-full flex justify-center max-h-20">
       <nav className={`px-10 p-3 w-4/5 flex items-center justify-between bg-transparen ${black ? "text-black" : "text-white"} `}>
-        <span className="">
-          <Link href="/">
-            <Image
-              priority
-              src={logo}
-              alt="logo"
-              width={85}
-              height={85}
-            />
-          </Link>
-        </span>
+        <Link href="/">
+          <Image
+            priority
+            src={logo}
+            alt="logo"
+            width={85}
+            height={85}
+          />
+        </Link>
         {/** search field */}
         <div className="w-1/4">
           <NavbarSearch />
