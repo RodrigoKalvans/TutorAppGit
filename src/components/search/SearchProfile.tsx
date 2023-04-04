@@ -78,7 +78,7 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
                   </div>
                 </div>
 
-                <div className="flex justify-around w-1/2 text-lg">
+                <div className="flex justify-around gap-3 w-1/2 text-lg">
                   {/** languages */}
                   <div className="">
                     <Languages languages={user.language} />

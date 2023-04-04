@@ -11,7 +11,6 @@ export default function NavbarSearch() {
   const router: NextRouter = useRouter();
 
   const search = (e: any) => {
-    e.preventDefault();
     if (!e.target[1].value) e.target[1].value = ""; // just in case something goes wrong, pass empty string
     const toSearch: any = {
       role: role,

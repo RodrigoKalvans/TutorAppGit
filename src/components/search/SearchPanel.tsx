@@ -20,7 +20,6 @@ import SearchProfile from "./SearchProfile";
  */
 export default function SearchPanel({subjects, students, tutors}: {subjects: any, students: any, tutors: any}) {
   const [profiles, setProfiles] = useState<any>(); // these will be displayed
-  const [error, setError] = useState<any>();
 
   const router: NextRouter = useRouter();
 
@@ -37,7 +36,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
         if (f[key] == undefined || f[key].length == 0) return true; // no value present in filter field
         if (key == "role" && f[key] == "both") return true; // handle role == "both"
         if (key == "rating") return f[key] == user[key].number; // rating is a number
-        if (Array.isArray(user[key])) return user[key].some((e: any) => f[key].includes(e));
+        if (Array.isArray(user[key])) return f[key].every((val: any) => user[key].includes(val)); // every value in filter must be present in user
         return user[key].toLowerCase().includes(f[key].toLowerCase());
       });
     });
@@ -48,20 +47,14 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
     else setProfiles(filter(undefined));
 
     return () => {
-      setError(null);
       setProfiles(null);
     };
-  }, []);
+  }, [router.query]);
 
   return (
     <>
       <div className="w-full flex justify-center min-h-screen ">
         <div className="w-4/5 rounded-xl bg-white-500 mt-5 flex-col justify-center">
-          <div className="w-full flex justify-center">
-            <h1 className="text-red-500 font-bold">
-              {!profiles && error && `${error}`}
-            </h1>
-          </div>
           <div className="flex p-2">
             <div className="w-2/5 m-3">
               {/** filter */}
@@ -74,11 +67,10 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
                 {profiles && (profiles.map((user: any) => (
                   <SearchProfile user={user} subjects={subjects} key={user._id}/>
                 ))) }
-                {error &&
+                {profiles && profiles.length === 0 &&
                   <div className="w-full flex justify-center">
                     <div className="w-fit m-2 mt-5 uppercase text-xl">
-                      Not found
-                      {error}
+                      no profiles found
                     </div>
                   </div>
                 }

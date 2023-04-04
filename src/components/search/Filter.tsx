@@ -37,24 +37,13 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
     rating: undefined,
   };
 
-  const getArrayOfChosenSubjectIds = () => {
-    const placeholder: string[] = [];
-    if (chosenSubjects) {
-      for (let i = 0; i < chosenSubjects.length; i++) {
-        placeholder.push(chosenSubjects.at(i).value);
-      }
-    }
-    if (placeholder.length === 0) return undefined;
-    return placeholder;
-  };
-
   const handleSubmit = (values: any) => {
     const query = {
       role: role,
       firstName: values.firstName,
       lastName: values.lastName,
       rating: values.rating,
-      subjects: getArrayOfChosenSubjectIds(),
+      subjects: chosenSubjects,
       languages: chosenLanguages,
     };
     action(query);
@@ -93,11 +82,12 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
                   <select
                     className="p-2 w-fit ml-3 rounded-xl bg-gray-300 mt-0  text-gray-900"
                     name="role"
+                    defaultValue={"tutor"}
                     onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value="both">Both</option>
-                    <option value="tutor" selected>Tutors</option>
+                    <option value="tutor">Tutors</option>
                     <option value="student">Students</option>
+                    <option value="both">Both</option>
                   </select>
                   <br/>
                 </label>
