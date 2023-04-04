@@ -3,7 +3,7 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiHandler} from "next/types";
 import {getToken} from "next-auth/jwt";
 import db from "@/utils/db";
-import {getProfilePicture, uploadPostPicture} from "@/utils/apiHelperFunction/pictureHelper";
+import {getPostPictures, uploadPostImages} from "@/utils/apiHelperFunction/pictureHelper";
 import Post from "@/models/Post";
 
 export const config = {
@@ -31,7 +31,7 @@ const postPicture = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  await uploadPostPicture(req, res, id as string, token.id);
+  await uploadPostImages(req, res, id as string, token.id);
 
   return;
 };
@@ -47,7 +47,7 @@ const getPostPicture = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  await getProfilePicture(res, post.images);
+  await getPostPictures(res, post.images);
 
   return;
 };

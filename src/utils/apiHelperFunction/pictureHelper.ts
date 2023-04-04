@@ -21,7 +21,7 @@ const upload: Multer = multer({
   },
 });
 
-export const uploadPostPicture = async (req: NextApiRequest, res: NextApiResponse, postId: string, userId: string) => {
+export const uploadPostImages = async (req: NextApiRequest, res: NextApiResponse, postId: string, userId: string) => {
   try {
     const post = await Post.findById(postId);
 
@@ -165,12 +165,14 @@ export const getPostPictures = async (res: NextApiResponse, keys: Array<string>)
   try {
     const responses = await Promise.all(commands.map((command) => client.send(command)));
     const images = responses.map((response) => response.Body);
+    const firstImage = images[0];
 
-    res.setHeader("Content-Type", "application/json");
-    res.status(StatusCodes.OK).send({images});
+    res.setHeader("Content-Type", "image/png");
+    res.status(StatusCodes.OK).send(firstImage);
     return;
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error);
+    console.log(error);
     return;
   }
 };

@@ -12,7 +12,7 @@ import profile from "@/public/images/profile-icon-transparent.png";
 export default function Navbar({black = false}: {black?: boolean}) {
   return (
 
-    <nav className={`w-full py-2 flex items-center justify-around bg-transparent ${black ? "text-black" : "text-white"} `}>
+    <nav className={`w-full py-2 flex items-center justify-around bg-transparent shadow ${black ? "text-black" : "text-white"} `}>
       <span className="">
         <Link href="/">
           <Image

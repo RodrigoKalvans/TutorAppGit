@@ -7,7 +7,7 @@ const PostSchema: mongoose.Schema = new mongoose.Schema(
         message: "{VALUE} is not supported as a role",
       }},
       userId: {type: String, required: true},
-      images: [{type: Buffer}],
+      images: [{type: String}],
       description: {type: String},
       likes: [
         {
