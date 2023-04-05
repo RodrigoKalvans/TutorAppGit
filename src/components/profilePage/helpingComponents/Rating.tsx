@@ -18,7 +18,7 @@ const Rating = ({rating}: {rating: {number: number, ratingCount: number}}) => {
         {[...Array(emptyStars)].map((o, i) =>
           <RatingStar key={i} colorStyle="text-gray-300" title="i" />,
         )}
-        <div>({rating.ratingCount})</div>
+        <div className="text-sm">({rating.ratingCount})</div>
       </div>
 
     </div>

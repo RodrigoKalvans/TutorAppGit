@@ -1,9 +1,9 @@
-import {useEffect, useState} from "react";
-
 import Languages from "../profilePage/helpingComponents/Languages";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import Subjects from "../profilePage/helpingComponents/Subjects";
 import Link from "next/link";
+import useSWR from "swr";
+import Rating from "../profilePage/helpingComponents/Rating";
 
 // TODO: types
 /**
@@ -11,27 +11,11 @@ import Link from "next/link";
  * @param {{any}}} user object to be displayed in the component
  * @return {any} yo
  */
-export default function SearchProfile({user, subjects}: {user: any, subjects: any}) {
+export default function SearchProfile({user}: {user: any}) {
   // TODO: type
-  const [userSubjects, setUserSubjects] = useState<Array<{}>>([]);
 
-  // TODO: types
-  // TODO: if we use pictures, handle those too
-  const filterSubjects: any = () => {
-    for (let i: number = 0; i < user.subjects.length; i++) {
-      for (let j: number = 0; j < subjects.length; j++) {
-        if (user.subjects.at(i) == subjects.at(j)._id) {
-          setUserSubjects((userSubjects: any) => [...userSubjects, subjects.at(j)]);
-        }
-      }
-    }
-  };
-
-  // prep data on mount
-  useEffect(() => {
-    filterSubjects();
-    return () => setUserSubjects([]);
-  }, []);
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const {data: subjects} = useSWR("http://localhost:3000/api/subjects", fetcher);
 
   return (
     <>
@@ -39,18 +23,16 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
       <div className="w-full p-2">
         <Link href={`/${user.role}s/${user._id}`}>
           {user && (
-            <div className="w-full min-w-40 max-h-32 bg-gray-200 rounded-2xl shadow flex align-middle p-2 hov">
+            <div className="w-full min-w-40 h-28 bg-gray-200 rounded-2xl shadow flex align-middle p-2 hov">
               {/** profile image */}
-              <div className="w-1/4 flex justify-center align-middle">
+              <div className="w-24 h-24 flex justify-center align-middle aspect-square">
                 {/** TODO: replace with profile image */}
                 <ProfilePicture user={user} />
               </div>
 
-              <div className="flex p-2 w-3/4">
-
-
+              <div className="flex px-2 w-full -mt-1">
                 {/** name and such */}
-                <div className="p-1 flex-col w-1/2">
+                <div className="flex-col w-1/2">
                   <div className="flex-col space-between">
                     {/** name */}
                     <div className="text-xl">
@@ -63,9 +45,9 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
                       {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                     </div>
                     {/** rating */}
-                    <div className="text-xs">
+                    <div className="text-xs w-24">
                       {/** TODO: Round to decimal */}
-                      {user.rating.number}/5
+                      <Rating rating={user.rating}/>
                     </div>
                     {/** location */}
                     <div className="text-xs">
@@ -78,14 +60,14 @@ export default function SearchProfile({user, subjects}: {user: any, subjects: an
                   </div>
                 </div>
 
-                <div className="flex justify-around gap-3 w-1/2 text-lg">
+                <div className="flex justify-around gap-3 w-1/2 text-sm">
                   {/** languages */}
                   <div className="">
-                    <Languages languages={user.language} />
+                    <Languages languages={user.languages} size="base" />
                   </div>
                   {/** subjects */}
-                  <div className="">
-                    <Subjects subjects={userSubjects} />
+                  <div className="overflow-hidden">
+                    <Subjects subjects={subjects} size="base" />
                   </div>
                 </div>
               </div>

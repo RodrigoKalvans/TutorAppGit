@@ -34,7 +34,7 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
     <>
       {imageSrc ? (
         <div
-          className={`avatar w-full ${(session?.user.id === user._id.toString()) ? "cursor-pointer": ""}`}
+          className={`avatar w-full aspect-square ${(session?.user.id === user._id.toString()) ? "cursor-pointer": ""}`}
           onClick={handlePictureClick}
         >
           <div className="rounded-full w-full">
@@ -43,7 +43,7 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
         </div>
       ) : (
         <div
-          className={`avatar placeholder w-full ${(session?.user.id === user._id.toString()) ? "cursor-pointer": ""}`}
+          className={`avatar placeholder w-full aspect-square ${(session?.user.id === user._id.toString()) ? "cursor-pointer": ""}`}
           onClick={handlePictureClick}
         >
           <div className="bg-neutral-focus text-neutral-content rounded-full w-full">

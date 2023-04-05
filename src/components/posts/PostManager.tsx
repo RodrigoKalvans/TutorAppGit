@@ -10,7 +10,7 @@ const PostManager = ({posts}: {posts: Array<any>}) => {
     <>
       <main className="w-full h-fit p-1 flex justify-center">
         <div className="w-full">
-          {posts && posts.map((post: any) => <div className="w-full flex justify-center"><Post post={post} key={post._id}/></div>)}
+          {posts && posts.map((post: any) => <div className="w-full flex justify-center" key={post._id}><Post post={post} key={post._id}/></div>)}
         </div>
       </main>
     </>

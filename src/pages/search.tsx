@@ -14,8 +14,8 @@ export default function Search({subjects, students, tutors}: {subjects: any, stu
       <Head>
         <title>Search</title>
       </Head>
-      <main className="flex-col justify-center min-h-screen">
-        <Navbar black={true} />
+      <Navbar black={true} />
+      <main className="flex-col justify-center min-h-screen container">
         <SearchPanel subjects={subjects} students={students} tutors={tutors} />
         <Footer />
       </main>
