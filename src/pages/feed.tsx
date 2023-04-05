@@ -7,7 +7,6 @@ import Footer from "@/components/footer";
 import {useState} from "react";
 import db from "@/utils/db";
 import Post from "@/models/Post";
-import Button from "@/components/button";
 import useSWR from "swr";
 import ProfilePicture from "@/components/profilePage/helpingComponents/ProfilePicture";
 import Link from "next/link";
