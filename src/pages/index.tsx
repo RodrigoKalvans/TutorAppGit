@@ -19,10 +19,8 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
       <Head>
         <title>TCorvus</title>
       </Head>
-      <main className="bg-landing bgimage z-0 w-full flex-wrap justify-center relative">
-
-        <Navbar />
-
+      <Navbar />
+      <main className="bg-landing bgimage z-0 w-full flex-wrap justify-center relative container">
         {/* Top part of page (everything in front of bg image) */}
         <div className="h-screen">
           <div className="m-5 p-3 ml-20 mt-20">
@@ -43,8 +41,8 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
 
         {/* Top subjects */}
         <h1 className="mt-80 p-20 text-bold text-5xl flex justify-center font-medium">Browse tutors by&nbsp;<div className="text-orange-500 ">Subject</div></h1>
-        <div className="flex justify-center">
-          <div className="w-4/5 px-10 flex-wrap justify-center">
+        <div className="flex justify-center bord">
+          <div className="w-4/5 px-10 flex-wrap justify-around">
             {subjects && subjects.map((subject) => <SubjectBox subject={subject} key={subject._id}/>)}
           </div>
         </div>
