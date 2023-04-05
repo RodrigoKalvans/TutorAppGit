@@ -40,7 +40,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
                   {data && data.map((tutor: any) => (
                     <div className="rounded-box bg-yellow-100 py-3 max-w-full my-4 h-20 flex items-center gap-3 hov">
                       <div className="w-1/5">
-                        <ProfilePicture />
+                        <ProfilePicture user={tutor}/>
                       </div>
                       <div className="flex-col">
                         <div className="my-1 flex overflow-hidden">{tutor.firstName + " " + tutor.lastName}</div>
