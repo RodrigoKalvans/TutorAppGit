@@ -1,13 +1,14 @@
 import Post from "@/models/Post";
 import Student from "@/models/Student";
 import Tutor from "@/models/Tutor";
-import {S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand} from "@aws-sdk/client-s3";
+import {PutObjectCommand, GetObjectCommand, DeleteObjectCommand, S3Client} from "@aws-sdk/client-s3";
 import {StatusCodes} from "http-status-codes";
 import multer, {Multer} from "multer";
 import {NextApiRequest, NextApiResponse} from "next";
 import sharp from "sharp";
+import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
 
-const client: S3Client = new S3Client({region: "eu-north-1"});
+const client = new S3Client({region: "eu-north-1"});
 const upload: Multer = multer({
   limits: {
     fileSize: 10000000,
@@ -42,7 +43,7 @@ export const uploadPostImages = async (req: NextApiRequest, res: NextApiResponse
 
           for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            const optimizedImageBuffer = await sharp(file.buffer).resize({width: 1024}).png({quality: 80}).toBuffer();
+            const optimizedImageBuffer = await sharp(file.buffer).resize({width: 600}).png({quality: 80}).toBuffer();
             const key = `${i}-${Date.now()}-${postId}`;
 
             const command = new PutObjectCommand({
@@ -174,6 +175,29 @@ export const getPostPictures = async (res: NextApiResponse, keys: Array<string>)
     res.status(StatusCodes.BAD_REQUEST).send(error);
     console.log(error);
     return;
+  }
+};
+
+export const getPostPicturesPresigned = async (res: NextApiResponse, keys: Array<string>) => {
+  const commands = keys.map((key: string) => {
+    return new GetObjectCommand({
+      Bucket: "tcorvus-post-images-bucket",
+      Key: key,
+    });
+  });
+
+  try {
+    const presignedUrls = [];
+
+    for (let i = 0; i < commands.length; i++) {
+      const command = commands[i];
+      const url = await getSignedUrl(client, command, {expiresIn: 3600});
+      presignedUrls.push(url);
+    }
+
+    res.status(StatusCodes.OK).send(presignedUrls);
+  } catch (error) {
+    console.log(error);
   }
 };
 

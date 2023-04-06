@@ -1,4 +1,3 @@
-import {useEffect, useState} from "react";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import useSWR from "swr";
 import Image from "next/image";
@@ -10,35 +9,13 @@ import Image from "next/image";
  * @return {JSX} component
  */
 const Post = ({post}: {post: any}) => {
-  const [images, setImages] = useState<string[]>([]);
-  const [imageSrc, setImageSrc] = useState<string>();
-  // TODO: convert post.date into a better format
-
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${post.role}s/${post.userId}`, fetcher);
+  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(`http://localhost:3000/api/posts/${post._id}/image`, fetcher);
 
-  useEffect(() => {
-    if (post.images) {
-      const getImagesFromAPI = async () => {
-        const response = await fetch(`http://localhost:3000/api/posts/${post._id}/image`);
-        const blob = await response.blob();
-        setImages([URL.createObjectURL(blob)]);
-        setImageSrc(URL.createObjectURL(blob));
-        // const json = await response.json();
-        // if (response.ok) setImages(json.images);
-        // else console.log(json);
-      };
-      getImagesFromAPI();
-    }
-  }, []);
-
-  // placeholder
-  // const pics: any = [
-  //   <Picture />,
-  //   <Picture />,
-  //   <Picture />,
-  //   <Picture />,
-  // ];
+  if (imagesError) {
+    console.log(imagesError);
+  }
 
   return (
     <>
@@ -59,12 +36,14 @@ const Post = ({post}: {post: any}) => {
           <div className="p-3 text-sm flex-col">
             <div className="w-full p-1 overflow-hidden">{post.description}</div>
             <div className="gap-2 w-full h-30 items-center mt-2">
-              {/* {images.map((image: any, index: number) => (
-                <Picture key={index} src={`data:image/png;base64,${Buffer.from(image).toString("base64")}`} />
-              ))} */}
-              {imageSrc && (
-                <Image src={imageSrc} alt="profile picture" width={96} height={96} priority />
+              {areImagesLoading && (
+                <p>Images are loading</p>
               )}
+              {presignedUrls &&
+                presignedUrls.map((url: string) => (
+                  <Image src={url} alt="profile picture" width={96} height={96} priority />
+                ))
+              }
 
             </div>
             <div className="w-full px-1 flex justify-end">{post.date}</div>

@@ -16,7 +16,7 @@ import db from "@/utils/db";
 import Post from "@/models/Post";
 import PostManager from "@/components/posts/PostManager";
 import CreatePost from "@/components/posts/CreatePost";
-import { useState } from "react";
+import {useState} from "react";
 
 const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, allSubjects: Array<any>, posts: Array<any>}) => {
   if (!tutor) {

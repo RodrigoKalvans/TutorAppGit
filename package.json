@@ -10,7 +10,8 @@
     "lint-fix": "npx eslint --ext .tsx,.ts src --fix"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.290.0",
+    "@aws-sdk/client-s3": "^3.306.0",
+    "@aws-sdk/s3-request-presigner": "^3.306.0",
     "@next-auth/mongodb-adapter": "^1.1.1",
     "@next/font": "^13.2.4",
     "@types/node": "18.11.18",
@@ -38,6 +39,7 @@
     "yup-password": "^0.2.2"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.306.0",
     "@types/bcrypt": "^5.0.0",
     "@types/multer": "^1.4.7",
     "@types/multer-s3": "^3.0.0",

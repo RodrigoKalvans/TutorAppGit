@@ -2,17 +2,21 @@ import React, {ChangeEvent, MouseEventHandler, useState} from "react";
 import {AiOutlineClose} from "react-icons/ai";
 import Image from "next/image";
 
-const CreatePost = ({closeModal}: {closeModal: MouseEventHandler}) => {
-  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
-  const [chosenFile, setChosenFile] = useState<File>();
-  const numberOfFiles = 0;
+const MAX_COUNT = 3;
 
-  const uploadImage = async (file: File, postId: string) => {
+const CreatePost = ({closeModal}: {closeModal: MouseEventHandler}) => {
+  const [fileLimit, setFileLimit] = useState(false);
+  const [previewImageUrls, setPreviewImageUrls] = useState<string[]>([]);
+  const [chosenFiles, setChosenFiles] = useState<File[]>([]);
+
+  const uploadImages = async (files: File[], postId: string) => {
     // Create a FormData object to send the file to the API endpoint
     const formData = new FormData();
-    // TODO: change state to be an array
 
-    formData.append("images", file);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      formData.append("images", file!);
+    }
 
     // Make a POST request to the API endpoint to upload the file
     const response = await fetch(`http://localhost:3000/api/posts/${postId}/image`, {
@@ -27,6 +31,33 @@ const CreatePost = ({closeModal}: {closeModal: MouseEventHandler}) => {
       console.log(json);
       alert("ERROR");
     }
+  };
+
+  const handleFilesChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.prototype.slice.call(e.target.files);
+
+    const lastFile = files[files.length-1];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImageUrls([reader.result as string, ...previewImageUrls]);
+    };
+    reader.readAsDataURL(lastFile);
+
+    const alreadyChosen = chosenFiles;
+    let limitExceeded = false;
+    files.some((file) => {
+      if (alreadyChosen.findIndex((f) => f.name === file.name) === -1) {
+        alreadyChosen.push(file);
+        if (alreadyChosen.length === MAX_COUNT) setFileLimit(true);
+        if (alreadyChosen.length > MAX_COUNT) {
+          alert(`You can only add a maximum of ${MAX_COUNT} files`);
+          setFileLimit(false);
+          limitExceeded = true;
+          return true;
+        }
+      }
+    });
+    if (!limitExceeded) setChosenFiles(alreadyChosen);
   };
 
   const handleSubmit = async (e: any) => {
@@ -51,9 +82,9 @@ const CreatePost = ({closeModal}: {closeModal: MouseEventHandler}) => {
 
       if (response.ok) {
         // Add images if chosen
-        if (chosenFile) {
+        if (chosenFiles) {
           try {
-            const resData = await uploadImage(chosenFile, json.post._id);
+            const resData = await uploadImages(chosenFiles, json.post._id);
             console.log("Image uploaded:", resData);
           } catch (err) {
             console.error(err);
@@ -82,31 +113,28 @@ const CreatePost = ({closeModal}: {closeModal: MouseEventHandler}) => {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col py-3">
-            {previewImageUrl && (
-              <div className="avatar self-center mb-3">
-                <div className="w-48">
-                  <Image src={previewImageUrl} alt="profile picture" width={100} height={100} />
-                </div>
+            {previewImageUrls && (
+              <div className="flex gap-2">
+                {previewImageUrls.map((url: string) => (
+                  <div className="w-48">
+                    <Image src={url} alt="Post picture" width={192} height={192} />
+                  </div>
+                ))}
               </div>
             )}
             <div className="flex flex-col">
               <label className="text-lg mb-3">Upload image</label>
               <input
                 type="file"
-                // multiple
+                multiple
                 accept=".jpg, .jpeg, .png"
                 className="bg-gray-100 hover:bg-gray-200 hover:cursor-pointer"
                 onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                  if (event?.target?.files?.[numberOfFiles]) {
-                    const file = event.target.files[numberOfFiles];
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setPreviewImageUrl(reader.result as string);
-                      setChosenFile(file);
-                    };
-                    reader.readAsDataURL(file);
+                  if (event?.target?.files?.[0]) {
+                    handleFilesChange(event);
                   }
-                }} />
+                }}
+                disabled={fileLimit} />
             </div>
 
             <div>
