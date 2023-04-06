@@ -93,9 +93,10 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
             <div className="w-4/5 min-h-fit m-3 ">
               <div className="overflow-auto max-h-screen rounded-3xl p-0">
                 {/** profiles */}
-                {profiles ? (profiles.map((item: any) => (
-                  <SearchProfile user={item} subjects={subjects} />
-                ))) : (
+                {profiles && (profiles.map((user: any) => (
+                  <SearchProfile user={user} key={user._id}/>
+                ))) }
+                {profiles && profiles.length === 0 && (
                   <div className="w-full flex justify-center">
                     <div className="w-fit m-2 mt-5 uppercase text-xl">
                       Not found

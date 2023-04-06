@@ -34,6 +34,9 @@ module.exports = {
         "container": "#F2F2F2",
       },
     },
+    container: {
+      center: true,
+    },
 
   },
   plugins: [require("daisyui")],
