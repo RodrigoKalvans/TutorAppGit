@@ -20,17 +20,11 @@ module.exports = {
         "9/20": "45%",
         "1/3": "33%",
       },
-      height: {
-        "9/10": "90%",
-        "3/5": "60%",
-        "9/20": "45%",
-        "1/3": "33%",
-      },
       borderRadius: {
         "4xl": "2rem",
       },
       colors: {
-
+        "light": "#F7F7F7",
       },
       textColor: {
         "subtitle": "#505050",

@@ -17,12 +17,11 @@
     @apply m-1 mb-5 text-lg;
   }
   ul {
-    @apply list-disc
+    @apply list-disc;
   }
   input {
-    @apply p-3 rounded-md
+    @apply p-3 rounded-md;
   }
-
 }
 
 @layer components {

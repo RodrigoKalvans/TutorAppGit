@@ -1,11 +1,11 @@
-import Link from "next/link";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import useSWR from "swr";
-import comment from "@/public/icons/commentsIcon.png";
-import like from "@/public/icons/likesIcon.png";
 import Image from "next/image";
 import {useState} from "react";
 import {format} from "date-fns";
+import Link from "next/link";
+import comment from "@/public/icons/commentsIcon.png";
+import like from "@/public/icons/likesIcon.png";
 
 /**
  * Post component
@@ -19,14 +19,11 @@ const Post = ({post}: {post: any}) => {
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${post.role}s/${post.userId}`, fetcher);
+  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(`http://localhost:3000/api/posts/${post._id}/image`, fetcher);
 
-  // placeholder
-  const pics: any = [
-    <Picture />,
-    <Picture />,
-    <Picture />,
-    <Picture />,
-  ];
+  if (imagesError) {
+    console.log(imagesError);
+  }
 
   return (
     <>
@@ -57,7 +54,14 @@ const Post = ({post}: {post: any}) => {
             <div className="w-full max-h-40 p-1 overflow-scroll">+{post.description}</div>
             <div className="w-full flex justify-center">
               <div className="carousel w-1/2 rounded-box">
-                {pics.map((pic: any) => <div className="carousel-item w-full" key={undefined}>{pic}</div>)}
+                {areImagesLoading && (
+                  <p>Images are loading</p>
+                )}
+                {presignedUrls &&
+                presignedUrls.map((url: string) => (
+                  <Image src={url} alt="profile picture" width={96} height={96} priority />
+                ))
+                }
               </div>
             </div>
             {/** everything below the pics */}
@@ -95,19 +99,3 @@ const Post = ({post}: {post: any}) => {
 };
 
 export default Post;
-
-/**
- * placeholder for image
- * @return {JSX} component
- */
-const Picture = () => {
-  return (
-    <>
-      <div className="aspect-square w-full bord">
-        <div>
-          pic
-        </div>
-      </div>
-    </>
-  );
-};

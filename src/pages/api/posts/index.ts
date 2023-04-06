@@ -67,7 +67,7 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const newPost = new Post(reqPost);
 
-    await addPostToUserPosts(newPost.role, newPost._id, newPost.userId);
+    await addPostToUserPosts(newPost.role, newPost._id.toString(), newPost.userId);
     await newPost.save();
 
     res.status(StatusCodes.CREATED).send({
@@ -81,14 +81,14 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   return;
 };
 
-const addPostToUserPosts = async (role: String, postId: String, userId: String) => {
+const addPostToUserPosts = async (role: string, postId: string, userId: string) => {
   if (role === "tutor") {
     await Tutor.findByIdAndUpdate(userId, {
-      $push: {posts: {postId: postId}},
+      $push: {posts: postId},
     });
   } else if (role === "student") {
     await Student.findByIdAndUpdate(userId, {
-      $push: {posts: {postId: postId}},
+      $push: {posts: postId},
     });
   }
 };

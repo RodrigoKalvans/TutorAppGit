@@ -10,34 +10,6 @@ import {signIn} from "next-auth/react";
 
 YupPassword(Yup);
 
-const schema: Object = Yup.object({
-  email: Yup.string()
-      .max(30, "Must be 30 characters or less")
-      .email("Invalid email address")
-      .required("Please enter your email"),
-  password: Yup.string()
-      .min(10, "Password must be at least 10 characters")
-      .minLowercase(1, "Password must contain at least 1 lower case letter")
-      .minUppercase(1, "Password must contain at least 1 upper case letter")
-      .minNumbers(1, "Password must contain at least 1 number")
-      .minSymbols(1, "Password must contain at least 1 special character")
-      .required("Please enter your password"),
-  firstName: Yup.string()
-      .max(30, "Must be 30 characters or less")
-      .required("Please enter your name"),
-  lastName: Yup.string()
-      .max(20, "Must be 20 characters or less")
-      .required("Please enter your last name"),
-});
-
-const initValues: any = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  tenantKey: "",
-};
-
 /**
  * TODO: fill this in
  * @param {any} param0
@@ -159,8 +131,26 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
         <button onClick={() => setRole("tutor")} className="btn w-1/2 bg-orange-400 hover:bg-orange-500">Tutor</button>
       </div>
       <Formik
-        initialValues={initValues}
-        validationSchema={schema}
+        initialValues={{firstName: "", lastName: "", email: "", password: "", tenantKey: ""}}
+        validationSchema={Yup.object({
+          email: Yup.string()
+              .max(30, "Must be 30 characters or less")
+              .email("Invalid email address")
+              .required("Please enter your email"),
+          password: Yup.string()
+              .min(10, "Password must be at least 10 characters")
+              .minLowercase(1, "Password must contain at least 1 lower case letter")
+              .minUppercase(1, "Password must contain at least 1 upper case letter")
+              .minNumbers(1, "Password must contain at least 1 number")
+              .minSymbols(1, "Password must contain at least 1 special character")
+              .required("Please enter your password"),
+          firstName: Yup.string()
+              .max(30, "Must be 30 characters or less")
+              .required("Please enter your name"),
+          lastName: Yup.string()
+              .max(20, "Must be 20 characters or less")
+              .required("Please enter your last name"),
+        })}
         onSubmit={async (values: { firstName: string; lastName: string; email: string; password: string; }) => onSubmit(values)}
       >
         {(formik: { handleSubmit: FormEventHandler<HTMLFormElement> | undefined; isSubmitting: any; }) => (

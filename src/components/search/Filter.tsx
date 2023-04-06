@@ -11,9 +11,9 @@ import {useState} from "react";
 
 type Values = {
   role: string,
-  firstName: string | undefined,
-  lastName: string | undefined,
-  rating: number | undefined,
+  firstName: string,
+  lastName: string,
+  rating: number,
 };
 
 /**
@@ -28,13 +28,16 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
   const [chosenLanguages, setChosenLanguages] = useState<any>();
 
   // TODO: types
-  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "tutor");
+  const [role, setRole] = useState<any>(router.query.role ? router.query.role : "tutors");
 
-  const initValues = { // for the form
-    role: role,
-    firstName: "",
-    lastName: "",
-    rating: undefined,
+  const getArrayOfChosenSubjectIds = () => {
+    const placeholder: string[] = [];
+    if (chosenSubjects) {
+      for (let i = 0; i < chosenSubjects.length; i++) {
+        placeholder.push(chosenSubjects.at(i).value);
+      }
+    }
+    return placeholder;
   };
 
   const handleSubmit = (values: any) => {
@@ -43,10 +46,12 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
       firstName: values.firstName,
       lastName: values.lastName,
       rating: values.rating,
-      subjects: chosenSubjects,
+      subjects: getArrayOfChosenSubjectIds(),
       languages: chosenLanguages,
     };
-    action(query);
+    router.query = query;
+    console.log("filter component", router.query);
+    action();
   };
 
   return (
@@ -54,7 +59,12 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
       <div className="w-full rounded-2xl shadow-xl bg-white flex justify-center p-2">
         <div className="flex justify-center">
           <Formik
-            initialValues={initValues}
+            initialValues={{
+              role: role,
+              firstName: "",
+              lastName: "",
+              rating: 0,
+            }}
             validationSchema={Yup.object({
               role: Yup
                   .string(),
@@ -82,12 +92,11 @@ export default function Filter({subjects, action}: {subjects: any, action: any})
                   <select
                     className="p-2 w-fit ml-3 rounded-xl bg-gray-300 mt-0  text-gray-900"
                     name="role"
-                    defaultValue={"tutor"}
                     onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value="tutor">Tutors</option>
-                    <option value="student">Students</option>
                     <option value="both">Both</option>
+                    <option value="tutors" selected>Tutors</option>
+                    <option value="students">Students</option>
                   </select>
                   <br/>
                 </label>

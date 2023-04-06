@@ -1,9 +1,3 @@
-
-
-/**
- * Footer
- * @return {JSX}
- */
 export default function Footer() {
   return (
     <>

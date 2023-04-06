@@ -38,11 +38,7 @@ export default function SubjectSelect({setFunction, subjects, userSubjects}: {se
      */
   const setSelectedSubjects = (value: any) => {
     setChosenSubjects(value);
-    if (value) {
-      setFunction(value.map((option: {value: string, label: string, disabled: boolean}) => option.value));
-    } else {
-      setFunction([]);
-    }
+    setFunction(value.map((option: {value: string, label: string, disabled: boolean}) => option.value));
   };
 
   return (

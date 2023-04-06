@@ -8,11 +8,14 @@ import Post from "./Post";
 const PostManager = ({posts}: {posts: Array<any>}) => {
   return (
     <>
-      <main className="w-full h-fit p-1 flex justify-center">
-        <div className="w-full">
-          {posts && posts.map((post: any) => <div className="w-full flex justify-center" key={post._id}><Post post={post} key={post._id}/></div>)}
-        </div>
-      </main>
+      <div className="w-9/10 mx-auto h-fit p-1 flex flex-col-reverse justify-center">
+        {posts.length > 1 ?
+            posts.map((post: any) => <Post post={post} key={post._id} />) :
+          <div className="text-black text-xl m-5 flex justify-center">
+            Follow other users in order to view their posts in this feed!
+          </div>
+        }
+      </div>
     </>
   );
 };

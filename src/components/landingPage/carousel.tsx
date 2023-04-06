@@ -10,7 +10,7 @@ export default function Carousel({tutors}: {tutors: Array<any>}) {
     <>
       <div className="carousel w-full rounded-box">
         {tutors && tutors.map((tutor) =>
-          <div className="carousel-item relative w-1/2">
+          <div id="slide1" className="carousel-item relative w-1/2">
             <TutorCard tutor={tutor} key={tutor._id} />
           </div>,
         )}
