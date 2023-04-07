@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const MAX_COUNT = 3;
 
-const CreatePost = ({closeModal}: {closeModal: MouseEventHandler}) => {
+const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
   const [fileLimit, setFileLimit] = useState(false);
   const [previewImageUrls, setPreviewImageUrls] = useState<string[]>([]);
   const [chosenFiles, setChosenFiles] = useState<File[]>([]);
@@ -156,4 +156,4 @@ const CreatePost = ({closeModal}: {closeModal: MouseEventHandler}) => {
   );
 };
 
-export default CreatePost;
+export default CreatePostModal;

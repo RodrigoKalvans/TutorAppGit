@@ -5,6 +5,8 @@ import Head from "next/head";
 import LandingPageBlurBox from "@/components/landingPage/LandingPageBlurBox";
 import Navbar from "@/components/Navbar";
 import SubjectBox from "@/components/landingPage/SubjectBox";
+import Image from "next/image";
+import LandingPageBgImage from "@/public/images/landing-background-image-fixed.jpg";
 
 // TODO: Add subject images
 // TODO: Get tutors that will be displayed
@@ -20,12 +22,14 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
         <title>TCorvus</title>
       </Head>
       <Navbar />
-      <main className="bg-landing bgimage z-0 w-full flex-wrap justify-center relative container">
+      <main className="w-full">
         {/* Top part of page (everything in front of bg image) */}
-        <div className="h-screen">
-          <div className="m-5 p-3 ml-20 mt-20">
-            <h1 className="p-1 m-1 text-6xl text-white font-black">Connect with <br/> <div className="mb-8 text-orange-400">Expert Tutors Now</div></h1>
-            <p className="p max-w-md text-lg ml-4 text-white">
+        <div className="h-screen flex flex-col justify-center gap-8 pl-20">
+          <div className="z-10 relative">
+            <h1 className="mb-8 text-6xl text-white font-black">Connect with <br/>
+              <span className="text-orange-400">Expert Tutors Now</span>
+            </h1>
+            <p className="max-w-md text-lg text-white">
               Find the perfect tutor to help you excel in your studies.
               Our platform connects you with qualified and experienced tutors who can assist you with a variety of subjects,
               from math and science to English and history.
@@ -33,9 +37,22 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
             </p>
           </div>
 
-          <div className="ml-24">
-            <Button style="bg-orange-500 text-lg mx-5 normal-case" link="/feed">Browse</Button>
-            <Button style="bg-blue-600 text-lg mx-5 normal-case" link="/signin">Join us</Button>
+          <div className="z-10 relative flex gap-8">
+            <Button style="bg-orange-500 text-lg font-medium normal-case" link="/feed">Browse</Button>
+            <Button style="bg-blue-600 text-lg font-medium normal-case" link="/signin">Join us</Button>
+          </div>
+          <div className="absolute inset-0">
+            <Image
+              src={LandingPageBgImage}
+              alt="Landing page background image"
+              style={
+                {
+                  objectFit: "cover",
+                  height: "100vh",
+                  width: "100vw",
+                }
+              }
+            />
           </div>
         </div>
 
