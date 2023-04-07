@@ -9,7 +9,7 @@ import {MathIcon} from "@/utils/icons";
  */
 export default function SubjectBox({subject}: {subject: any}) {
   return (
-    <div className="rounded-2xl w-32 p-4 py-6 m-10 inline-flex hover:bg-gray-50 hov">
+    <div className="rounded-2xl w-80 p-4 py-6 flex hover:bg-gray-50 hov">
       <div className=" h-full w-2/5"><MathIcon size={100} color="#F97316" key={subject._id}/></div>
       <div className="flex flex-col h-full pl-5 pt-3 w-auto">
         <div className="text-xl p-1">{subject.name}</div>

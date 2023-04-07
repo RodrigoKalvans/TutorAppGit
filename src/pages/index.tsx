@@ -57,9 +57,9 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
         </div>
 
         {/* Top subjects */}
-        <h1 className="mt-80 p-20 text-bold text-5xl flex justify-center font-medium">Browse tutors by&nbsp;<div className="text-orange-500 ">Subject</div></h1>
-        <div className="flex justify-center bord">
-          <div className="w-4/5 px-10 flex-wrap justify-around">
+        <h1 className="mt-[30px] p-20 text-bold text-5xl flex justify-center font-medium">Browse tutors by&nbsp;<div className="text-orange-500 ">Subject</div></h1>
+        <div className="flex justify-center">
+          <div className="w-4/5 flex flex-wrap justify-between">
             {subjects && subjects.map((subject) => <SubjectBox subject={subject} key={subject._id}/>)}
           </div>
         </div>

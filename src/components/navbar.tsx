@@ -15,7 +15,7 @@ export default function Navbar({black = false}: {black?: boolean}) {
     // It is fixed for now, but it should be sticky. With fixed position the navbar is removed from
     // the layer, so other elements do not see it and go up. Therefore, it causes the navbar to cover the elements all the time
     // The solution would be to use sticky, as with sticky position the navbar is not removed from the common with other elements "layer"
-    <nav className={`fixed top-0 w-full h-16 py-2 bg-slate-900 bg-opacity-30 shadow ${black ? "text-black" : "text-white"}  z-50 backdrop-blur-md`}>
+    <nav className={`relative top-0 w-full h-16 py-2 bg-slate-900 bg-opacity-30 shadow ${black ? "text-black" : "text-white"}  z-50 backdrop-blur-md`}>
       <div className="flex items-center justify-around">
         <span className="">
           <Link href="/">
@@ -33,9 +33,9 @@ export default function Navbar({black = false}: {black?: boolean}) {
           <NavbarSearch />
         </div>
         <span className="p-1 w-2/5 flex justify-around">
-          <Link href="/" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Feed</Link>
-          <Link href="/" className="normal-case text-base p-2 hover:text-orange-500 transition-all">About us</Link>
-          <Link href="/" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Support us</Link>
+          <Link href="/feed" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Feed</Link>
+          <Link href="/aboutus" className="normal-case text-base p-2 hover:text-orange-500 transition-all">About us</Link>
+          <Link href="/supportus" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Support us</Link>
         </span>
         <span className="avatar">
           <Link href="/" className="w-8 rounded-full items-center justify-center overflow-hidden">
