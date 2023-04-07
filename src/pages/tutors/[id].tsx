@@ -15,8 +15,7 @@ import {authOptions} from "../api/auth/[...nextauth]";
 import db from "@/utils/db";
 import Post from "@/models/Post";
 import PostManager from "@/components/posts/PostManager";
-import CreatePost from "@/components/posts/CreatePost";
-import {useState} from "react";
+import CreatePostButton from "@/components/CreatePostButton";
 
 const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, allSubjects: Array<any>, posts: Array<any>}) => {
   if (!tutor) {
@@ -25,13 +24,8 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
     );
   }
 
-  const [openCreatePost, setOpenCreatePost] = useState<boolean>(false);
   const {data: session} = useSession();
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
-
-  const closeModal = () => {
-    setOpenCreatePost(false);
-  };
 
   return (
     <>
@@ -64,18 +58,14 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
             <section className="m-2 p-3 mt-10">
               <div className="w-full h-10 flex justify-between items-center px-24">
                 <div className="uppercase font-bold text-xl">posts</div>
-                {(session && session.user.id === tutor._id.toString()) && (
-                  <button type="button" onClick={() => setOpenCreatePost(true)} className="btn btn-sm rounded-full capitalize">Create Post</button>
+                {session?.user.id === tutor._id.toString() && (
+                  <CreatePostButton />
                 )}
               </div>
               <div>
                 {posts.length === 0 ? <div className="m-5 mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
               </div>
             </section>
-
-            {openCreatePost && (
-              <CreatePost closeModal={closeModal} />
-            )}
           </main>
         </>
       )}

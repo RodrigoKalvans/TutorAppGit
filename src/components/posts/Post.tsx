@@ -28,7 +28,7 @@ const Post = ({post}: {post: any}) => {
   return (
     <>
       {post && user &&
-        <div className="flex-col w-3/5 my-5 bg-white text-sm rounded-2xl shadow-md hov ">
+        <div className="flex-col my-5 bg-white text-sm rounded-2xl shadow-md hov">
           {/** top section */}
           <div className="flex justify-between p-3 h-10 shadow-lg items-center">
             <Link href={`/${user.role}s/${user._id}`}>
@@ -51,18 +51,20 @@ const Post = ({post}: {post: any}) => {
           </div>
           {/** main body (description pics) */}
           <div className="p-3 text-sm flex-col">
-            <div className="w-full max-h-40 p-1 overflow-scroll">+{post.description}</div>
-            <div className="w-full flex justify-center">
-              <div className="carousel w-1/2 rounded-box">
-                {areImagesLoading && (
-                  <p>Images are loading</p>
-                )}
-                {presignedUrls &&
-                presignedUrls.map((url: string) => (
-                  <Image src={url} alt="profile picture" width={96} height={96} priority />
-                ))
-                }
-              </div>
+            <div className="w-full mt-2">
+              <p>{post.description}</p>
+            </div>
+            <div className="w-full flex justify-center my-5">
+              {areImagesLoading && (
+                <p>Images are loading</p>
+              )}
+              {presignedUrls && (
+                <div className={`${presignedUrls.length > 1 && "carousel rounded-md"}`}>
+                  {presignedUrls.map((url: string) => (
+                    <Image src={url} alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
+                  ))}
+                </div>
+              )}
             </div>
             {/** everything below the pics */}
             <hr/>

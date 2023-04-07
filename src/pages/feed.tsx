@@ -11,6 +11,7 @@ import useSWR from "swr";
 import ProfilePicture from "@/components/profilePage/helpingComponents/ProfilePicture";
 import Link from "next/link";
 import Rating from "@/components/profilePage/helpingComponents/Rating";
+import CreatePostButton from "@/components/CreatePostButton";
 /**
  * Feed page
  * @param {Array<any>} posts
@@ -29,7 +30,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
         <div className="flex justify-center gap-10 pt-3">
           {/** sidebar (top tutors & create post) */}
           <div className="w-[30%] px-5">
-            <div className="flex justify-center"><button className="btn btn-sm w-full text-black bg-opacity-10 hover:bg-opacity-20 capitalize">Create a post</button></div>
+            <CreatePostButton style="w-full btn bg-[#3F678A] bg-opacity-80 hover:bg-blue-600 hover:bg-opacity-100 border-none normal-case text-white font-medium text-md rounded-box" />
             <div className="mt-5 flex-col">
               <div className="bg-white rounded-box p-3 py-5">
                 <h1 className="w-full flex justify-center font-bold">Top tutors</h1>
@@ -95,7 +96,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   return {
     props: {
       allPosts: JSON.parse(JSON.stringify(allPosts)),
-      followedPosts,
+      followedPosts: JSON.parse(JSON.stringify(followedPosts)),
       loggedIn: (session ? true : false),
     },
   };
