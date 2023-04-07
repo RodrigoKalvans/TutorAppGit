@@ -22,10 +22,13 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
         <title>TCorvus</title>
       </Head>
       <Navbar />
+      <div className="relative">
+        <div className="fixed w-screen z-5 bg-blue-800 h-16 -translate-y-16"></div>
+      </div>
       <main className="w-full">
         {/* Top part of page (everything in front of bg image) */}
         <div className="h-screen flex flex-col justify-center gap-8 pl-20">
-          <div className="z-10 relative">
+          <div className="relative z-20">
             <h1 className="mb-8 text-6xl text-white font-black">Connect with <br/>
               <span className="text-orange-400">Expert Tutors Now</span>
             </h1>
@@ -37,7 +40,7 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
             </p>
           </div>
 
-          <div className="z-10 relative flex gap-8">
+          <div className="z-20 relative flex gap-8">
             <Button style="bg-orange-500 text-lg font-medium normal-case" link="/feed">Browse</Button>
             <Button style="bg-blue-600 text-lg font-medium normal-case" link="/signin">Join us</Button>
           </div>
