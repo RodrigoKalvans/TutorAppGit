@@ -8,6 +8,7 @@ import commentImage from "@/public/icons/commentsIcon.png";
 import likeImage from "@/public/icons/likesIcon.png";
 import Comment from "./Comment";
 import hamburgerMenu from "@/public/icons/hamburger-menu.svg";
+import { useSession } from "next-auth/react";
 
 /**
  * Post component
@@ -15,11 +16,12 @@ import hamburgerMenu from "@/public/icons/hamburger-menu.svg";
  * @param {any} user tutor or student
  * @return {JSX} component
  */
-const Post = ({post, loggedIn}: {post: any, loggedIn: boolean}) => {
-  // TODO: convert post.date into a better format
+const Post = ({post}: {post: any}) => {
   const [isExtended, setIsExtended] = useState<boolean>(false);
   const [showEnterComment, setShowEnterComment] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
+
+  const loggedIn = useSession();
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${post.role}s/${post.userId}`, fetcher);
@@ -33,19 +35,22 @@ const Post = ({post, loggedIn}: {post: any, loggedIn: boolean}) => {
   }
 
   const handleComment = async () => {
+    const c: any = {
+      text: comment,
+      postId: post._id,
+    };
     const res = await fetch("http://localhost:3000/api/comments", {
       method: "POST",
-      body: JSON.stringify({
-        text: comment,
-        postId: post._id,
-      }),
+      body: c,
     });
     setComment("");
     console.log(res);
   };
 
   const handleLike = async () => {
-    
+    const l: any = {
+
+    }
   }
 
   return (
@@ -114,7 +119,7 @@ const Post = ({post, loggedIn}: {post: any, loggedIn: boolean}) => {
                     width={24}
                   />
                 </div>
-                {!loggedIn ?
+                {loggedIn ?
                   <button className="btn btn-sm" onClick={(e: any) => setShowEnterComment(!showEnterComment)}>comment</button> :
                   <div className="w-10"></div>
                 }

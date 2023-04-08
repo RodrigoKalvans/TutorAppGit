@@ -6,11 +6,12 @@ import useSWR from "swr";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const FeedPageTopTutor = ({tutor}: any) => {
+  if (tutor.subjects.length < 1) return <div></div>;
   const {data: subject} = useSWR(`http://localhost:3000/api/subjects/${tutor.subjects[0]}`, fetcher);
 
   return (
     <Link href={`/tutors/${tutor._id}`}>
-      <div className={"rounded-full py-3 max-w-full my-4 h-20 flex items-center gap-3 hov shadow-round"}>
+      <div className={"rounded-full py-3 max-w-full min-w-40 my-4 h-20 flex items-center gap-3 hov shadow-round"}>
         <div className="ml-2 w-1/5">
           <ProfilePicture user={tutor} key={tutor._id}/>
         </div>

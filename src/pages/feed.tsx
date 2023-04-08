@@ -36,7 +36,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
                 {error && <div className="text-xl mt-10 w-full flex justify-center text-red-600">Error...</div>}
                 <div className="w-full mt-3">
                   {data && data.map((tutor: any) => (
-                    <FeedPageTopTutor tutor={tutor} />
+                    <FeedPageTopTutor tutor={tutor} key={tutor._id} />
                   ))}
                 </div>
               </div>
@@ -50,7 +50,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
             </div>
             <div className="w-full flex justify-center">
               <div className="w-full">
-                {general && <PostManager posts={allPosts} loggedIn={loggedIn} />}
+                {general && <PostManager posts={allPosts}/>}
                 {!general && loggedIn && followedPosts.length > 0 && <PostManager posts={followedPosts} loggedIn={loggedIn}/>}
                 {!general && loggedIn && followedPosts.length === 0 && <div className="m-5 mt-10 flex justify-center text-xl">Follow other users in order to see their posts in this feed</div>}
                 {!general && !loggedIn && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
