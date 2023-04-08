@@ -5,12 +5,12 @@ import Post from "./Post";
  * @param {Array<any>} posts
  * @return {JSX} component
  */
-const PostManager = ({posts}: {posts: Array<any>}) => {
+const PostManager = ({posts, loggedIn}: {posts: Array<any>, loggedIn: boolean}) => {
   return (
     <>
-      <div className="w-9/10 mx-auto h-fit p-1 flex flex-col-reverse justify-center">
-        {posts.length > 1 ?
-            posts.map((post: any) => <Post post={post} key={post._id} />) :
+      <div className="mx-auto h-fit flex flex-col-reverse">
+        {posts.length > 0 ?
+            posts.map((post: any) => <Post post={post} key={post._id} loggedIn={loggedIn}/>) :
           <div className="text-black text-xl m-5 flex justify-center">
             Follow other users in order to view their posts in this feed!
           </div>

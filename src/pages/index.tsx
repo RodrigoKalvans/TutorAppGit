@@ -1,5 +1,4 @@
 import Button from "@/components/Button";
-import Carousel from "@/components/landingPage/Carousel";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import LandingPageBlurBox from "@/components/landingPage/LandingPageBlurBox";
@@ -7,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import SubjectBox from "@/components/landingPage/SubjectBox";
 import Image from "next/image";
 import LandingPageBgImage from "@/public/images/landing-background-image-fixed.jpg";
+import TutorCard from "@/components/landingPage/TutorCard";
 
 // TODO: Add subject images
 // TODO: Get tutors that will be displayed
@@ -23,7 +23,7 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
       </Head>
       <Navbar />
       <div className="relative">
-        <div className="fixed w-screen z-5 bg-blue-800 h-16 -translate-y-16"></div>
+        <div className="fixed w-screen z-5 bg-blue-800 opacity-20 h-16 -translate-y-16 backdrop-blur-md"></div>
       </div>
       <main className="w-full">
         {/* Top part of page (everything in front of bg image) */}
@@ -72,7 +72,13 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
           <LandingPageBlurBox style="bg-blue-200">
             <div className="text-5xl pl-10 py-10 w-full flex justify-center font-medium">Take a look at our&nbsp;<span className="text-orange-500">Trending Tutors</span></div>
             <div className="flex items-center justify-around">
-              <Carousel tutors={tutors}/>
+              <div className="carousel w-full rounded-box ml-3">
+                {tutors && tutors.map((tutor) =>
+                  <div id="slide1" className="carousel-item relative w-1/2">
+                    <TutorCard tutor={tutor} key={tutor._id} />
+                  </div>,
+                )}
+              </div>
             </div>
           </LandingPageBlurBox>
         </div>

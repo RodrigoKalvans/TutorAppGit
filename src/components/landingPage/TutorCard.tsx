@@ -13,7 +13,7 @@ export default function TutorCard({tutor}: {tutor: any}) {
   const twitter: string = "exampletwitter";
 
   return (
-    <div className="bg-blue-900 w-9/10 text-white rounded-xl">
+    <div className="bg-blue-900 w-[450px] text-white rounded-xl">
       <div className="w-full flex-wrap">
 
         <div className="w-full flex justify-content pb-5">

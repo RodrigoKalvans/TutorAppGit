@@ -17,7 +17,7 @@ export default function Navbar({black = false}: {black?: boolean}) {
     // The solution would be to use sticky, as with sticky position the navbar is not removed from the common with other elements "layer"
     <>
       <div className="h-16 w-full"></div>
-      <nav className={`fixed top-0 w-full h-16 py-2 bg-slate-900 bg-opacity-30 shadow ${black ? "text-black" : "text-white"}  z-50 backdrop-blur-md`}>
+      <nav className={`fixed top-0 w-full h-16 py-2 shadow bg-slate-900 ${black ? "bg-opacity-80" : "bg-opacity-30"} text-white z-50 backdrop-blur-md`}>
         <div className="flex items-center justify-around">
           <span className="">
             <Link href="/">

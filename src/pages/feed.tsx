@@ -8,10 +8,8 @@ import Footer from "@/components/Footer";
 import db from "@/utils/db";
 import Post from "@/models/Post";
 import useSWR from "swr";
-import ProfilePicture from "@/components/profilePage/helpingComponents/ProfilePicture";
-import Link from "next/link";
-import Rating from "@/components/profilePage/helpingComponents/Rating";
 import CreatePostButton from "@/components/CreatePostButton";
+import FeedPageTopTutor from "@/components/feed/FeedPageTopTutor";
 /**
  * Feed page
  * @param {Array<any>} posts
@@ -38,22 +36,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
                 {error && <div className="text-xl mt-10 w-full flex justify-center text-red-600">Error...</div>}
                 <div className="w-full mt-3">
                   {data && data.map((tutor: any) => (
-                    <Link href={`/tutors/${tutor._id}`}>
-                      <div className="rounded-full bg-yellow-100 py-3 max-w-full my-4 h-20 flex items-center gap-3 hov">
-                        <div className="ml-2 w-1/5">
-                          <ProfilePicture user={tutor} key={tutor._id}/>
-                        </div>
-                        <div className="flex-col w-4/5">
-                          <div className="my-1 h-1/2 flex pr-1 justify-between overflow-hidden">
-                            <div className="max-w-1/2">{tutor.firstName + " " + tutor.lastName}</div>
-                            <div className="w-1/4 pr-1"><Rating rating={tutor.rating}/></div>
-                          </div>
-                          <div className="my-1 h-1/2 flex justify-between overflow-hidden">
-                            <div className="text-xs">{tutor.location}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
+                    <FeedPageTopTutor tutor={tutor} />
                   ))}
                 </div>
               </div>
@@ -67,8 +50,8 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
             </div>
             <div className="w-full flex justify-center">
               <div className="w-full">
-                {general && <PostManager posts={allPosts} />}
-                {!general && loggedIn && followedPosts.length > 0 && <PostManager posts={followedPosts} />}
+                {general && <PostManager posts={allPosts} loggedIn={loggedIn} />}
+                {!general && loggedIn && followedPosts.length > 0 && <PostManager posts={followedPosts} loggedIn={loggedIn}/>}
                 {!general && loggedIn && followedPosts.length === 0 && <div className="m-5 mt-10 flex justify-center text-xl">Follow other users in order to see their posts in this feed</div>}
                 {!general && !loggedIn && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
               </div>
