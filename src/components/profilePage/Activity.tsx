@@ -1,58 +1,45 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import BoxContainer from "./helpingComponents/BoxContainer";
 
-const Activity = ({fullName, activity}: {fullName: string, activity: any}) => {
-  const activityArray: Array<any> = [];
+const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => {
+  const [activityArray, setActivityArray] = useState<any[]>([]);
+  const arr: Array<any> = [];
+  useEffect(() => {
+    const populateActivities = async () => {
+      for (let i = activity.length - 1; i >= 0; i--) {
+        const element = activity[i];
+        const res = await fetch(`http://localhost:3000/api/${element.activityType}s/${element.activityId}`);
+        const json = await res.json();
 
-  activity.forEach(async (obj: {activityId: string, activityType: string}) => {
-    const res = await fetch(`http://localhost:3000/api/${obj.activityType}s/${obj.activityId}`);
-    const json = await res.json();
+        let action: string;
 
-    let action: string;
+        switch (element.activityType) {
+          case "comment":
+            action = "commented on post";
+            break;
 
-    switch (obj.activityType) {
-      case "comment":
-        action = "commented on post";
-        break;
+          case "like":
+            action = "liked post";
+            break;
 
-      case "like":
-        action = "liked post";
-        break;
+          case "review":
+            action = "reviewed a user";
+            break;
 
-      case "review":
-        action = "reviewed a user";
-        break;
+          default:
+            action = "undefined activity";
+            break;
+        }
 
-      default:
-        action = "undefined activity";
-        break;
-    }
+        arr.push({activityType: element.activityType, action, ...json});
+      }
+      setActivityArray(arr);
+    };
 
-    activityArray.push({activityType: obj.activityType, action, ...json});
-  });
+    populateActivities();
 
-  const firstActivity = activityArray[0];
-
-  const renderActivity = (obj: any) => {
-    if (obj) {
-      return (
-        <div>
-          <p className="text-base">{fullName} {firstActivity.action}</p>
-          {firstActivity.activityType !== "like" && (
-            <p>{firstActivity.text}</p>
-          )}
-          <hr className="w-full" />
-          <button className="text-base mx-3 mt-3">Show all activity</button>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <p className="text-base">{fullName} does not have activities</p>
-        </div>
-      );
-    }
-  };
+    return () => setActivityArray([]);
+  }, [activity]);
 
   return (
     <BoxContainer style={""}>
@@ -61,7 +48,20 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any}) => {
           <h2 className="text-xl font-medium ">Activity</h2>
         </div>
 
-        {renderActivity(firstActivity)}
+        {activityArray[0] ? (
+          <div>
+            <p className="text-base">{fullName} { activityArray[0].action}</p>
+            { activityArray[0].activityType !== "like" && (
+              <p className="italic text-base" >"{ activityArray[0].text}"</p>
+            )}
+            <hr className="w-full" />
+            <button className="text-base mx-3 mt-3">Show all activity</button>
+          </div>
+        ): (
+          <div>
+            <p className="text-base">{fullName} does not have activities</p>
+          </div>
+        )}
       </div>
     </BoxContainer>
   );
