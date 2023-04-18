@@ -51,8 +51,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
             <div className="w-full flex justify-center">
               <div className="w-full">
                 {general && <PostManager posts={allPosts}/>}
-                {!general && loggedIn && followedPosts.length > 0 && <PostManager posts={followedPosts}/>}
-                {!general && loggedIn && followedPosts.length === 0 && <div className="m-5 mt-10 flex justify-center text-xl">Follow other users in order to see their posts in this feed</div>}
+                {!general && loggedIn && <PostManager posts={followedPosts}/>}
                 {!general && !loggedIn && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
               </div>
             </div>
