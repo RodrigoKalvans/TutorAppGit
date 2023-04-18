@@ -31,7 +31,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
     const arr = [...tutors, ...students];
     if (f == undefined) f = router.query; // in case we got here from the navbar
     const keys = Object.keys(f); // keys in the filter (eg  { firstName: "john" } )
-    console.log(f)
+    console.log(f);
     return arr.filter((user: any) => { // do the following on every user object
       return keys.every((key: any) => {
         if (f[key] == undefined || f[key].length == 0) return true; // no value present in filter field

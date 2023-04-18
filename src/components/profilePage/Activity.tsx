@@ -8,7 +8,7 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => 
     const populateActivities = async () => {
       for (let i = activity.length - 1; i >= 0; i--) {
         const element = activity[i];
-        const res = await fetch(`http://localhost:3000/api/${element.activityType}s/${element.activityId}`);
+        const res = await fetch(`http://localhost:3000/api/${element.activityType}s?_id=${element.activityId}`);
         const json = await res.json();
 
         let action: string;
@@ -31,7 +31,7 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => 
             break;
         }
 
-        arr.push({activityType: element.activityType, action, ...json});
+        arr.push({activityType: element.activityType, action, ...json.at(0)});
       }
       setActivityArray(arr);
     };
