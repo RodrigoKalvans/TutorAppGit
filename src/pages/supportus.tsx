@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
-import Link from "next/link";
 
 // Payments are currently handled in a no-code way
 // Simply redirect to the Stripe link for TCorvus
