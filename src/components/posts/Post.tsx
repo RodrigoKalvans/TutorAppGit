@@ -5,9 +5,9 @@ import {useEffect, useState} from "react";
 import {format} from "date-fns";
 import Link from "next/link";
 import commentImage from "@/public/icons/commentsIcon.png";
-import likeImage from "@/public/icons/likesIcon.png";
 import Comment from "./Comment";
 import {useSession} from "next-auth/react";
+import {LikeIcon, LoadingIcon} from "@/utils/icons";
 
 /**
  * Post component
@@ -19,6 +19,8 @@ const Post = ({post}: {post: any}) => {
   const [isExtended, setIsExtended] = useState<boolean>(false);
   const [commentsArray, setCommentsArray] = useState<any[]>([]);
   const [comment, setComment] = useState<string>("");
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likeCount, setLikeCount] = useState<number>(post.likes.length);
 
   const {data: session} = useSession();
 
@@ -38,6 +40,35 @@ const Post = ({post}: {post: any}) => {
   if (imagesError) {
     console.log(imagesError);
   }
+
+
+  useEffect(() => {
+    if (session && post.likes.findIndex((like: {likeId: string, userId: string}) => like.userId === session.user.id) > -1) {
+      setIsLiked(true);
+    }
+  }, [session]);
+
+  const handleLike = async () => {
+    if (isLiked) {
+      const response = await fetch(`http://localhost:3000/api/posts/${post._id.toString()}/likes`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setIsLiked(false);
+        setLikeCount(likeCount-1);
+      }
+    } else {
+      const response = await fetch(`http://localhost:3000/api/posts/${post._id.toString()}/likes`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        setIsLiked(true);
+        setLikeCount(likeCount+1);
+      }
+    }
+  };
 
   const handleComment = async (e: any) => {
     e.preventDefault();
@@ -116,6 +147,17 @@ const Post = ({post}: {post: any}) => {
               {/** everything below the pics */}
               <div className="mt-1 flex items-center justify-between">
                 <div className="flex gap-5">
+                  <div className="flex items-center">
+                    <button
+                      type="button"
+                      onClick={handleLike}
+                      disabled={!session}
+                      className="active:scale-125 scale-100 transition-all"
+                    >
+                      <LikeIcon color="#527695" opacity={isLiked ? 1: 0.5} size={18} className="transition-all" />
+                    </button>
+                    <div className="font-bold text-xs font-normal">&nbsp;{likeCount}</div>
+                  </div>
                   <div className="text-xs flex items-center cursor-pointer" onClick={() => setIsExtended(!isExtended)}
                   >
                     <Image
@@ -123,15 +165,7 @@ const Post = ({post}: {post: any}) => {
                       alt={"comment"}
                       width={18}
                     />&nbsp;:
-                    <div className="font-bold text-xs">&nbsp;{commentsArray.length}</div>
-                  </div>
-                  <div className="text-xs flex items-center">
-                    <Image
-                      src={likeImage}
-                      alt={"like"}
-                      width={18}
-                    />&nbsp;:
-                    <div className="font-bold text-xs">&nbsp;{post.likes.length}</div>
+                    <div className="font-bold text-xs font-normal">&nbsp;{commentsArray.length}</div>
                   </div>
                 </div>
               </div>
@@ -164,7 +198,7 @@ const Post = ({post}: {post: any}) => {
         </div>
       }
       {error && "Error"}
-      {isLoading && "Loading..."}
+      {isLoading && <LoadingIcon className="animate-spin" />}
     </>
   );
 };

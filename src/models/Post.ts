@@ -12,6 +12,7 @@ const PostSchema: mongoose.Schema = new mongoose.Schema(
       likes: [
         {
           likeId: {type: String},
+          userId: {type: String},
         },
       ],
       comments: [

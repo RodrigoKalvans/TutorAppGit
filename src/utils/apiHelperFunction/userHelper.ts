@@ -166,3 +166,38 @@ export const unfollowUser = async (req: NextApiRequest, res: NextApiResponse, id
   res.status(StatusCodes.OK).send({followedUser: followedUser, followingUser: followingUser});
   return;
 };
+
+export const addActivityToUser = async (activityId: string, activityType: string, user?: any, userId?: string, role?: string) => {
+  if (user) {
+    user.activity.push({activityId: activityId, activityType: activityType});
+    await user.save();
+  } else if (userId && role) {
+    if (role === "tutor") {
+      await Tutor.findByIdAndUpdate(userId, {
+        $push: {activity: {activityId: activityId, activityType: activityType}},
+      });
+    } else if (role === "student") {
+      await Student.findByIdAndUpdate(userId, {
+        $push: {activity: {activityId: activityId, activityType: activityType}},
+      });
+    }
+  }
+};
+
+export const removeActivityFromUser = async (activityId: string, user?: any, userId?: string, role?: string) => {
+  if (user) {
+    const index = user.activity.findIndex((activity: {activityId: string, activityType: string}) => activity.activityId === activityId);
+    user.activity.splice(index, 1);
+    await user.save();
+  } else if (userId && role) {
+    if (role === "tutor") {
+      await Tutor.findByIdAndUpdate(userId, {
+        $pull: {activity: {activityId: activityId}},
+      });
+    } else if (role === "student") {
+      await Student.findByIdAndUpdate(userId, {
+        $pull: {activity: {activityId: activityId}},
+      });
+    }
+  }
+};

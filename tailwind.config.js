@@ -5,7 +5,6 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/react-tailwindcss-select/dist/index.esm.js",
   ],
-  darkMode: false,
   theme: {
     extend: {
       fontFamily: {
@@ -36,6 +35,9 @@ module.exports = {
     },
     container: {
       center: true,
+      padding: {
+        DEFAULT: "48px",
+      },
     },
 
   },
