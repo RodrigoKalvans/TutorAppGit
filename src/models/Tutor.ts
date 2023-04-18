@@ -49,9 +49,12 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
         }},
       }],
       posts: [{type: String}],
-      isPromoted: {type: Boolean, default: false},
-      promotedDue: {type: Date, default: undefined},
       isSuspended: {type: Boolean, default: false},
+      donations: [{
+        amount: {type: Number},
+        date: {type: Date},
+        paymentId: {type: String},
+      }],
     },
     {timestamps: true},
 );

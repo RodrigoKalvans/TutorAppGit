@@ -43,7 +43,7 @@ const handleRequest = async (req: NextApiRequest, res: NextApiResponse) => {
   const buf = await buffer(req);
 
   let event;
-  let customer: string; // email
+  let customerEmail: string;
   let amount: number; // cents
 
   // verify that request came from Stripe
@@ -65,13 +65,13 @@ const handleRequest = async (req: NextApiRequest, res: NextApiResponse) => {
       console.log("payment successful");
       amount = event.data.object.amount;
       const paymentMethod = await stripe.paymentMethods.retrieve(event.data.object.payment_method);
-      customer = paymentMethod.billing_details.email!;
+      customerEmail = paymentMethod.billing_details.email!;
       console.log(`A payment was made by: ${customer}`);
-      subscribe(customer, res); // handle login on db side
+      savePayment(customerEmail, amount, res); // handle login on db side
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
-      res.status(200).send("Type not recognized");
+      res.status(510).send("Type not recognized");
       break;
   }
 
@@ -81,29 +81,60 @@ const handleRequest = async (req: NextApiRequest, res: NextApiResponse) => {
 /**
  * plc
  * @param {string} customerEmail
+ * @param {number} amount
+ * @param {string} paymentId
  * @param {NextApiResponse} res
  * @return {any} plc
  */
-const subscribe = async (customerEmail: string, res: NextApiResponse) => {
-  // let user: typeof Tutor | typeof Student;
-  let user: any;
-  //
+const savePayment = async (customerEmail: string, amount: number, paymentId: string, res: NextApiResponse) => {
   await db.connect();
 
   // find user with the email provided in payment
-  // user = Tutor.find({
-  //   email: {
-  //     $in: email,
-  //   },
-  // }) ||
-  user = await Tutor.find({
-    email: "email@email.com",
-  });
+  const user = await findUser(customerEmail);
 
-  console.log(user);
+  if (!user) res.status(404).send("Email not recognized");
+
+  const currentTime = new Date();
+
+  const payment = {
+    date: currentTime,
+    amount,
+    paymentId,
+  };
+
+  // TODO: actually subscribe the user
+  switch (user.role) {
+    case "tutor":
+      Tutor.findByIdAndUpdate();
+      break;
+    case "student":
+      // TODO
+      break;
+    default:
+      res.status(400).send("Unknown role");
+  }
 
   await db.disconnect();
+
   return;
+};
+
+const findUser = async (email: string) => {
+  // let user: typeof Tutor | typeof Student;
+  let user: any;
+
+  // find user with the email provided in payment
+  user = await Tutor.find({
+    email,
+  });
+  if (user.length > 0) return user;
+
+  user = await Student.find({
+    email,
+  });
+  if (user.length > 0) return user;
+
+  return null;
 };
 
 export default handler;

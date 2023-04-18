@@ -40,6 +40,11 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
       }],
       posts: [{type: String}],
       isSuspended: {type: Boolean, default: false},
+      donations: [{
+        amount: {type: Number},
+        date: {type: Date},
+        paymentId: {type: String},
+      }],
     },
     {timestamps: true},
 );
