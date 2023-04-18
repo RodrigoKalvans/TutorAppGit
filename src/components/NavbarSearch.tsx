@@ -15,6 +15,7 @@ export default function NavbarSearch() {
   const router = useRouter();
 
   const search = (e: any) => {
+    e.preventDefault();
     if (!e.target[1].value) e.target[1].value = ""; // just in case something goes wrong, pass empty string
     const toSearch: any = {
       role: role,
@@ -49,7 +50,7 @@ export default function NavbarSearch() {
               onBlur={() => setIsOpen(false)}>
               <ul className="list-none">
                 <li>
-                  <button type="button" onClick={() => setRole("tutor")} className="text-current flex items-center gap-3 p-3 hover:bg-gray-200 transition-all w-full rounded-t-lg" onClick={() => setRole("tutors")} value={"tutors"}>
+                  <button type="button" className="text-current flex items-center gap-3 p-3 hover:bg-gray-200 transition-all w-full rounded-t-lg" onClick={() => setRole("tutor")} value={"tutors"}>
                     <Image src={TutorsIcon} alt="Tutors icon" width={25} height={25}></Image>
                     <div className="text-left">
                       <p className="text-sm p-0 m-0">Tutors</p>
@@ -58,7 +59,7 @@ export default function NavbarSearch() {
                   </button>
                 </li>
                 <li>
-                  <button type="button" onClick={() => setRole("student")} className="text-current flex items-center gap-3 p-3 hover:bg-gray-200 transition-all w-full rounded-b-lg" onClick={() => setRole("both")} value={"both"}>
+                  <button type="button" className="text-current flex items-center gap-3 p-3 hover:bg-gray-200 transition-all w-full rounded-b-lg" onClick={() => setRole("both")} value={"both"}>
                     <Image src={EveryoneIcon} alt="Everyone icon" width={25} height={25}></Image>
                     <div className="text-left">
                       <p className="text-sm p-0 m-0">Both</p>
