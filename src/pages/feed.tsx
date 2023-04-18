@@ -10,6 +10,8 @@ import Post from "@/models/Post";
 import useSWR from "swr";
 import CreatePostButton from "@/components/CreatePostButton";
 import FeedPageTopTutor from "@/components/feed/FeedPageTopTutor";
+import Tutor from "@/models/Tutor";
+import Student from "@/models/Student";
 /**
  * Feed page
  * @param {Array<any>} posts
@@ -71,7 +73,20 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
 
   const allPosts = await Post.find();
-  const followedPosts = allPosts.filter((post: any) => post.userId === session?.user.id.toString());
+
+  let followedPosts = [];
+
+  if (session) {
+    // get follower list
+    let user: any;
+    if (session.user.role === "tutor") {
+      user = await Tutor.findById(session.user.id);
+    } else if (session.user.role === "student") {
+      user = await Student.findById(session.user.id);
+    }
+
+    followedPosts = allPosts.filter((post: any) => user.following.includes(post._id));
+  }
 
   await db.disconnect();
 
