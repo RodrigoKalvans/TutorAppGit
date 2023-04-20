@@ -1,0 +1,10 @@
+image: node:latest
+
+stages:
+  - linting
+
+code-linting:
+  stage: linting
+  script:
+    npm i eslint
+    npm run lint
