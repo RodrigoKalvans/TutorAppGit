@@ -11,7 +11,7 @@ const ImageComponent: React.FC<Props> = ({userId, fileKey}) => {
   useEffect(() => {
     const getImageFromApi = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/tutors/${userId}/picture?key=${fileKey}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tutors/${userId}/picture?key=${fileKey}`);
         const blob = await response.blob();
         setImageSrc(URL.createObjectURL(blob));
       } catch (error) {
