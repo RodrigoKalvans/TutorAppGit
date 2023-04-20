@@ -72,23 +72,24 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
 
+  await db.disconnect();
+
   const allPosts = await Post.find();
 
   let followedPosts = [];
 
+  // get posts for follow feed
   if (session) {
-    // get follower list
-    let user: any;
+    let loggedInUser: any;
     if (session.user.role === "tutor") {
-      user = await Tutor.findById(session.user.id);
+      loggedInUser = await Tutor.findById(session.user.id);
     } else if (session.user.role === "student") {
-      user = await Student.findById(session.user.id);
+      loggedInUser = await Student.findById(session.user.id);
     }
 
-    followedPosts = allPosts.filter((post: any) => user.following.includes(post._id));
+    followedPosts = allPosts.filter((post: any) => loggedInUser.following.some((following: any) => post.userId == following.userId));
+    console.log(followedPosts);
   }
-
-  await db.disconnect();
 
   return {
     props: {

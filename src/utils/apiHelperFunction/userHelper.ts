@@ -67,7 +67,7 @@ export const followUser = async (req: NextApiRequest, res: NextApiResponse, id: 
   if (token.role === "tutor") {
     followingUser = await Tutor.findById(token.id);
   } else if (token.role === "student") {
-    followingUser === await Student.findById(token.id);
+    followingUser = await Student.findById(token.id);
   }
 
   if (!followingUser) {
@@ -125,7 +125,7 @@ export const unfollowUser = async (req: NextApiRequest, res: NextApiResponse, id
   if (token.role === "tutor") {
     followingUser = await Tutor.findById(token.id);
   } else if (token.role === "student") {
-    followingUser === await Student.findById(token.id);
+    followingUser = await Student.findById(token.id);
   }
 
   if (!followingUser) {
