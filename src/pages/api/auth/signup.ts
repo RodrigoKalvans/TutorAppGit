@@ -7,6 +7,7 @@ import Tutor from "../../../models/Tutor";
 import db from "../../../utils/db";
 import {getToken} from "next-auth/jwt";
 import {hash} from "argon2";
+import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHelper";
 
 /**
  * Sign up route
@@ -27,16 +28,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  // Add check property
-  const reqUser = req.body;
-  console.log(reqUser);
-
-  if (!reqUser.firstName || !reqUser.lastName ||
-        !reqUser.role || !reqUser.email || !reqUser.password ||
-        (reqUser.role !== "student" && reqUser.role !== "tutor")) {
+  if (!req.body.firstName || !req.body.lastName ||
+        !req.body.role || !req.body.email || !req.body.password ||
+        (req.body.role !== "student" && req.body.role !== "tutor")) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({message: "Not enough information (Validation Error)"});
     return;
+  }
+
+  const reqUser: {
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    role: string,
+    priceForLessons?: any,
+  } = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
+    role: req.body.role,
+  };
+  if (req.body.role === "tutor" && req.body.priceForLessons) {
+    reqUser.priceForLessons = req.body.priceForLessons;
   }
 
   await db.connect();
@@ -88,6 +103,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  // Check if user wanted to subscribe to newsletters
+  if (req.body.subscribeToNewsletters && req.body.subscribeToNewsletters === true) {
+    try {
+      const res = await subscribeUserToNewsletter(newUser.email, newUser.firstName, newUser.lastName, newUser.role);
+      newUser.subscriberId = res.data.id;
+    } catch (error) {
+      res.status(StatusCodes.BAD_REQUEST)
+          .send({message: "Error occurred while subscribing user to newsletter.", error: error});
+      return;
+    }
+  }
   await newUser.save();
 
   delete newUser.password;

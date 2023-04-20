@@ -6,8 +6,8 @@ import {format} from "date-fns";
 import Link from "next/link";
 import commentImage from "@/public/icons/commentsIcon.png";
 import Comment from "./Comment";
-import {useSession} from "next-auth/react";
-import {LikeIcon, LoadingIcon} from "@/utils/icons";
+import {DeleteIcon, LikeIcon, LoadingIcon} from "@/utils/icons";
+import {Session} from "next-auth";
 
 /**
  * Post component
@@ -15,14 +15,13 @@ import {LikeIcon, LoadingIcon} from "@/utils/icons";
  * @param {any} user tutor or student
  * @return {JSX} component
  */
-const Post = ({post}: {post: any}) => {
+const Post = ({post, index, handleDelete, session}:
+      {post: any, index: number, handleDelete: Function, session: Session | null}) => {
   const [isExtended, setIsExtended] = useState<boolean>(false);
   const [commentsArray, setCommentsArray] = useState<any[]>([]);
   const [comment, setComment] = useState<string>("");
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(post.likes.length);
-
-  const {data: session} = useSession();
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${post.role}s/${post.userId}`, fetcher);
@@ -112,20 +111,21 @@ const Post = ({post}: {post: any}) => {
         <div className="flex justify-center h-fit my-5">
           <div className="flex-col bg-white text-sm rounded-2xl shadow-md w-[52rem] hov">
             {/** top section */}
-            {user &&
-            <div className="flex justify-between p-3 h-10 shadow-lg items-center">
-              <Link href={`/${user.role}s/${user._id}`}>
-                <div className="flex gap-5 items-center">
-                  <div className="h-full w-8"><ProfilePicture user={user} /></div>
-                  <div className="text-xl">{user.firstName + " " + user.lastName}</div>
+            {user && (
+              <div className="flex justify-between p-3 h-10 shadow-lg items-center">
+                <Link href={`/${user.role}s/${user._id}`}>
+                  <div className="flex gap-5 items-center">
+                    <div className="h-full w-8"><ProfilePicture user={user} /></div>
+                    <div className="text-xl">{user.firstName + " " + user.lastName}</div>
                   |
-                  <div className="uppercase">{user.role}</div>
+                    <div className="uppercase">{user.role}</div>
+                  </div>
+                </Link>
+                <div className="items-center">
+                  {format(new Date(post.createdAt), "dd/MM/yyyy")}
                 </div>
-              </Link>
-              <div className="items-center">
-                {format(new Date(post.createdAt), "dd/MM/yyyy")}
               </div>
-            </div>
+            )
             }
             {/** main body (description pics) */}
             <div className="p-3 text-sm flex-col">
@@ -168,6 +168,16 @@ const Post = ({post}: {post: any}) => {
                     <div className="font-bold text-xs font-normal">&nbsp;{commentsArray.length}</div>
                   </div>
                 </div>
+
+                {(session && session.user.id === post.userId) && (
+                  <button
+                    type="button"
+                    className="hover:opacity-80 transition-all"
+                    onClick={() => handleDelete(index)}
+                  >
+                    <DeleteIcon size={18} color="#E0115F" />
+                  </button>
+                )}
               </div>
               {isExtended && (
                 <div>
