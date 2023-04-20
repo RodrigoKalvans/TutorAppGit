@@ -12,17 +12,18 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [${process.env.NEXT_PUBLIC_BASE_URL}](${process.env.NEXT_PUBLIC_BASE_URL}) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [${process.env.NEXT_PUBLIC_BASE_URL}/api/hello](${process.env.NEXT_PUBLIC_BASE_URL}/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## MongoDB
+
 Before using the app you need to create the local .env file with MONGODB_URI variable there. This variable has the link to connect to the database. The link has place holders that should be replaced with username, password and database name. The URI: mongodb+srv://<username>:<password>@cluster0.0jp3cpr.mongodb.net/<database-name>?retryWrites=true&w=majority
 
 ## Learn More

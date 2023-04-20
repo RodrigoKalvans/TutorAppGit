@@ -2,6 +2,10 @@ import Footer from "@/components/Footer";
 import Head from "next/head";
 import Navbar from "@/components/Navbar";
 import SearchPanel from "@/components/search/SearchPanel";
+import Subject from "@/models/Subject";
+import Student from "@/models/Student";
+import Tutor from "@/models/Tutor";
+import db from "@/utils/db";
 
 /**
  * TODO: fill this in
@@ -28,19 +32,17 @@ export default function Search({subjects, students, tutors}: {subjects: any, stu
  * @return {any} props
  */
 export async function getStaticProps() {
-  const subjectsRes = await fetch("http://localhost:3000/api/subjects");
-  const studentsRes = await fetch("http://localhost:3000/api/students");
-  const tutorsRes = await fetch("http://localhost:3000/api/tutors");
-
-  const subjects = await subjectsRes.json();
-  const students = await studentsRes.json();
-  const tutors = await tutorsRes.json();
+  await db.connect();
+  const subjects = await Subject.find();
+  const students = await Student.find();
+  const tutors = await Tutor.find();
+  await db.disconnect();
 
   return {
     props: {
-      subjects,
-      students,
-      tutors,
+      subjects: JSON.parse(JSON.stringify(subjects)),
+      students: JSON.parse(JSON.stringify(students)),
+      tutors: JSON.parse(JSON.stringify(tutors)),
     },
     revalidate: 10,
   };

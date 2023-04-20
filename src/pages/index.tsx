@@ -7,6 +7,9 @@ import SubjectBox from "@/components/landingPage/SubjectBox";
 import Image from "next/image";
 import LandingPageBgImage from "@/public/images/landing-background-image-fixed.jpg";
 import TutorCard from "@/components/landingPage/TutorCard";
+import Subject from "@/models/Subject";
+import Tutor from "@/models/Tutor";
+import db from "@/utils/db";
 
 // TODO: Add subject images
 // TODO: Get tutors that will be displayed
@@ -129,16 +132,77 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
  * @return {any} props
  */
 export async function getStaticProps() {
-  const reqSubjects = await fetch("http://localhost:3000/api/subjects");
-  const subjects = await reqSubjects.json();
+  await db.connect();
+  const subjects = await Subject.find();
+  const allTutors = await Tutor.find();
+  await db.disconnect();
 
-  const reqTutors = await fetch("http://localhost:3000/api/tutors/getTopFiveTutorsByFollowers");
-  const tutors = await reqTutors.json();
+  const sortedTutors = quickSort(allTutors, 0, allTutors.length - 1);
 
   return {
     props: {
-      subjects: subjects.slice(0, 9),
-      tutors,
+      subjects: JSON.parse(JSON.stringify(subjects.slice(0, 9))),
+      tutors: JSON.parse(JSON.stringify(sortedTutors)),
     },
   };
+}
+
+/**
+ * Used for QuickSort algo
+ * @param {Array<any>} items
+ * @param {number} leftIndex
+ * @param {number} rightIndex
+ */
+function swap(items: Array<any>, leftIndex: number, rightIndex: number) {
+  const temp = items[leftIndex];
+  items[leftIndex] = items[rightIndex];
+  items[rightIndex] = temp;
+}
+
+/**
+ * Used for QuickSort algo
+ * @param {Array<any>} items
+ * @param {number} left
+ * @param {number} right
+ * @return {any} partition
+ */
+function partition(items: Array<any>, left: number, right: number) {
+  const pivot = items[Math.floor((right + left) / 2)]; // middle element
+  let i = left; // left pointer
+  let j = right; // right pointer
+  while (i <= j) {
+    while (items[i].followers.length < pivot.followers.length) {
+      i++;
+    }
+    while (items[j].followers.length > pivot.followers.length) {
+      j--;
+    }
+    if (i <= j) {
+      swap(items, i, j); // sawpping two elements
+      i++;
+      j--;
+    }
+  }
+  return i;
+}
+
+/**
+ * Used to sort tutors by follower count
+ * @param {Array<any>} items
+ * @param {number} left
+ * @param {number} right
+ * @return {Array<any>} sorted items
+ */
+function quickSort(items: Array<any>, left: number, right: number) {
+  let index;
+  if (items.length > 1) {
+    index = partition(items, left, right); // index returned from partition
+    if (left < index - 1) { // more elements on the left side of the pivot
+      quickSort(items, left, index - 1);
+    }
+    if (index < right) { // more elements on the right side of the pivot
+      quickSort(items, index, right);
+    }
+  }
+  return items;
 }
