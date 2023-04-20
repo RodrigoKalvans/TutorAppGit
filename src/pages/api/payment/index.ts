@@ -1,5 +1,3 @@
-import Student from "@/models/Student";
-import Tutor from "@/models/Tutor";
 import {StatusCodes} from "http-status-codes";
 import {NextApiRequest, NextApiResponse} from "next";
 import {getToken} from "next-auth/jwt";
@@ -12,7 +10,6 @@ export const config = {
 };
 
 const STRIPE_API_VERSION = "2022-11-15";
-const STRIPE_BASE_URL = "https://api.stripe.com";
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
   apiVersion: STRIPE_API_VERSION,
