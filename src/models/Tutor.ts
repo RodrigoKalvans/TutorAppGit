@@ -52,6 +52,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       isPromoted: {type: Boolean, default: false},
       promotedDue: {type: Date, default: undefined},
       isSuspended: {type: Boolean, default: false},
+      subscriberId: {type: String},
     },
     {timestamps: true},
 );
