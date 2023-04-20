@@ -5,7 +5,7 @@ const FollowButton = ({role, id, followers, setFollowers, isFollowed, setIsFollo
 
   const handleFollow = async () => {
     setLoading(true);
-    const res = await fetch(`http://localhost:3000/api/${role}s/${id}/follow`,
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${role}s/${id}/follow`,
         {
           method: "PUT",
           headers: {
@@ -27,7 +27,7 @@ const FollowButton = ({role, id, followers, setFollowers, isFollowed, setIsFollo
 
   const handleUnfollow = async () => {
     setLoading(true);
-    const res = await fetch(`http://localhost:3000/api/${role}s/${id}/unfollow`,
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${role}s/${id}/unfollow`,
         {
           method: "PUT",
           headers: {

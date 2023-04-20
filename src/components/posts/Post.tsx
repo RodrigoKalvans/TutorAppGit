@@ -24,11 +24,11 @@ const Post = ({post, index, handleDelete, session}:
   const [likeCount, setLikeCount] = useState<number>(post.likes.length);
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${post.role}s/${post.userId}`, fetcher);
-  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(`http://localhost:3000/api/posts/${post._id}/image`, fetcher);
+  const {data: user, error, isLoading} = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${post.role}s/${post.userId}`, fetcher);
+  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post._id}/image`, fetcher);
 
   // quietly load comments
-  const {data: comments}: {data: Array<any>} = useSWR(`http://localhost:3000/api/comments?postId=${post._id}`, fetcher);
+  const {data: comments}: {data: Array<any>} = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comments?postId=${post._id}`, fetcher);
 
   useEffect(() => {
     if (comments) setCommentsArray(comments);
@@ -49,7 +49,7 @@ const Post = ({post, index, handleDelete, session}:
 
   const handleLike = async () => {
     if (isLiked) {
-      const response = await fetch(`http://localhost:3000/api/posts/${post._id.toString()}/likes`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post._id.toString()}/likes`, {
         method: "DELETE",
       });
 
@@ -58,7 +58,7 @@ const Post = ({post, index, handleDelete, session}:
         setLikeCount(likeCount-1);
       }
     } else {
-      const response = await fetch(`http://localhost:3000/api/posts/${post._id.toString()}/likes`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post._id.toString()}/likes`, {
         method: "POST",
       });
 
@@ -78,7 +78,7 @@ const Post = ({post, index, handleDelete, session}:
       text: comment,
       postId: post._id.toString(),
     };
-    const res = await fetch("http://localhost:3000/api/comments", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comments`, {
       method: "POST",
       body: JSON.stringify(c),
       headers: {
@@ -94,7 +94,7 @@ const Post = ({post, index, handleDelete, session}:
   };
 
   const handleCommentDelete = async (id: string) => {
-    const response = await fetch(`http://localhost:3000/api/comments/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comments/${id}`, {
       method: "DELETE",
     });
 

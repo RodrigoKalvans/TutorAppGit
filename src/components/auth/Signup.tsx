@@ -81,7 +81,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
       }
 
       // post new user to the database
-      const res = await fetch("http://localhost:3000/api/auth/signup", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/signup`, {
         method: "POST",
         body: JSON.stringify(user),
         headers: {
@@ -109,7 +109,7 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
 
       // if user is a tutor, send patch request to update subjects
       if (role === "tutor") {
-        const res = await fetch("http://localhost:3000/api/subjects/subscribeTutorToSubjects", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subjects/subscribeTutorToSubjects`, {
           method: "PUT",
           body: JSON.stringify({
             subjectIds: chosenSubjects,

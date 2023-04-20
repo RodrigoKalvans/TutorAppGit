@@ -21,7 +21,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
   const [general, setGeneral] = useState<boolean>(true);
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data, error, isLoading} = useSWR("http://localhost:3000/api/tutors/getTopFiveTutorsByFollowers", fetcher);
+  const {data, error, isLoading} = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tutors/getTopFiveTutorsByFollowers`, fetcher);
 
   return (
     <>

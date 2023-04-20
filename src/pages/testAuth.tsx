@@ -23,7 +23,7 @@ const testAuth = () => {
           <p>Your last name is: {session.user.lastName}</p>
           <p>Your role: {session.user.role}</p>
           <div><button onClick={async () => {
-            const res = await fetch(`http://localhost:3000/api/tutors/${session.user.id}`,
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tutors/${session.user.id}`,
                 {
                   method: "PUT",
                   body: JSON.stringify({
@@ -39,7 +39,7 @@ const testAuth = () => {
             console.log(json);
           }}>Update First Name</button></div>
           <div><button onClick={async () => {
-            const res = await fetch(`http://localhost:3000/api/tutors/${session.user.id}`,
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tutors/${session.user.id}`,
                 {
                   method: "DELETE",
                   headers: {

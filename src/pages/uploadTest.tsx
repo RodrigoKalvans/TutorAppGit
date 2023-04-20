@@ -26,7 +26,7 @@ const uploadTest = ({tutor}: {tutor: any}) => {
     formData.append("image", file);
 
     // Make a POST request to the API endpoint to upload the file
-    const response = await fetch(`http://localhost:3000/api/tutors/${session.user.id}/picture`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tutors/${session.user.id}/picture`, {
       method: "POST",
       body: formData,
     });
