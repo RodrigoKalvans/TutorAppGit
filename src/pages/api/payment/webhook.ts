@@ -31,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     res.status(405).send("Method not permitted");
+    return;
   }
 
   handleRequest(req, res);
@@ -57,22 +58,25 @@ const handleRequest = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // handle different stages of payment
   switch (event.type) {
-    case "payment_intent.created":
+    case "payment_intent.created": {
       console.log(`A payment request has been created: ${event.data.object}`);
       res.status(200).send("Payment intent created");
       break;
-    case "payment_intent.succeeded":
+    }
+    case "payment_intent.succeeded": {
       console.log("payment successful");
-      amount = event.data.object.amount;
+      amount = event.data.object.amount!;
       const paymentMethod = await stripe.paymentMethods.retrieve(event.data.object.payment_method);
       customerEmail = paymentMethod.billing_details.email!;
-      console.log(`A payment was made by: ${customer}`);
-      savePayment(customerEmail, amount, res); // handle login on db side
+      console.log(`A payment was made by: ${customerEmail}`);
+      savePayment(customerEmail, amount, paymentMethod.id, res); // handle login on db side
       break;
-    default:
+    }
+    default: {
       console.log(`Unhandled event type ${event.type}`);
       res.status(510).send("Type not recognized");
       break;
+    }
   }
 
   return;
@@ -90,28 +94,29 @@ const savePayment = async (customerEmail: string, amount: number, paymentId: str
   await db.connect();
 
   // find user with the email provided in payment
-  const user = await findUser(customerEmail);
+  const user: any = await findUser(customerEmail);
 
-  if (!user) res.status(404).send("Email not recognized");
-
-  const currentTime = new Date();
+  if (!user) {
+    res.status(404).send("Email not recognized");
+    db.disconnect();
+    return;
+  }
 
   const payment = {
-    date: currentTime,
+    date: new Date(),
     amount,
     paymentId,
   };
+  console.log(payment);
 
-  // TODO: actually subscribe the user
-  switch (user.role) {
-    case "tutor":
-      Tutor.findByIdAndUpdate();
-      break;
-    case "student":
-      // TODO
-      break;
-    default:
-      res.status(400).send("Unknown role");
+  try {
+    user.donations.push(payment);
+    await user.save();
+    console.log("pushed", user);
+    res.status(200).send(`Donation ${paymentId} has been added to ${user._id as string}`);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(`Error: ${err}`);
   }
 
   await db.disconnect();
@@ -120,19 +125,19 @@ const savePayment = async (customerEmail: string, amount: number, paymentId: str
 };
 
 const findUser = async (email: string) => {
-  // let user: typeof Tutor | typeof Student;
+  // let user: typeof Tutor | typeof Student | undefined;
   let user: any;
 
   // find user with the email provided in payment
   user = await Tutor.find({
     email,
   });
-  if (user.length > 0) return user;
+  if (user.length > 0) return user.at(0);
 
   user = await Student.find({
     email,
   });
-  if (user.length > 0) return user;
+  if (user.length > 0) return user.at(0);
 
   return null;
 };
