@@ -82,7 +82,7 @@ const like = async (req: NextApiRequest, res: NextApiResponse, id: string, post:
     return;
   }
 
-  const isLiked = post.likes.findIndex((like: {likeId: string, userId: string }) => like.userId === token.id) > -1;
+  const isLiked: boolean = post.likes.findIndex((like: {likeId: string, userId: string }) => like.userId === token.id) > -1;
 
   if (isLiked) {
     res.status(StatusCodes.CONFLICT).send({message: "You have already liked this post."});

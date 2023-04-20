@@ -10,6 +10,8 @@ import Post from "@/models/Post";
 import useSWR from "swr";
 import CreatePostButton from "@/components/CreatePostButton";
 import FeedPageTopTutor from "@/components/feed/FeedPageTopTutor";
+import Tutor from "@/models/Tutor";
+import Student from "@/models/Student";
 /**
  * Feed page
  * @param {Array<any>} posts
@@ -51,8 +53,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
             <div className="w-full flex justify-center">
               <div className="w-full">
                 {general && <PostManager posts={allPosts}/>}
-                {!general && loggedIn && followedPosts.length > 0 && <PostManager posts={followedPosts} loggedIn={loggedIn}/>}
-                {!general && loggedIn && followedPosts.length === 0 && <div className="m-5 mt-10 flex justify-center text-xl">Follow other users in order to see their posts in this feed</div>}
+                {!general && loggedIn && <PostManager posts={followedPosts}/>}
                 {!general && !loggedIn && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
               </div>
             </div>
@@ -71,10 +72,24 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
 
-  const allPosts = await Post.find();
-  const followedPosts = allPosts.filter((post: any) => post.userId === session?.user.id.toString());
-
   await db.disconnect();
+
+  const allPosts = await Post.find();
+
+  let followedPosts = [];
+
+  // get posts for follow feed
+  if (session) {
+    let loggedInUser: any;
+    if (session.user.role === "tutor") {
+      loggedInUser = await Tutor.findById(session.user.id);
+    } else if (session.user.role === "student") {
+      loggedInUser = await Student.findById(session.user.id);
+    }
+
+    followedPosts = allPosts.filter((post: any) => loggedInUser.following.some((following: any) => post.userId == following.userId));
+    console.log(followedPosts);
+  }
 
   return {
     props: {
