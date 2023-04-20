@@ -50,6 +50,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       }],
       posts: [{type: String}],
       isSuspended: {type: Boolean, default: false},
+      subscriberId: {type: String},
       donations: [{
         amount: {type: Number},
         date: {type: Date},

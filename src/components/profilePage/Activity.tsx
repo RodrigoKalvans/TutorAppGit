@@ -42,10 +42,10 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => 
   }, [activity]);
 
   return (
-    <BoxContainer style={""}>
+    <BoxContainer>
       <div>
-        <div className="pb-2 border-b-2">
-          <h2 className="text-xl font-medium ">Activity</h2>
+        <div className="pb-2 border-b-2 text-xl font-medium">
+          Activity
         </div>
 
         {activityArray[0] ? (

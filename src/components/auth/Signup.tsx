@@ -23,6 +23,9 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
   const [price, setPrice] = useState<string>("");
   const [chosenSubjects, setSubjects] = useState<any>();
 
+  // Newsletter checkbox
+  const [subscribed, setSubscribed] = useState<boolean>(false);
+
   // change roll on button clicks
   const [role, setRole] = useState<string>("student");
 
@@ -46,19 +49,22 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
     try {
       // define object to be sent via HTTP
       const user: {
-                  firstName: string,
-                  lastName: string,
-                  email: string,
-                  password: string,
-                  role: string,
-                  priceForLessons?: {}
-              } = {
-                firstName: values.firstName,
-                lastName: values.lastName,
-                email: values.email,
-                password: values.password,
-                role: role,
-              };
+        firstName: string,
+        lastName: string,
+        email: string,
+        password: string,
+        role: string,
+        priceForLessons?: {},
+        subscribeToNewsletters?: boolean,
+      } = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+        role: role,
+      };
+
+      if (subscribed) user.subscribeToNewsletters = true;
 
       // changes entered prices to proper format
       if (role === "tutor") {
@@ -238,73 +244,82 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
                   </div>
                 </div>
 
-                {role === "student" ? (
-                <>
-                </>
-                ) : (
-                <>
-                  <label
-                    htmlFor="subjects"
-                    className="uppercase text-sm text-gray-600 font-bold"
-                  >
+                {role === "tutor" && (
+                  <>
+                    <label
+                      htmlFor="subjects"
+                      className="uppercase text-sm text-gray-600 font-bold"
+                    >
                     Subjects
-                    <SubjectSelect setFunction={setSubjects} subjects={subjects}/>
-                  </label>
-                  <div className="text-red-600 text-sm">
-                    <ErrorMessage name="subjects" />
-                  </div>
+                      <SubjectSelect setFunction={setSubjects} subjects={subjects}/>
+                    </label>
+                    <div className="text-red-600 text-sm">
+                      <ErrorMessage name="subjects" />
+                    </div>
 
-                  <label htmlFor="time" className="flex justify-center text-xs" >price for lesson</label>
-                  <div className="input-group w-full">
-                    <input
-                      placeholder="min"
-                      name="min"
-                      id="time"
-                      type="number"
-                      required
-                      className="w-1/2 mr-0"
-                      onChange = {
-                        (e: any) => {
-                          try {
-                            setMinutes(e.target.value);
-                          } catch (e) {
-                            alert("minutes must be a number");
+                    <label htmlFor="time" className="flex justify-center text-xs" >price for lesson</label>
+                    <div className="input-group w-full">
+                      <input
+                        placeholder="min"
+                        name="min"
+                        id="time"
+                        type="number"
+                        required
+                        className="w-1/2 mr-0"
+                        onChange = {
+                          (e: any) => {
+                            try {
+                              setMinutes(e.target.value);
+                            } catch (e) {
+                              alert("minutes must be a number");
+                            }
                           }
                         }
-                      }
-                    />
+                      />
 
-                    <input
-                      placeholder="eur"
-                      name="eur"
-                      type="number"
-                      required
-                      className="w-1/2 ml-0"
-                      onChange = {
-                        (e: any) => {
-                          try {
-                            setPrice(e.target.value);
-                          } catch (e) {
-                            alert("price must be a number");
+                      <input
+                        placeholder="eur"
+                        name="eur"
+                        type="number"
+                        required
+                        className="w-1/2 ml-0"
+                        onChange = {
+                          (e: any) => {
+                            try {
+                              setPrice(e.target.value);
+                            } catch (e) {
+                              alert("price must be a number");
+                            }
                           }
                         }
-                      }
-                    />
-                  </div>
-                </>
+                      />
+                    </div>
+                  </>
                 )}
 
                 <div className="flex justify-center p-3">
                   <input
                     type="checkbox"
-                    id="check"
+                    id="terms"
                     value="check"
                     className="checkbox-xs"
                     required
                   />
 
                   {/** TODO: link Terms to ToS */}
-                  <label htmlFor="check" className="text-xs">Agree to our <Link href="/">Terms</Link></label>
+                  <label htmlFor="terms" className="text-xs">Agree to our <Link href="/">Terms</Link></label>
+                </div>
+
+                <div className="flex justify-center p-3">
+                  <input
+                    type="checkbox"
+                    id="newslettersCheck"
+                    value="check"
+                    className="checkbox-xs"
+                    onChange={() => setSubscribed(!subscribed)}
+                  />
+
+                  <label htmlFor="newslettersCheck" className="text-xs">Subscribe to our newsletters</label>
                 </div>
 
                 <div className="flex items-center justify-center">

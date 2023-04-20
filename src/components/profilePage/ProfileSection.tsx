@@ -22,7 +22,7 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
   };
 
   return (
-    <BoxContainer style={""}>
+    <BoxContainer>
       <div className="flex justify-between">
         <div className="w-9/20">
           <ProfilePicture user={user} session={session} />
