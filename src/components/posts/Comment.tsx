@@ -5,7 +5,7 @@ import useSWR from "swr";
 
 const Comment = ({comment, handleDelete, session}: {comment: any, handleDelete: MouseEventHandler, session: Session | null}) => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data: user, error, isLoading} = useSWR(`http://localhost:3000/api/${comment.role}s/${comment.userId}`, fetcher);
+  const {data: user, error, isLoading} = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${comment.role}s/${comment.userId}`, fetcher);
 
   if (error) return <div>error</div>;
   if (isLoading) return <div>loading</div>;

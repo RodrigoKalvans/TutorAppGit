@@ -8,7 +8,7 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => 
     const populateActivities = async () => {
       for (let i = activity.length - 1; i >= 0; i--) {
         const element = activity[i];
-        const res = await fetch(`http://localhost:3000/api/${element.activityType}s?_id=${element.activityId}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${element.activityType}s?_id=${element.activityId}`);
         const json = await res.json();
 
         let action: string;
@@ -42,10 +42,10 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => 
   }, [activity]);
 
   return (
-    <BoxContainer style={""}>
+    <BoxContainer>
       <div>
-        <div className="pb-2 border-b-2">
-          <h2 className="text-xl font-medium ">Activity</h2>
+        <div className="pb-2 border-b-2 text-xl font-medium">
+          Activity
         </div>
 
         {activityArray[0] ? (

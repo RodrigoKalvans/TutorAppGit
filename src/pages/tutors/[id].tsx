@@ -37,33 +37,25 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
 
           <Navbar black={true} />
 
-          <main className="w-full px-28">
-            <section className="m-2">
-              <div className="w-full h-max flex justify-around">
-
-                <div className="w-9/20 h-max">
-                  <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
-                </div>
-
-                <div className="w-9/20 flex flex-col">
-
-                  <Activity fullName={fullName} activity={tutor.activity} />
-                  <ReviewsSection reviews={reviews} />
-
-                </div>
+          <main className="container flex py-2 gap-14">
+            <section className="w-9/20">
+              <div className="flex flex-col gap-5">
+                <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
+                <Activity fullName={fullName} activity={tutor.activity} />
+                <ReviewsSection reviews={reviews} />
 
               </div>
             </section>
 
-            <section className="m-2 p-3 mt-10">
-              <div className="w-full h-10 flex justify-between items-center px-24">
-                <div className="uppercase font-bold text-xl">posts</div>
+            <section className="">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-xl">Posts</span>
                 {session?.user.id === tutor._id.toString() && (
                   <CreatePostButton />
                 )}
               </div>
               <div>
-                {posts.length === 0 ? <div className="m-5 mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
+                {posts.length === 0 ? <div className="mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
               </div>
             </section>
           </main>

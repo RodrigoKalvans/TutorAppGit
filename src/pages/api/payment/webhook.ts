@@ -65,8 +65,8 @@ const handleRequest = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     case "payment_intent.succeeded": {
       console.log("payment successful");
-      amount = event.data.object.amount!;
-      const paymentMethod = await stripe.paymentMethods.retrieve(event.data.object.payment_method);
+      amount = (event.data.object as any).amount;
+      const paymentMethod = await stripe.paymentMethods.retrieve((event.data.object as any).payment_method);
       customerEmail = paymentMethod.billing_details.email!;
       console.log(`A payment was made by: ${customerEmail}`);
       savePayment(customerEmail, amount, paymentMethod.id, res); // handle login on db side

@@ -20,7 +20,7 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
   useEffect(() => {
     const getImageFromApi = async (userId: string, fileKey: string) => {
       try {
-        const response = await fetch(`http://localhost:3000/api/${user.role}s/${userId}/picture?key=${fileKey}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${user.role}s/${userId}/picture?key=${fileKey}`);
         const blob = await response.blob();
         setImageSrc(URL.createObjectURL(blob));
       } catch (error) {
