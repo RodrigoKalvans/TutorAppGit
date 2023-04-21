@@ -18,13 +18,14 @@ import PostManager from "@/components/posts/PostManager";
 import CreatePostButton from "@/components/CreatePostButton";
 
 const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, allSubjects: Array<any>, posts: Array<any>}) => {
+  const {data: session} = useSession();
+
   if (!tutor) {
     return (
       <p>No tutor was found!</p>
     );
   }
 
-  const {data: session} = useSession();
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
 
   return (

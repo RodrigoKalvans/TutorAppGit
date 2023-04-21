@@ -56,7 +56,7 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
           </div>
           <div className="flex gap-8">
             <Button style="bg-orange-500 text-lg font-medium normal-case" link="/feed">Browse</Button>
-            <Button style="bg-blue-600 text-lg font-medium normal-case" link="/signin">Join us</Button>
+            <Button style="bg-blue-600 text-lg font-medium normal-case" link="/signIn">Join us</Button>
           </div>
         </div>
       </section>
@@ -77,8 +77,8 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
           <div className="flex items-center justify-around">
             <div className="carousel w-full rounded-box ml-3">
               {tutors && tutors.map((tutor) =>
-                <div id="slide1" className="carousel-item relative w-1/2">
-                  <TutorCard tutor={tutor} key={tutor._id} />
+                <div id="slide1" key={tutor._id} className="carousel-item relative w-1/2">
+                  <TutorCard tutor={tutor} />
                 </div>,
               )}
             </div>

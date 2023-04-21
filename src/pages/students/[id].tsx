@@ -18,13 +18,14 @@ import Activity from "@/components/profilePage/Activity";
 import CreatePostButton from "@/components/CreatePostButton";
 
 const StudentPage = ({student, isFollowing, subjects, allSubjects, reviews, posts}: {student: any, isFollowing: boolean, subjects: Array<any>, allSubjects: Array<any>, reviews: Array<any>, posts: Array<any>}) => {
+  const {data: session} = useSession();
+
   if (!student) {
     return (
       <p>No tutor was found!</p>
     );
   }
 
-  const {data: session} = useSession();
   const fullName = `${student.firstName} ${student.lastName}`;
 
   return (

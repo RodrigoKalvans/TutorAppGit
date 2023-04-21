@@ -4,6 +4,7 @@ import Login from "@/components/auth/Login";
 import SignUp from "@/components/auth/Signup";
 import {getCsrfToken} from "next-auth/react";
 import {useState} from "react";
+import Subject from "@/models/Subject";
 
 /** Login page
  * @return {any} yo
@@ -44,12 +45,12 @@ export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfTok
  * @return {any}
  */
 export async function getServerSideProps(context: CtxOrReq | undefined) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subjects`);
+  const subjects = await Subject.find();
 
   return {
     props: {
       csrfToken: await getCsrfToken(context),
-      subjects: await res.json(),
+      subjects: JSON.parse(JSON.stringify(subjects)),
     },
   };
 }

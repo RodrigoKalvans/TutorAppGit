@@ -3,8 +3,8 @@ import BoxContainer from "./helpingComponents/BoxContainer";
 
 const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => {
   const [activityArray, setActivityArray] = useState<any[]>([]);
-  const arr: Array<any> = [];
   useEffect(() => {
+    const arr: Array<any> = [];
     const populateActivities = async () => {
       for (let i = activity.length - 1; i >= 0; i--) {
         const element = activity[i];
@@ -52,7 +52,7 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => 
           <div>
             <p className="text-base">{fullName} { activityArray[0].action}</p>
             { activityArray[0].activityType !== "like" && (
-              <p className="italic text-base" >"{ activityArray[0].text}"</p>
+              <p className="italic text-base" >&quot;{ activityArray[0].text}&quot;</p>
             )}
             <hr className="w-full" />
             <button className="text-base mx-3 mt-3">Show all activity</button>

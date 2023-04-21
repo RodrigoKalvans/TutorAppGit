@@ -1,9 +1,8 @@
 import {useSession} from "next-auth/react";
 import {useState} from "react";
 
-const createPost = () => {
+const CreatePost = () => {
   const {data: session} = useSession();
-
   const [description, setDescription] = useState("");
 
   const createPostRequest = async () => {
@@ -47,4 +46,4 @@ const createPost = () => {
   );
 };
 
-export default createPost;
+export default CreatePost;
