@@ -41,7 +41,7 @@ export default function SearchProfile({user}: {user: any}) {
                       </Link>
                     </div>
                     {/** tutor or student */}
-                    <div className="font-bold">
+                    <div className="font-light text-base">
                       {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                     </div>
                     {/** rating */}

@@ -30,7 +30,7 @@ const PostManager = ({posts: postsArr}: {posts: any[]}) => {
     }
   };
   return (
-    <div className="mx-auto h-fit flex flex-col-reverse">
+    <div className="mx-auto h-fit flex flex-col-reverse gap-10">
       {posts.length > 0 ?
         posts.map((post: any, index: number) =>
           <Post post={post} key={post._id} index={index} handleDelete={handleDeletePost} session={session} />) :
