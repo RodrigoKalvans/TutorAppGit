@@ -18,13 +18,14 @@ import PostManager from "@/components/posts/PostManager";
 import CreatePostButton from "@/components/CreatePostButton";
 
 const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, allSubjects: Array<any>, posts: Array<any>}) => {
+  const {data: session} = useSession();
+
   if (!tutor) {
     return (
       <p>No tutor was found!</p>
     );
   }
 
-  const {data: session} = useSession();
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
 
   return (
@@ -38,7 +39,7 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
           <Navbar black={true} />
 
           <main className="container flex py-2 gap-14">
-            <section className="w-9/20">
+            <section className="basis-[40rem]">
               <div className="flex flex-col gap-5">
                 <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
                 <Activity fullName={fullName} activity={tutor.activity} />
@@ -47,8 +48,8 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
               </div>
             </section>
 
-            <section className="">
-              <div className="flex justify-between items-center">
+            <section>
+              <div className="flex justify-between items-center mb-5">
                 <span className="font-medium text-xl">Posts</span>
                 {session?.user.id === tutor._id.toString() && (
                   <CreatePostButton />
@@ -87,7 +88,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
   const isFollowing = tutor.followers.findIndex((follower: {_id: ObjectId, userId: String, accountType: String}) => follower.userId === session?.user.id.toString()) > -1;
 
-  // Get subjects (all)
+  // Get subjects (tutor's)
   const subjects = await Subject.find({
     _id: {
       $in: tutor.subjects,
@@ -101,6 +102,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     },
   });
 
+  // Get all subjects
   const allSubjects = await Subject.find();
 
   // Get reviews

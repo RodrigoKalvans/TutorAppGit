@@ -39,8 +39,8 @@ export default function NavbarSearch() {
         </button>
         <input type="search" id="search" className="w-full h-full mr-0 pl-10 rounded-full bg-white-200 text-black focus:outline-none" placeholder="Search" required />
 
-        <button type="button" id="dropdownBtn" onClick={() => setIsOpen(!isOpen)} className="capitalize absolute right-0 min-h-0 h-full px-5 rounded-full max-w-fit bg-[#3F678A] bg-opacity-90 text-light font-normal black focus:outline-none flex items-center
-          hover:bg-opacity-[0.85] transition-all focus:bg-opacity-100">
+        <button type="button" id="dropdownBtn" onClick={() => setIsOpen(!isOpen)} className={`capitalize absolute -right-1 min-h-0 h-full px-5 rounded-full max-w-fit ${isOpen ? "bg-[#43607a]" : "bg-[#527695]"} text-light font-normal black focus:outline-none flex items-center
+          hover:bg-[#5980a3] transition-all focus:bg-[#43607a]`}>
           {role} {arrowSvg}
         </button>
 

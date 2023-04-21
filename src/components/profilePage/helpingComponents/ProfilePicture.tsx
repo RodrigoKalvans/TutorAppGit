@@ -28,7 +28,7 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
       }
     };
     if (user.picture) getImageFromApi(user._id.toString(), user.picture);
-  }, []);
+  }, [user]);
 
   return (
     <>

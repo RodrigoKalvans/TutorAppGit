@@ -46,7 +46,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
           </div>
           {/** posts section */}
           <div className="w-3/5 bg-white rounded-t-2xl">
-            <div className="w-full rounded-b-none flex items-center">
+            <div className="w-full rounded-b-none flex items-center mb-5">
               <button onClick={() => setGeneral(true)} className="border-solid border-r-2 border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tl-2xl hover:bg-gray-200 text-black transition-colors duration-500">General</button>
               <button onClick={() => setGeneral(false)} className="border-solid border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tr-2xl hover:bg-gray-200 text-black transition-colors duration-500">Follow</button>
             </div>
@@ -86,7 +86,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
 
     followedPosts = allPosts.filter((post: any) => loggedInUser.following.some((following: any) => post.userId == following.userId));
-    console.log(followedPosts);
   }
 
   await db.disconnect();

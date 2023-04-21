@@ -19,7 +19,7 @@ const SupportUs = () => {
       <div className="w-screen flex flex-col gap-20 py-20">
         <div className="w-screen text-2xl flex justify-center">Please consider making a donation!</div>
         <div className="w-screen flex justify-center">
-          <a href="https://donate.stripe.com/test_3csaFe1p67sL0b69AA" target="_blank">
+          <a href="https://donate.stripe.com/test_3csaFe1p67sL0b69AA" target="_blank" rel="noreferrer">
             <button className="btn btn-xl btn-primary">donate</button>
           </a>
         </div>

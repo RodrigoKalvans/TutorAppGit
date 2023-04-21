@@ -115,8 +115,8 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
           <div className="flex flex-col py-3">
             {previewImageUrls && (
               <div className="flex gap-2">
-                {previewImageUrls.map((url: string) => (
-                  <div className="w-48">
+                {previewImageUrls.map((url: string, index: number) => (
+                  <div key={index} className="w-48">
                     <Image src={url} alt="Post picture" width={192} height={192} />
                   </div>
                 ))}
