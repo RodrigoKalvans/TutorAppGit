@@ -108,80 +108,79 @@ const Post = ({post, index, handleDelete, session}:
   return (
     <>
       {post &&
-        <div className="flex justify-center h-fit my-5">
-          <div className="flex-col bg-white text-sm rounded-2xl shadow-md w-[52rem] hov">
-            {/** top section */}
-            {user && (
-              <div className="flex justify-between p-3 h-10 shadow-lg items-center">
-                <Link href={`/${user.role}s/${user._id}`}>
-                  <div className="flex gap-5 items-center">
-                    <div className="h-full w-8"><ProfilePicture user={user} /></div>
-                    <div className="text-xl">{user.firstName + " " + user.lastName}</div>
+        <div className="flex-col bg-white text-sm rounded-2xl shadow-md w-full max-w-[52rem] hov">
+          {/** top section */}
+          {user && (
+            <div className="flex justify-between p-3 h-10 shadow-lg items-center">
+              <Link href={`/${user.role}s/${user._id}`}>
+                <div className="flex gap-5 items-center">
+                  <div className="h-full w-8"><ProfilePicture user={user} /></div>
+                  <div className="text-xl">{user.firstName + " " + user.lastName}</div>
                   |
-                    <div className="uppercase">{user.role}</div>
-                  </div>
-                </Link>
-                <div className="items-center">
-                  {format(new Date(post.createdAt), "dd/MM/yyyy")}
+                  <div className="uppercase">{user.role}</div>
                 </div>
+              </Link>
+              <div className="items-center">
+                {format(new Date(post.createdAt), "dd/MM/yyyy")}
               </div>
-            )
-            }
-            {/** main body (description pics) */}
-            <div className="p-3 text-sm flex-col">
-              <div className="w-full mt-2">
-                <p>{post.description}</p>
-              </div>
-              <div className="w-full flex justify-center my-5">
-                {areImagesLoading && (
-                  <p>Images are loading</p>
-                )}
-                {presignedUrls && (
-                  <div className={`${presignedUrls.length > 1 && "carousel rounded-md"}`}>
-                    {presignedUrls.map((url: string, index: number) => (
-                      <Image key={index} src={url} alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
-                    ))}
-                  </div>
-                )}
-              </div>
-              {/** everything below the pics */}
-              <div className="mt-1 flex items-center justify-between">
-                <div className="flex gap-5">
-                  <div className="flex items-center">
-                    <button
-                      type="button"
-                      onClick={handleLike}
-                      disabled={!session}
-                      className="active:scale-125 scale-100 transition-all"
-                    >
-                      <LikeIcon color="#527695" opacity={isLiked ? 1: 0.5} size={18} className="transition-all" />
-                    </button>
-                    <div className="text-xs font-normal">&nbsp;{likeCount}</div>
-                  </div>
-                  <div className="text-xs flex items-center cursor-pointer" onClick={() => setIsExtended(!isExtended)}
-                  >
-                    <Image
-                      src={commentImage}
-                      alt={"comment"}
-                      width={18}
-                    />&nbsp;:
-                    <div className="text-xs font-normal">&nbsp;{commentsArray.length}</div>
-                  </div>
+            </div>
+          )
+          }
+          {/** main body (description pics) */}
+          <div className="p-3 text-sm flex-col">
+            <div className="w-full mt-2">
+              <p>{post.description}</p>
+            </div>
+            <div className="w-full flex justify-center my-5">
+              {areImagesLoading && (
+                <p>Images are loading</p>
+              )}
+              {presignedUrls && (
+                <div className={`${presignedUrls.length > 1 && "carousel rounded-md"}`}>
+                  {presignedUrls.map((url: string, index: number) => (
+                    <Image key={index} src={url} alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
+                  ))}
                 </div>
-
-                {(session && session.user.id === post.userId) && (
+              )}
+            </div>
+            {/** everything below the pics */}
+            <div className="mt-1 flex items-center justify-between">
+              <div className="flex gap-5">
+                <div className="flex items-center">
                   <button
                     type="button"
-                    className="hover:opacity-80 transition-all"
-                    onClick={() => handleDelete(index)}
+                    onClick={handleLike}
+                    disabled={!session}
+                    className="active:scale-125 scale-100 transition-all"
                   >
-                    <DeleteIcon size={18} color="#E0115F" />
+                    <LikeIcon color="#527695" opacity={isLiked ? 1: 0.5} size={18} className="transition-all" />
                   </button>
-                )}
+                  <div className="text-xs font-normal">&nbsp;{likeCount}</div>
+                </div>
+                <div className="text-xs flex items-center cursor-pointer" onClick={() => setIsExtended(!isExtended)}
+                >
+                  <Image
+                    src={commentImage}
+                    alt={"comment"}
+                    width={18}
+                  />&nbsp;:
+                  <div className="text-xs font-normal">&nbsp;{commentsArray.length}</div>
+                </div>
               </div>
-              {isExtended && (
-                <div>
-                  {session &&
+
+              {(session && session.user.id === post.userId) && (
+                <button
+                  type="button"
+                  className="hover:opacity-80 transition-all"
+                  onClick={() => handleDelete(index)}
+                >
+                  <DeleteIcon size={18} color="#E0115F" />
+                </button>
+              )}
+            </div>
+            {isExtended && (
+              <div>
+                {session &&
                     <form
                       onSubmit={(e: any) => handleComment(e)}
                       className="w-full h-fit py-4 max-h-32 flex justify-around items-center"
@@ -195,16 +194,15 @@ const Post = ({post, index, handleDelete, session}:
                       />
                       <button type="submit" className="btn btn-xs">enter</button>
                     </form>
-                  }
-                  <div className={`${commentsArray.length > 0 ? "max-h-80 pt-3 overflow-auto" : "h-6"} flex flex-col gap-3`}>
-                    {commentsArray ? commentsArray.map((c: any) =>
-                      <Comment key={c._id} comment={c} handleDelete={() => handleCommentDelete(c._id.toString())} session={session} />).reverse() :
+                }
+                <div className={`${commentsArray.length > 0 ? "max-h-80 pt-3 overflow-auto" : "h-6"} flex flex-col gap-3`}>
+                  {commentsArray ? commentsArray.map((c: any) =>
+                    <Comment key={c._id} comment={c} handleDelete={() => handleCommentDelete(c._id.toString())} session={session} />).reverse() :
                     <div className="flex justify-center m-3">No comments have been made yet!</div>
-                    }
-                  </div>
+                  }
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       }

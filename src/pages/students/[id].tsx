@@ -16,6 +16,7 @@ import {useSession} from "next-auth/react";
 import ReviewsSection from "@/components/profilePage/ReviewsSection";
 import Activity from "@/components/profilePage/Activity";
 import CreatePostButton from "@/components/CreatePostButton";
+import Navbar from "@/components/Navbar";
 
 const StudentPage = ({student, isFollowing, subjects, allSubjects, reviews, posts}: {student: any, isFollowing: boolean, subjects: Array<any>, allSubjects: Array<any>, reviews: Array<any>, posts: Array<any>}) => {
   const {data: session} = useSession();
@@ -36,35 +37,29 @@ const StudentPage = ({student, isFollowing, subjects, allSubjects, reviews, post
             <title>{fullName}</title>
           </Head>
 
-          {/* <Navbar black={true} /> */}
-          <main className="w-full h-screen px-28">
-            <div className="w-full flex justify-around m-2">
+          <Navbar black={true} />
 
-              <div className="w-9/20 h-max">
-                <ProfileSection user={student} isFollowing={isFollowing} subjects={subjects} allSubjects={allSubjects} session={session} />
-              </div>
-
-              <div className="w-9/20 flex flex-col">
-
+          <main className="container flex py-2 gap-14">
+            <section className="basis-[40rem]">
+              <div className="flex flex-col gap-5">
+                <ProfileSection user={student} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
                 <Activity fullName={fullName} activity={student.activity} />
                 <ReviewsSection reviews={reviews} />
 
               </div>
+            </section>
 
-            </div>
-
-            <section className="m-2 p-3 mt-10">
-              <div className="w-full h-10 flex justify-between items-center px-24">
-                <div className="uppercase font-bold text-xl">posts</div>
+            <section>
+              <div className="flex justify-between items-center mb-5">
+                <span className="font-medium text-xl">Posts</span>
                 {session?.user.id === student._id.toString() && (
                   <CreatePostButton />
                 )}
               </div>
               <div>
-                {posts.length === 0 ? <div className="m-5 mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
+                {posts.length === 0 ? <div className="mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
               </div>
             </section>
-
           </main>
 
         </>
@@ -85,20 +80,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
   const isFollowing = student.followers.findIndex((follower: {_id: ObjectId, userId: String, accountType: String}) => follower.userId === session?.user.id.toString()) > -1;
   // Get subjects
-  // const subjects = await Subject.find({
-  //   _id: {
-  //     $in: student.subjectsOfSpecialty,
-  //   },
-  // });
-  const studentSubjects = [];
+  const subjects = await Subject.find({
+    _id: {
+      $in: student.subjects,
+    },
+  });
 
   const allSubjects = await Subject.find();
-
-  for (let i = 0; i < allSubjects.length; i++) {
-    if (allSubjects.findIndex((subject: any) => subject._id.toString() === allSubjects[i]._id.toString()) > -1) {
-      studentSubjects.push(allSubjects[i]);
-    }
-  }
 
   // get posts
   const posts = await Post.find({
@@ -127,7 +115,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     props: {
       student,
       isFollowing,
-      subjects: JSON.parse(JSON.stringify(studentSubjects)),
+      subjects: JSON.parse(JSON.stringify(subjects)),
       allSubjects: JSON.parse(JSON.stringify(allSubjects)),
       reviews: JSON.parse(JSON.stringify(newArr)),
       posts: JSON.parse(JSON.stringify(posts)),
