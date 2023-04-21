@@ -45,7 +45,7 @@ const Post = ({post, index, handleDelete, session}:
     if (session && post.likes.findIndex((like: {likeId: string, userId: string}) => like.userId === session.user.id) > -1) {
       setIsLiked(true);
     }
-  }, [session]);
+  }, [session, post]);
 
   const handleLike = async () => {
     if (isLiked) {
@@ -138,8 +138,8 @@ const Post = ({post, index, handleDelete, session}:
                 )}
                 {presignedUrls && (
                   <div className={`${presignedUrls.length > 1 && "carousel rounded-md"}`}>
-                    {presignedUrls.map((url: string) => (
-                      <Image src={url} alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
+                    {presignedUrls.map((url: string, index: number) => (
+                      <Image key={index} src={url} alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
                     ))}
                   </div>
                 )}
@@ -156,7 +156,7 @@ const Post = ({post, index, handleDelete, session}:
                     >
                       <LikeIcon color="#527695" opacity={isLiked ? 1: 0.5} size={18} className="transition-all" />
                     </button>
-                    <div className="font-bold text-xs font-normal">&nbsp;{likeCount}</div>
+                    <div className="text-xs font-normal">&nbsp;{likeCount}</div>
                   </div>
                   <div className="text-xs flex items-center cursor-pointer" onClick={() => setIsExtended(!isExtended)}
                   >
@@ -165,7 +165,7 @@ const Post = ({post, index, handleDelete, session}:
                       alt={"comment"}
                       width={18}
                     />&nbsp;:
-                    <div className="font-bold text-xs font-normal">&nbsp;{commentsArray.length}</div>
+                    <div className="text-xs font-normal">&nbsp;{commentsArray.length}</div>
                   </div>
                 </div>
 
@@ -197,7 +197,8 @@ const Post = ({post, index, handleDelete, session}:
                     </form>
                   }
                   <div className={`${commentsArray.length > 0 ? "max-h-80 pt-3 overflow-auto" : "h-6"} flex flex-col gap-3`}>
-                    {commentsArray ? commentsArray.map((c: any) => <Comment comment={c} handleDelete={() => handleCommentDelete(c._id.toString())} session={session} />).reverse() :
+                    {commentsArray ? commentsArray.map((c: any) =>
+                      <Comment key={c._id} comment={c} handleDelete={() => handleCommentDelete(c._id.toString())} session={session} />).reverse() :
                     <div className="flex justify-center m-3">No comments have been made yet!</div>
                     }
                   </div>

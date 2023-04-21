@@ -77,8 +77,8 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
           <div className="flex items-center justify-around">
             <div className="carousel w-full rounded-box ml-3">
               {tutors && tutors.map((tutor) =>
-                <div id="slide1" className="carousel-item relative w-1/2">
-                  <TutorCard tutor={tutor} key={tutor._id} />
+                <div id="slide1" key={tutor._id} className="carousel-item relative w-1/2">
+                  <TutorCard tutor={tutor} />
                 </div>,
               )}
             </div>

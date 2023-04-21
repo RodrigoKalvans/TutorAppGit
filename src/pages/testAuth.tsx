@@ -6,7 +6,7 @@ import Link from "next/link";
  * Page for testing authentication
  * @return {JSX} page to be displayed
  */
-const testAuth = () => {
+const TestAuth = () => {
   const {data: session} = useSession();
 
   return (
@@ -59,4 +59,4 @@ const testAuth = () => {
   );
 };
 
-export default testAuth;
+export default TestAuth;
