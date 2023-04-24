@@ -6,7 +6,7 @@ import useSWR from "swr";
 const FeedPageTopTutor = ({tutor}: any) => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: subject} = useSWR(tutor.subjects.length > 0 ?
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/subjects/${tutor.subjects[0]}` :
+    `/api/subjects/${tutor.subjects[0]}` :
     null, fetcher);
 
   return (

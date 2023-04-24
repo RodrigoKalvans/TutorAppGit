@@ -16,7 +16,7 @@ const PostManager = ({posts: postsArr}: {posts: any[]}) => {
 
     if (session && session.user.id !== post.userId) return;
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post._id.toString()}`, {
+    const response = await fetch(`/api/posts/${post._id.toString()}`, {
       method: "DELETE",
     });
 

@@ -15,7 +15,7 @@ export default function SearchProfile({user}: {user: any}) {
   // TODO: type
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data: subjects} = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subjects`, fetcher);
+  const {data: subjects} = useSWR("/api/subjects", fetcher);
 
   return (
     <>

@@ -19,7 +19,7 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
     }
 
     // Make a POST request to the API endpoint to upload the file
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${postId}/image`, {
+    const response = await fetch(`/api/posts/${postId}/image`, {
       method: "POST",
       body: formData,
     });
@@ -70,7 +70,7 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
     };
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
+      const response = await fetch("/api/posts", {
         method: "POST",
         body: JSON.stringify(post),
         headers: {
