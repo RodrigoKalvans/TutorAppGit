@@ -4,7 +4,7 @@ import NavbarSearch from "./NavbarSearch";
 
 const MobileNavbar = ({handleClose, isOpen}: {handleClose: MouseEventHandler, isOpen: boolean}) => {
   return (
-    <div className={`pt-12 fixed inset-0 z-50 overflow-y-auto max-w-full max-h-screen bg-[#2c4e6b] transition-all duration-500 ${isOpen ? "opacity-100 translate-x-[0%]" : "opacity-0 -translate-x-full transition-all duration-500"}`} >
+    <div className={`pt-12 fixed inset-0 z-50 overflow-y-auto overscroll-y-none max-w-full max-h-screen bg-[#2c4e6b] transition-all duration-500 ${isOpen ? "opacity-100 translate-x-[0%]" : "opacity-0 -translate-x-full transition-all duration-500"}`} >
       <button
         className="absolute top-6 right-6 select-none"
         onClick={handleClose}>

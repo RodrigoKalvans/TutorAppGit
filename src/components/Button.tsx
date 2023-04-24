@@ -9,6 +9,6 @@ import React from "react";
  */
 export default function Button({children, style, link = "/"}: {children: React.ReactNode, style?: string, link?: string}) {
   return (
-    <Link href={link} className={`btn btn-primary px-14 p-2 rounded-full border-0 text-white ${style}`}>{children}</Link>
+    <Link href={link} className={`btn btn-primary px-9 md:px-14 p-2 rounded-full border-0 text-white ${style}`}>{children}</Link>
   );
 }
