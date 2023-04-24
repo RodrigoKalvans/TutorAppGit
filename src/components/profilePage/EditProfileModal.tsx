@@ -38,7 +38,7 @@ const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}
       updatedUser.priceForLessons = map;
       console.log(map);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tutors/${session!.user.id}`, {
+      const response = await fetch(`/api/tutors/${session!.user.id}`, {
         method: "PUT",
         body: JSON.stringify(updatedUser),
         headers: {
@@ -48,7 +48,7 @@ const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}
 
       if (response.ok) {
         if (selectedSubjects) {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subjects/subscribeTutorToSubjects`, {
+          const res = await fetch("/api/subjects/subscribeTutorToSubjects", {
             method: "PUT",
             body: JSON.stringify({
               subjectIds: selectedSubjects,
@@ -69,7 +69,7 @@ const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}
         console.log(json);
       }
     } else {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/students/${session!.user.id}`, {
+      const response = await fetch(`/api/students/${session!.user.id}`, {
         method: "PUT",
         body: JSON.stringify(updatedUser),
         headers: {
