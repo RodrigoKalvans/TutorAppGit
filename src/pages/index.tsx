@@ -27,7 +27,7 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
       <Navbar />
 
       {/* Top part of page (everything in front of bg image) */}
-      <section className="h-[calc(100vh-64px)]">
+      <section className="h-[calc(100vh-64px)] mb-14 lg:mb-28 z-0">
         <Image
           src={LandingPageBgImage}
           alt="Landing page background image"
@@ -39,12 +39,13 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
               position: "absolute",
               top: 0,
               left: 0,
+              zIndex: 0,
             }
           }
         />
-        <div className="absolute top-1/2 -translate-y-1/2 flex flex-col justify-center gap-8 pl-20 z-0">
+        <div className="absolute top-1/2 -translate-y-1/2 flex flex-col justify-center gap-8 pl-5 lg:pl-20 z-0">
           <div>
-            <h1 className="mb-8 text-6xl text-white font-black">Connect with <br/>
+            <h1 className="mb-8 text-5xl md:text-6xl text-white font-black">Connect with <br/>
               <span className="text-orange-400">Expert Tutors Now</span>
             </h1>
             <p className="max-w-md text-lg text-white">
@@ -62,61 +63,61 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
       </section>
 
       {/* Top subjects */}
-      <section className="mt-28 container">
-        <h1 className="mb-20 text-bold text-5xl text-center font-medium">Browse tutors by&nbsp;<span className="text-orange-500 ">Subject</span></h1>
+      <section className="container mb-16">
+        <h1 className="mb-10 lg:mb-20 text-center font-medium">Browse tutors by&nbsp;<span className="text-orange-500 ">Subject</span></h1>
 
-        <div className="grid grid-cols-3 justify-items-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 justify-items-center">
           {subjects && subjects.map((subject) => <SubjectBox subject={subject} key={subject._id}/>)}
         </div>
       </section>
 
       {/* Top tutors */}
-      <div className="container flex justify-center">
+      <div className="container mb-16">
         <LandingPageBlurBox style="bg-blue-200">
-          <div className="text-5xl pl-10 py-10 w-full flex justify-center font-medium">Take a look at our&nbsp;<span className="text-orange-500">Trending Tutors</span></div>
-          <div className="flex items-center justify-around">
-            <div className="carousel w-full rounded-box ml-3">
-              {tutors && tutors.map((tutor) =>
-                <div id="slide1" key={tutor._id} className="carousel-item relative w-1/2">
-                  <TutorCard tutor={tutor} />
-                </div>,
-              )}
+          <div className="flex flex-col lg:py-10">
+            <div className="mb-10 w-full font-medium text-center">
+              <h1>Take a look at our&nbsp;<span className="text-orange-500">Trending Tutors</span></h1>
+            </div>
+            <div className="flex items-center justify-around">
+              <div className="carousel w-full rounded-box ml-3">
+                {tutors && tutors.map((tutor) =>
+                  <div id="slide1" key={tutor._id} className="carousel-item relative w-1/2">
+                    <TutorCard tutor={tutor} />
+                  </div>,
+                )}
+              </div>
             </div>
           </div>
         </LandingPageBlurBox>
       </div>
 
       {/** Discover more about us */}
-      <div className="container flex justify-center">
+      <div className="container mb-16">
         <LandingPageBlurBox style="bg-blue-200 ">
-          <div className=" pl-10 py-10 ml-auto mr-0 flex-col justify-end ">
-            <h1 className="text-5xl text-right px-5 font-medium">Discover more <br/><div className="text-blue-900">about us</div></h1>
-            <div className="w-full flex justify-end">
-              <p className="w-1/2 text-2xl my-10 text-right ">
+          <div className="lg:pl-10 lg:py-10 mx-auto flex flex-col lg:items-end">
+            <h1 className="text-center lg:text-right px-5 font-medium">Discover more <br/><div className="text-blue-900">about us</div></h1>
+            <p className="lg:w-1/2 md:text-2xl my-10 text-center lg:text-right ">
                     We are so excited to connect you with the best tutors to help you excel in your studies.
                     If you want to know more about our mission,
                     values, and the story behind our platform, visit our about us page!
-              </p>
-            </div>
-            <div className="flex w-full justify-end">
-              <Button style="bg-blue-600 hover:bg-blue-700" link="/aboutus">Learn more about us</Button>
-            </div>
+            </p>
+            <Button style="bg-blue-600 hover:bg-blue-700" link="/aboutUs">Learn more about us</Button>
           </div>
         </LandingPageBlurBox>
       </div>
 
       {/** Support our mission */}
-      <div className="container flex justify-center">
+      <div className="container">
         <LandingPageBlurBox style="bg-blue-200">
-          <div className="pl-10 py-10">
-            <h1 className="text-5xl mt-5 font-medium">Support our mission <br/>to provide <br/><div className="text-blue-900">quality education</div></h1>
-            <p className="w-3/5 text-2xl my-10">
+          <div className="lg:pl-10 lg:py-10 mx-auto flex flex-col lg:items-start">
+            <h1 className="font-medium text-center lg:text-left">Support our mission <br/>to provide <br/><div className="text-blue-900">quality education</div></h1>
+            <p className="lg:w-3/5 lg:text-2xl my-10 text-center lg:text-left">
                   At our platform, we are committed to providing quality education to students of all ages by
                   connecting them with highly qualified and experienced tutors.
                   Your support will help us to continue to improve and expand our services
                   to reach more students who need our help.
             </p>
-            <Button style="bg-blue-600 hover:bg-blue-700" link="/supportus">Support us now</Button>
+            <Button style="bg-blue-600 hover:bg-blue-700" link="/supportUs">Support us now</Button>
           </div>
         </LandingPageBlurBox>
       </div>

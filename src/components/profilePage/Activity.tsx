@@ -8,7 +8,7 @@ const Activity = ({fullName, activity}: {fullName: string, activity: any[]}) => 
     const populateActivities = async () => {
       for (let i = activity.length - 1; i >= 0; i--) {
         const element = activity[i];
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${element.activityType}s?_id=${element.activityId}`);
+        const res = await fetch(`/api/${element.activityType}s?_id=${element.activityId}`);
         const json = await res.json();
 
         let action: string;
