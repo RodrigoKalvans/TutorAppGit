@@ -5,9 +5,9 @@
 export default function Footer() {
   return (
     <>
-      <footer className="w-full flex justify-center bg-blue-900 text-white p-5 mt-20 rounded-t-xl">
-        <div className="w-4/5 px-8 flex-col justify-center">
-          <div className="w-full pb-5 px-10 flex justify-between">
+      <footer className="w-full flex justify-center bg-blue-900 text-white lg:p-5 mt-20 rounded-t-xl">
+        <div className="lg:w-4/5 lg:px-8 flex-col justify-center">
+          <div className="w-full pb-5 lg:px-10 flex justify-between">
             <div className="w-fit">
                             Navigation:
               <div>

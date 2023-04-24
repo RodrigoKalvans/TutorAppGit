@@ -4,7 +4,7 @@
 
 @layer base {
   h1 {
-    @apply text-current;
+    @apply text-current text-3xl md:text-5xl;
   }
   h2 {
     @apply text-current;
@@ -14,7 +14,7 @@
   }
   p {
     @apply text-current;
-    @apply m-1 mb-5 text-lg;
+    @apply m-1 mb-5 text-base md:text-lg;
   }
   ul {
     @apply list-disc;
@@ -44,6 +44,19 @@
     -moz-box-shadow: 0 0 3px #ccc;
     -webkit-box-shadow: 0 0 3px #ccc;
     box-shadow: 0 0 3px #ccc;
+  }
+
+  .modal {
+    @apply pt-12;
+    @apply fixed inset-0;
+    @apply overflow-y-auto max-w-full max-h-screen;
+    @apply bg-[#2c4e6b];
+    @apply transition-all duration-500;
+    @apply opacity-0 -translate-x-full;
+  }
+
+  .open {
+    @apply opacity-100 -translate-x-[0%];
   }
 }
 
