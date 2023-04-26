@@ -13,11 +13,11 @@ export const config = {
 };
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  db.connect();
+  await db.connect();
   // POST request
   if (req.method === "POST") await postPicture(req, res);
   if (req.method === "GET") await getPostPicture(req, res);
-  db.disconnect();
+  await db.disconnect();
 
   return;
 };
@@ -37,7 +37,8 @@ const postPicture = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const getPostPicture = async (req: NextApiRequest, res: NextApiResponse) => {
-  const post = await Post.findById(req.query.id);
+  const {id} = req.query;
+  const post = await Post.findById(id);
 
   if (!post) {
     res.status(StatusCodes.NOT_FOUND).send({message: "Post does not exist!"});
