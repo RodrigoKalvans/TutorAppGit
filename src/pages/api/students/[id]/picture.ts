@@ -3,7 +3,7 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiHandler} from "next/types";
 import {getToken} from "next-auth/jwt";
 import db from "@/utils/db";
-import {uploadProfilePicture, getProfilePicture} from "@/utils/apiHelperFunction/pictureHelper";
+import {uploadProfilePicture, getProfilePicture, getProfilePicturePresigned} from "@/utils/apiHelperFunction/pictureHelper";
 import Student from "@/models/Student";
 
 export const config = {
@@ -49,7 +49,7 @@ const getPicture = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  await getProfilePicture(res, student.picture);
+  await getProfilePicturePresigned(res, student.picture);
 
   return;
 };

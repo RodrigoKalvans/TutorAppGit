@@ -4,7 +4,7 @@ import {NextApiHandler} from "next/types";
 import {getToken} from "next-auth/jwt";
 import Tutor from "@/models/Tutor";
 import db from "@/utils/db";
-import {uploadProfilePicture, getProfilePicture} from "@/utils/apiHelperFunction/pictureHelper";
+import {uploadProfilePicture, getProfilePicturePresigned} from "@/utils/apiHelperFunction/pictureHelper";
 
 export const config = {
   api: {
@@ -45,7 +45,7 @@ const postProfilePicture = async (req: NextApiRequest, res: NextApiResponse) => 
 };
 
 const getPicture = async (req: NextApiRequest, res: NextApiResponse) => {
-  const {id} = req.query;
+  const {id, key} = req.query;
   const tutor = await Tutor.findById(id);
 
   if (!tutor) {
@@ -56,7 +56,7 @@ const getPicture = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  await getProfilePicture(res, tutor.picture);
+  await getProfilePicturePresigned(res, key as string);
 
   return;
 };
