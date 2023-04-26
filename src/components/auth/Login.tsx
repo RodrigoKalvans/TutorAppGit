@@ -1,9 +1,14 @@
 import * as Yup from "yup";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import {useRef, useState} from "react";
+import {getSession, signIn} from "next-auth/react";
+import {Session} from "next-auth";
+import {useRouter} from "next/router";
 
-import {ErrorMessage, Field, Formik} from "formik";
-import {FormEventHandler, useState} from "react";
-
-import {signIn} from "next-auth/react";
+interface Values {
+  email: string,
+  password: string,
+}
 
 /**
  * TODO: fill this in
@@ -11,13 +16,15 @@ import {signIn} from "next-auth/react";
  * @return {any}
  */
 export default function Login() {
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string>();
+  const loading = useRef<boolean>(false);
+  const router = useRouter();
 
   return (
     <>
       {/** abstract onSubmit to a function */}
       <Formik
-        initialValues={{email: "", password: "", tenantKey: ""}}
+        initialValues={{email: "", password: ""}}
         validationSchema={Yup.object({
           email: Yup.string()
               .max(30, "Must be 30 characters or less")
@@ -25,21 +32,26 @@ export default function Login() {
               .required("Please enter your email"),
           password: Yup.string().required("Please enter your password"),
         })}
-        onSubmit={async (values: { email: any; password: any; }, {setSubmitting}: any) => {
+        onSubmit={async (values: Values) => {
+          loading.current = true;
           const res = await signIn("credentials", {
             email: values.email,
             password: values.password,
-            callbackUrl: "/testAuth",
+            redirect: false,
           });
+
           if (res?.error) {
-            alert(res.error);
+            setError(res.error);
+            loading.current = false;
           } else {
-            setError(null);
+            const session: Session | null = await getSession();
+
+            router.push(`/${session?.user.role}s/${session?.user.id}`);
           }
         }}
       >
-        {(formik: { handleSubmit: FormEventHandler<HTMLFormElement> | undefined; isSubmitting: any; }) => (
-          <form onSubmit={formik.handleSubmit}>
+        {() => (
+          <Form>
             <div >
               <div className="text-red-400 text-md text-center rounded p-2">
                 {error}
@@ -83,14 +95,15 @@ export default function Login() {
               <div className="flex items-center justify-center">
                 <button
                   type="submit"
+                  disabled={loading.current}
                   className="bg-orange-500 text-gray-100 p-3 rounded-lg w-full"
                 >
-                  {formik.isSubmitting ? "Please wait..." : "Sign In"}
+                  {loading.current ? "Logging in..." : "Sign In"}
                 </button>
               </div>
 
             </div>
-          </form>
+          </Form>
         )}
       </Formik>
     </>
