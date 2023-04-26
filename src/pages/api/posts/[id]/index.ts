@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // DELETE request
   if (req.method === "DELETE") await deletePostByID(req, res, id as String);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 

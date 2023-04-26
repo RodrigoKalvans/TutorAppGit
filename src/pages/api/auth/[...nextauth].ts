@@ -64,7 +64,7 @@ export const authOptions: NextAuthOptions = {
         const isValid = await verify(hashedPassword, password);
         if (!isValid) throw new Error("Wrong credentials!");
 
-        await db.disconnect();
+        // await db.disconnect();
 
         // Returning the object to jwt
         return {

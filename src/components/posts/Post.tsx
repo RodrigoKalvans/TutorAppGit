@@ -23,9 +23,9 @@ const Post = ({post, index, handleDelete, session}:
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(post.likes.length);
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data: user, error, isLoading} = useSWR(`/api/${post.role}s/${post.userId}`, fetcher);
-  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(`/api/posts/${post._id.toString()}/image`, fetcher);
+  const fetcher = (url: string) => fetch(url).then((res) => res.json()).catch((res) => res.json());
+  const {data: user, error, isLoading} = useSWR(post ?`/api/${post.role}s/${post.userId}` : null, fetcher);
+  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(post ? `/api/posts/${post._id.toString()}/image` : null, fetcher);
 
   // quietly load comments
   const {data: comments}: {data: Array<any>} = useSWR(`/api/comments?postId=${post._id.toString()}`, fetcher);

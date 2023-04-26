@@ -24,7 +24,6 @@ const connect = async () => {
     autoIndex: true,
 
   });
-  console.log("Database connected");
   connection.isConnected = db.connections[0].readyState;
 };
 

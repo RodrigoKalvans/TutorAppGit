@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // DELETE request
   if (req.method === "DELETE") await deleteReviewById(req, res, reviewId as String);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 

@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // PUT request
   if (req.method === "PUT") await addTutorToSubject(req, res, id as String);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 
