@@ -36,7 +36,7 @@ export async function getStaticProps() {
   const subjects = await Subject.find();
   const students = await Student.find();
   const tutors = await Tutor.find();
-  await db.disconnect();
+  // await db.disconnect();
 
   return {
     props: {

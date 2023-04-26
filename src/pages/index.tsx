@@ -136,7 +136,7 @@ export async function getStaticProps() {
   await db.connect();
   const subjects = await Subject.find();
   const allTutors = await Tutor.find();
-  await db.disconnect();
+  // await db.disconnect();
 
   const sortedTutors = quickSort(allTutors, 0, allTutors.length - 1);
 

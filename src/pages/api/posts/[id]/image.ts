@@ -17,7 +17,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
   // POST request
   if (req.method === "POST") await postPicture(req, res);
   if (req.method === "GET") await getPostPicture(req, res);
-  await db.disconnect();
+  // await db.disconnect();
 
   return;
 };

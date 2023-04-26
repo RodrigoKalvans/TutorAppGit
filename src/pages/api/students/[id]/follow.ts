@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // PUT request
   if (req.method === "PUT") await followUser(req, res, id as String, "student");
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 

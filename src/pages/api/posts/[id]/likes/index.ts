@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // DELETE method
   if (req.method === "DELETE") await removeLike(req, res, id as string, post);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 
