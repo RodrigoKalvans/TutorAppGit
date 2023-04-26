@@ -1,11 +1,17 @@
 import {Session} from "next-auth";
-import {useEffect, useState} from "react";
+import {useState} from "react";
+import useSWR from "swr";
 import Image from "next/image";
 import ProfilePictureEdit from "@/components/profilePage/helpingComponents/ProfilePictureEdit";
 
 const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) => {
-  const [imageSrc, setImageSrc] = useState<string>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const {data} = useSWR(
+      (user && user.picture) ? `/api/${user.role}s/${user._id}/picture?key=${user.picture}` : null,
+      fetcher,
+  );
 
   const closeModal = () => {
     setModalOpen(false);
@@ -17,28 +23,15 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
     setModalOpen(true);
   };
 
-  useEffect(() => {
-    const getImageFromApi = async (userId: string, fileKey: string) => {
-      try {
-        const response = await fetch(`/api/${user.role}s/${userId}/picture?key=${fileKey}`);
-        const blob = await response.blob();
-        setImageSrc(URL.createObjectURL(blob));
-      } catch (error) {
-        console.error("Error retrieving image from API:", error);
-      }
-    };
-    if (user.picture) getImageFromApi(user._id.toString(), user.picture);
-  }, [user]);
-
   return (
     <>
-      {imageSrc ? (
+      {data && data.presignedUrl ? (
         <div
           className={`avatar w-full aspect-square ${(session?.user.id === user._id.toString()) ? "cursor-pointer": ""}`}
           onClick={handlePictureClick}
         >
           <div className="rounded-full w-full">
-            <Image src={imageSrc} alt="profile picture" width={96} height={96} priority />
+            <Image src={data.presignedUrl} alt="profile picture" width={600} height={600} priority />
           </div>
         </div>
       ) : (
@@ -47,13 +40,13 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
           onClick={handlePictureClick}
         >
           <div className="bg-neutral-focus text-neutral-content rounded-full w-full">
-            <span className="text-3xl">K</span>
+            <span className="text-2xl">{user.firstName[0]}</span>
           </div>
         </div>
       )}
 
       {modalOpen && (
-        <ProfilePictureEdit session={session!} imageSrc={imageSrc} closeModal={closeModal} />
+        <ProfilePictureEdit session={session!} imageSrc={data.presignedUrl || undefined} closeModal={closeModal} />
       )}
     </>
   );

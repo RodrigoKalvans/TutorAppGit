@@ -1,15 +1,14 @@
-import {CtxOrReq} from "next-auth/client/_utils";
 import Head from "next/head";
 import Login from "@/components/auth/Login";
 import SignUp from "@/components/auth/Signup";
-import {getCsrfToken} from "next-auth/react";
 import {useState} from "react";
 import Subject from "@/models/Subject";
+import db from "@/utils/db";
 
 /** Login page
  * @return {any} yo
  */
-export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfToken: any}) {
+export default function LoginPage({subjects}: {subjects: any}) {
   const [login, setLogin] = useState(true);
 
   return (
@@ -26,7 +25,7 @@ export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfTok
         <div className=" flex justify-center">
           <div className="flex-col justify-center w-1/4 shadow-xl bg-gray-100 rounded-xl px-8 pt-6 pb-8 mb-4">
 
-            {(login ? <Login csrfToken={csrfToken} /> : <SignUp csrfToken={csrfToken} subjects={subjects} />)}
+            {(login ? <Login /> : <SignUp subjects={subjects} />)}
 
             <div className="flex justify-center m-3">
               <button onClick={() => setLogin(!login)}>{(login ? "Sign up" : "Login")}</button>
@@ -41,16 +40,17 @@ export default function LoginPage({subjects, csrfToken}: {subjects: any, csrfTok
 
 /**
  * yo
- * @param {any} context a
  * @return {any}
  */
-export async function getServerSideProps(context: CtxOrReq | undefined) {
+export async function getStaticProps() {
+  await db.connect();
   const subjects = await Subject.find();
+  await db.disconnect();
 
   return {
     props: {
-      csrfToken: await getCsrfToken(context),
       subjects: JSON.parse(JSON.stringify(subjects)),
     },
+    revalidate: 3600,
   };
 }
