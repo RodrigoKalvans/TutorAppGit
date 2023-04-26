@@ -45,7 +45,7 @@ export default function LoginPage({subjects}: {subjects: any}) {
 export async function getStaticProps() {
   await db.connect();
   const subjects = await Subject.find();
-  await db.disconnect();
+  // await db.disconnect();
 
   return {
     props: {

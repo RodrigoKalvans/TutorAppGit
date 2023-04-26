@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // POST method
   if (req.method === "POST") await createSubject(req, res);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 

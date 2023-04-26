@@ -119,7 +119,7 @@ const savePayment = async (customerEmail: string, amount: number, paymentId: str
     res.status(400).send(`Error: ${err}`);
   }
 
-  await db.disconnect();
+  // await db.disconnect();
 
   return;
 };
