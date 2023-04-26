@@ -14,7 +14,7 @@ const TestAuth = () => {
       <p>fakeAuth</p>
 
       {!session && (
-        <Link href="/auth/signin">Sign in</Link>
+        <Link href="/signin">Sign in</Link>
       )}
       {session && (
         <div>

@@ -39,8 +39,8 @@ export default function Navbar({black = false}: {black?: boolean}) {
             </div>
             <span className="p-1 w-2/5 flex justify-around">
               <Link href="/feed" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Feed</Link>
-              <Link href="/aboutUs" className="normal-case text-base p-2 hover:text-orange-500 transition-all">About us</Link>
-              <Link href="/supportUs" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Support us</Link>
+              <Link href="/about" className="normal-case text-base p-2 hover:text-orange-500 transition-all">About us</Link>
+              <Link href="/support" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Support us</Link>
             </span>
             <span className="avatar">
               <Link href="/" className="w-8 rounded-full items-center justify-center overflow-hidden">
