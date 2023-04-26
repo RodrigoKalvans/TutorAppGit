@@ -19,11 +19,11 @@ export const config = {
  * @return {null} returns null
  */
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  db.connect();
+  await db.connect();
   // POST request
   if (req.method === "POST") await postProfilePicture(req, res);
   if (req.method === "GET") await getPicture(req, res);
-  db.disconnect();
+  await db.disconnect();
 
   return;
 };

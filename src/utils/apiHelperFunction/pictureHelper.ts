@@ -165,7 +165,6 @@ export const getProfilePicturePresigned = async (res: NextApiResponse, key: stri
     const url = await getSignedUrl(client, command, {expiresIn: 3600});
 
     res.status(StatusCodes.OK).send({presignedUrl: url});
-    console.log(url);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error);
   }
