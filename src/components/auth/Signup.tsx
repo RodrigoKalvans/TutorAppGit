@@ -15,7 +15,7 @@ YupPassword(Yup);
  * @param {any} param0
  * @return {any} yo
  */
-export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects: any}) {
+export default function SignUp({subjects}: {subjects: any}) {
   const [error, setError] = useState<any>(null);
 
   // only for tutors
@@ -163,11 +163,6 @@ export default function SignUp({csrfToken, subjects}: {csrfToken: any, subjects:
           <>
             <form onSubmit={formik.handleSubmit}>
               <div >
-                <input
-                  name="csrfToken"
-                  type="hidden"
-                  defaultValue={csrfToken}
-                />
                 <div className="text-red-400 text-md text-center rounded p-2">
                   {error}
                 </div>

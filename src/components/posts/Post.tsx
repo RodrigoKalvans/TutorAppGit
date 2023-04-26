@@ -110,7 +110,7 @@ const Post = ({post, index, handleDelete, session}:
       {post &&
         <div className="flex-col bg-white text-sm rounded-2xl shadow-md w-full max-w-[52rem] hov">
           {/** top section */}
-          {user && (
+          {user && !isLoading && (
             <div className="flex justify-between p-3 h-10 shadow-lg items-center">
               <Link href={`/${user.role}s/${user._id}`}>
                 <div className="flex gap-5 items-center">

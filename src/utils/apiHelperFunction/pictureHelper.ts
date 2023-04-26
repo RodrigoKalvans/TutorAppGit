@@ -155,6 +155,22 @@ export const getProfilePicture = async (res: NextApiResponse, key: string) => {
   }
 };
 
+export const getProfilePicturePresigned = async (res: NextApiResponse, key: string) => {
+  const command = new GetObjectCommand({
+    Bucket: "tcorvus-profile-images-bucket",
+    Key: key as string,
+  });
+
+  try {
+    const url = await getSignedUrl(client, command, {expiresIn: 3600});
+
+    res.status(StatusCodes.OK).send({presignedUrl: url});
+    console.log(url);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
 export const getPostPictures = async (res: NextApiResponse, keys: Array<string>) => {
   const commands = keys.map((key: string) => {
     return new GetObjectCommand({
@@ -197,6 +213,7 @@ export const getPostPicturesPresigned = async (res: NextApiResponse, keys: Array
 
     res.status(StatusCodes.OK).send(presignedUrls);
   } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
     console.log(error);
   }
 };

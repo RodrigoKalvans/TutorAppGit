@@ -10,7 +10,7 @@ import {signIn} from "next-auth/react";
  * @param {any} param0
  * @return {any}
  */
-export default function Login({csrfToken}: {csrfToken: any}) {
+export default function Login() {
   const [error, setError] = useState(null);
 
   return (
@@ -41,11 +41,6 @@ export default function Login({csrfToken}: {csrfToken: any}) {
         {(formik: { handleSubmit: FormEventHandler<HTMLFormElement> | undefined; isSubmitting: any; }) => (
           <form onSubmit={formik.handleSubmit}>
             <div >
-              <input
-                name="csrfToken"
-                type="hidden"
-                defaultValue={csrfToken}
-              />
               <div className="text-red-400 text-md text-center rounded p-2">
                 {error}
               </div>
