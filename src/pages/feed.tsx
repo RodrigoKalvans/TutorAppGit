@@ -88,7 +88,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     followedPosts = allPosts.filter((post: any) => loggedInUser.following.some((following: any) => post.userId == following.userId));
   }
 
-  await db.disconnect();
+  // await db.disconnect();
 
   return {
     props: {

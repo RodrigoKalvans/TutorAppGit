@@ -3,7 +3,7 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiHandler} from "next/types";
 import {getToken} from "next-auth/jwt";
 import db from "@/utils/db";
-import {uploadProfilePicture, getProfilePicture} from "@/utils/apiHelperFunction/pictureHelper";
+import {uploadProfilePicture, getProfilePicturePresigned} from "@/utils/apiHelperFunction/pictureHelper";
 import Student from "@/models/Student";
 
 export const config = {
@@ -13,11 +13,11 @@ export const config = {
 };
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  db.connect();
+  await db.connect();
   // POST request
   if (req.method === "POST") await postProfilePicture(req, res);
   if (req.method === "GET") await getPicture(req, res);
-  db.disconnect();
+  // await db.disconnect();
 
   return;
 };
@@ -39,7 +39,8 @@ const postProfilePicture = async (req: NextApiRequest, res: NextApiResponse) => 
 };
 
 const getPicture = async (req: NextApiRequest, res: NextApiResponse) => {
-  const student = await Student.findById(req.query.id);
+  const {id, key} = req.query;
+  const student = await Student.findById(id);
 
   if (!student) {
     res.status(StatusCodes.NOT_FOUND).send({message: "Student does not exist!"});
@@ -49,7 +50,7 @@ const getPicture = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  await getProfilePicture(res, student.picture);
+  await getProfilePicturePresigned(res, key as string);
 
   return;
 };

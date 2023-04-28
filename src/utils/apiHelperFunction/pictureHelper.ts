@@ -66,11 +66,10 @@ export const uploadPostImages = async (req: NextApiRequest, res: NextApiResponse
         }
       });
     }).then((post) => res.status(StatusCodes.OK).send(post)).
-        catch((error) => res.status(StatusCodes.BAD_REQUEST).send(error));
+        catch((error) => res.status(StatusCodes.BAD_REQUEST).send({error}));
     return;
   } catch (err) {
-    console.log(err);
-    res.status(StatusCodes.BAD_REQUEST).send(err);
+    res.status(StatusCodes.BAD_REQUEST).send({err});
     return;
   }
 };
@@ -127,11 +126,10 @@ export const uploadProfilePicture = async (req: NextApiRequest, res: NextApiResp
         }
       });
     }).then((user) => res.status(StatusCodes.OK).send({user})).
-        catch((error) => res.status(StatusCodes.BAD_REQUEST).send(error));
+        catch((error) => res.status(StatusCodes.BAD_REQUEST).send({error}));
     return;
   } catch (err) {
-    console.log(err);
-    res.status(StatusCodes.BAD_REQUEST).send(err);
+    res.status(StatusCodes.BAD_REQUEST).send({err});
     return;
   }
 };
@@ -150,8 +148,23 @@ export const getProfilePicture = async (res: NextApiResponse, key: string) => {
     res.status(StatusCodes.OK).send(image);
     return;
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send(error);
+    res.status(StatusCodes.BAD_REQUEST).send({error});
     return;
+  }
+};
+
+export const getProfilePicturePresigned = async (res: NextApiResponse, key: string) => {
+  const command = new GetObjectCommand({
+    Bucket: "tcorvus-profile-images-bucket",
+    Key: key as string,
+  });
+
+  try {
+    const url = await getSignedUrl(client, command, {expiresIn: 3600});
+
+    res.status(StatusCodes.OK).send({presignedUrl: url});
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send({error});
   }
 };
 
@@ -170,11 +183,8 @@ export const getPostPictures = async (res: NextApiResponse, keys: Array<string>)
 
     res.setHeader("Content-Type", "image/png");
     res.status(StatusCodes.OK).send(firstImage);
-    return;
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send(error);
-    console.log(error);
-    return;
+    res.status(StatusCodes.BAD_REQUEST).send({error});
   }
 };
 
@@ -197,7 +207,7 @@ export const getPostPicturesPresigned = async (res: NextApiResponse, keys: Array
 
     res.status(StatusCodes.OK).send(presignedUrls);
   } catch (error) {
-    console.log(error);
+    res.status(StatusCodes.BAD_REQUEST).send({error});
   }
 };
 
@@ -212,7 +222,7 @@ export const deleteProfilePicture = async (req: NextApiRequest, res: NextApiResp
     res.status(StatusCodes.OK).send("Profile picture with key " + key + " has been deleted.");
     console.log(response);
   } catch (err) {
-    res.status(StatusCodes.BAD_REQUEST).send(err);
+    res.status(StatusCodes.BAD_REQUEST).send({err});
   }
 };
 
@@ -227,6 +237,6 @@ export const deletePostPicture = async (req: NextApiRequest, res: NextApiRespons
     res.status(StatusCodes.OK).send("Profile picture with key " + key + " has been deleted.");
     console.log(response);
   } catch (err) {
-    res.status(StatusCodes.BAD_REQUEST).send(err);
+    res.status(StatusCodes.BAD_REQUEST).send({err});
   }
 };

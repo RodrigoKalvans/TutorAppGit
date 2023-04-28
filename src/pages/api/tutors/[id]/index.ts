@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // DELETE request
   if (req.method === "DELETE") await deleteTutorById(req, res, id as string);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 

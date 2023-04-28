@@ -14,7 +14,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
   // GET request
   if (req.method === "GET") await getLikes(req, res);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 

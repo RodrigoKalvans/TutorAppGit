@@ -57,7 +57,7 @@ export default function Home({subjects, tutors}: {subjects: Array<any>, tutors: 
           </div>
           <div className="flex gap-8">
             <Button style="bg-orange-500 text-lg font-medium normal-case" link="/feed">Browse</Button>
-            <Button style="bg-blue-600 text-lg font-medium normal-case" link="/signIn">Join us</Button>
+            <Button style="bg-blue-600 text-lg font-medium normal-case" link="/signin">Join us</Button>
           </div>
         </div>
       </section>
@@ -136,7 +136,7 @@ export async function getStaticProps() {
   await db.connect();
   const subjects = await Subject.find();
   const allTutors = await Tutor.find();
-  await db.disconnect();
+  // await db.disconnect();
 
   const sortedTutors = quickSort(allTutors, 0, allTutors.length - 1);
 

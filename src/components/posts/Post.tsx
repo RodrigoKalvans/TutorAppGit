@@ -24,9 +24,9 @@ const Post = ({post, index, handleDelete, session}:
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(post.likes.length);
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data: user, error, isLoading} = useSWR(`/api/${post.role}s/${post.userId}`, fetcher);
-  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(`/api/posts/${post._id.toString()}/image`, fetcher);
+  const fetcher = (url: string) => fetch(url).then((res) => res.json()).catch((res) => res.json());
+  const {data: user, error, isLoading} = useSWR(post ?`/api/${post.role}s/${post.userId}` : null, fetcher);
+  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(post ? `/api/posts/${post._id.toString()}/image` : null, fetcher);
 
   // quietly load comments
   const {data: comments}: {data: Array<any>} = useSWR(`/api/comments?postId=${post._id.toString()}`, fetcher);
@@ -111,7 +111,7 @@ const Post = ({post, index, handleDelete, session}:
       {post &&
         <div className="flex-col bg-white text-sm rounded-2xl shadow-md w-full max-w-[52rem] hov">
           {/** top section */}
-          {user && (
+          {user && !isLoading && (
             <div className="flex justify-between p-3 h-10 shadow-lg items-center">
               <Link href={`/${user.role}s/${user._id}`}>
                 <div className="flex gap-5 items-center">

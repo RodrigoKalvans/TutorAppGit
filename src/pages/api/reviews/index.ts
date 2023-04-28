@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") await getReviews(req, res);
   // POST method
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 

@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await getTwoTutors(req, res);
 
-  await db.disconnect();
+  // await db.disconnect();
   return;
 };
 
