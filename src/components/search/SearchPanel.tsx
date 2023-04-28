@@ -3,15 +3,7 @@ import {useEffect, useState} from "react";
 
 import Filter from "./Filter";
 import SearchProfile from "./SearchProfile";
-
-// this should be moved to a 'types' file or something
-// type TQuery = {
-//   role: string,
-//   firstName: string | undefined,
-//   lastName: string | undefined,
-//   rating: number | undefined,
-//   subjects: string[] | undefined,
-// }
+import { isPromoted } from "@/utils/promotion";
 
 /** TODO: correct this
  * @param {string} props.query query input by the user
@@ -28,11 +20,11 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
   };
 
   const filter = (f: any | undefined) => {
-    const arr = [...tutors, ...students];
+    let arr = [...tutors, ...students];
     if (f == undefined) f = router.query; // in case we got here from the navbar
     const keys = Object.keys(f); // keys in the filter (eg  { firstName: "john" } )
     console.log(f);
-    return arr.filter((user: any) => { // do the following on every user object
+    arr = arr.filter((user: any) => { // do the following on every user object
       return keys.every((key: any) => {
         if (f[key] == undefined || f[key].length == 0) return true; // no value present in filter field
         if (key == "role" && f[key] == "both") return true; // handle role == "both"
@@ -41,6 +33,9 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
         return user[key].toLowerCase().includes(f[key].toLowerCase());
       });
     });
+    // sort by promotion
+    arr.sort((a: any, b: any) => Number(isPromoted(b.donations)) - Number(isPromoted(a.donations)));
+    return arr;
   };
 
   useEffect(() => {
