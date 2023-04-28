@@ -29,9 +29,10 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
           <ProfilePicture user={user} session={session} />
         </div>
         <div className="w-9/20">
-          <h1 className="text-3xl font-medium">{user.firstName} {user.lastName}</h1>
-          {isPromoted(user.donations) && <PromoIcon size={15} className="-mx-2 -ml-3" fill="orange"></PromoIcon>}
           <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-medium flex items-center">{user.firstName} {user.lastName}
+              {isPromoted(user.donations) && <PromoIcon size={15} className="mx-2" fill="orange"></PromoIcon>}
+            </h1>
             {canEdit && (
               <>
                 <button

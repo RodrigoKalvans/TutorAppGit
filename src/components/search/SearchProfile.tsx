@@ -37,11 +37,11 @@ export default function SearchProfile({user}: {user: any}) {
                 <div className="flex-col w-1/2">
                   <div className="flex-col space-between">
                     {/** name */}
-                    <div className="text-xl">
+                    <div className="text-xl flex items-center">
                       <Link href={`/${user.role}s/${user._id}`}>
                         {user.firstName + " " + user.lastName}
                       </Link>
-                      {isPromoted(user.donations) && <PromoIcon size={15} className="-mx-2 -ml-3" fill="orange"></PromoIcon>}
+                      {isPromoted(user.donations) && <PromoIcon size={15} className="mx-2" fill="orange"></PromoIcon>}
                     </div>
                     {/** tutor or student */}
                     <div className="font-light text-base">
