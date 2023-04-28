@@ -58,7 +58,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
             </div>
 
             <div className="w-4/5 min-h-fit m-3">
-              <div className="overflow-auto max-h-screen rounded-3xl p-0 pb-8">
+              <div className="h-fit rounded-3xl p-0 pb-8">
                 {/** profiles */}
                 {profiles && (profiles.map((user: any) => (
                   <SearchProfile user={user} key={user._id}/>
@@ -68,8 +68,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
                     <div className="w-fit m-2 mt-5 uppercase text-xl">
                       no profiles found
                     </div>
-                  </div>
-                }
+                  </div>}
               </div>
             </div>
           </div>
