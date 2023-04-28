@@ -4,6 +4,7 @@ import Subjects from "../profilePage/helpingComponents/Subjects";
 import Link from "next/link";
 import useSWR from "swr";
 import Rating from "../profilePage/helpingComponents/Rating";
+import { isPromoted } from "@/utils/promotion";
 
 // TODO: types
 /**
@@ -39,6 +40,7 @@ export default function SearchProfile({user}: {user: any}) {
                       <Link href={`/${user.role}s/${user._id}`}>
                         {user.firstName + " " + user.lastName}
                       </Link>
+                      {isPromoted(user.donations) && <Promo1 size={15} className="-mx-2 -ml-3" fill="orange"></Promo1>}
                     </div>
                     {/** tutor or student */}
                     <div className="font-light text-base">
