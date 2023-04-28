@@ -8,7 +8,7 @@ import ContactDetails from "./helpingComponents/ContactDetails";
 import Languages from "./helpingComponents/Languages";
 import Subjects from "./helpingComponents/Subjects";
 import {Session} from "next-auth";
-import {EditIcon} from "@/utils/icons";
+import {EditIcon, PromoIcon} from "@/utils/icons";
 import EditProfileModal from "./EditProfileModal";
 import {isPromoted} from "@/utils/promotion";
 
@@ -30,7 +30,7 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
         </div>
         <div className="w-9/20">
           <h1 className="text-3xl font-medium">{user.firstName} {user.lastName}</h1>
-          {isPromoted(user.donations) && <Promo1 size={15} className="-mx-2 -ml-3" fill="orange"></Promo1>}
+          {isPromoted(user.donations) && <PromoIcon size={15} className="-mx-2 -ml-3" fill="orange"></PromoIcon>}
           <div className="flex justify-between items-center">
             {canEdit && (
               <>

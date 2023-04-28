@@ -6,7 +6,7 @@ import {format} from "date-fns";
 import Link from "next/link";
 import commentImage from "@/public/icons/commentsIcon.png";
 import Comment from "./Comment";
-import {DeleteIcon, LikeIcon, LoadingIcon} from "@/utils/icons";
+import {DeleteIcon, LikeIcon, LoadingIcon, PromoIcon} from "@/utils/icons";
 import {Session} from "next-auth";
 import { isPromoted } from "@/utils/promotion";
 
@@ -117,7 +117,7 @@ const Post = ({post, index, handleDelete, session}:
                 <div className="flex gap-5 items-center">
                   <div className="h-full w-8"><ProfilePicture user={user} /></div>
                   <div className="text-xl">{user.firstName + " " + user.lastName}</div>
-                  {isPromoted(user.donations) && <Promo1 size={15} className="-mx-2 -ml-3" fill="orange"></Promo1>}
+                  {isPromoted(user.donations) && <PromoIcon size={15} className="-mx-2 -ml-3" fill="orange"></PromoIcon>}
                   |
                   <div className="uppercase">{user.role}</div>
                 </div>
