@@ -8,7 +8,7 @@ import commentImage from "@/public/icons/commentsIcon.png";
 import Comment from "./Comment";
 import {DeleteIcon, LikeIcon, LoadingIcon, PromoIcon} from "@/utils/icons";
 import {Session} from "next-auth";
-import { isPromoted } from "@/utils/promotion";
+import {isPromoted} from "@/utils/promotion";
 
 /**
  * Post component

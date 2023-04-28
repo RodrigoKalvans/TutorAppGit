@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 
 import Filter from "./Filter";
 import SearchProfile from "./SearchProfile";
-import { isPromoted } from "@/utils/promotion";
+import {isPromoted} from "@/utils/promotion";
 
 /** TODO: correct this
  * @param {string} props.query query input by the user

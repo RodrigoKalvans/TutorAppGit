@@ -4,8 +4,8 @@ import Subjects from "../profilePage/helpingComponents/Subjects";
 import Link from "next/link";
 import useSWR from "swr";
 import Rating from "../profilePage/helpingComponents/Rating";
-import { isPromoted } from "@/utils/promotion";
-import { PromoIcon } from "@/utils/icons";
+import {isPromoted} from "@/utils/promotion";
+import {PromoIcon} from "@/utils/icons";
 
 // TODO: types
 /**
