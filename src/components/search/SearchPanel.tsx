@@ -45,7 +45,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
     return () => {
       setProfiles(null);
     };
-  }, [router.query]);
+  }, [router.query]); // I don't understand this error
 
   return (
     <>
