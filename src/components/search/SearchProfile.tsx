@@ -13,11 +13,8 @@ import {PromoIcon} from "@/utils/icons";
  * @param {{any}}} user object to be displayed in the component
  * @return {any} yo
  */
-export default function SearchProfile({user}: {user: any}) {
-  // TODO: type
-
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data: subjects} = useSWR("/api/subjects", fetcher);
+export default function SearchProfile({user, allSubjects}: {user: any, allSubjects: Array<any>}) {
+  const subjects = allSubjects.filter((subject: any) => user.subjects.includes(subject._id));
 
   return (
     <>
@@ -25,10 +22,9 @@ export default function SearchProfile({user}: {user: any}) {
       <div className="w-full p-2">
         <Link href={`/${user.role}s/${user._id}`}>
           {user && (
-            <div className="w-full min-w-40 h-28 bg-gray-200 rounded-2xl shadow flex align-middle p-2 hov">
+            <div className="w-full min-w-40 h-28 bg-gray-200 rounded-full shadow flex align-middle p-2 hov">
               {/** profile image */}
               <div className="w-24 h-24 flex justify-center align-middle aspect-square">
-                {/** TODO: replace with profile image */}
                 <ProfilePicture user={user} />
               </div>
 

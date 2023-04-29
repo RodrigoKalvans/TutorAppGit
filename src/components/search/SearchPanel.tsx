@@ -61,7 +61,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
               <div className="h-fit rounded-3xl p-0 pb-8">
                 {/** profiles */}
                 {profiles && (profiles.map((user: any) => (
-                  <SearchProfile user={user} key={user._id}/>
+                  <SearchProfile user={user} allSubjects={subjects} key={user._id}/>
                 ))) }
                 {profiles && profiles.length === 0 &&
                   <div className="w-full flex justify-center">
