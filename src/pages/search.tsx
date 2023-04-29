@@ -12,7 +12,7 @@ import db from "@/utils/db";
  * @param {any} param0
  * @return {any} search page
  */
-export default function Search({subjects, students, tutors}: {subjects: any, students: any, tutors: any}) {
+export default function Search({subjects, students, tutors}: {subjects: Array<any>, students: Array<any>, tutors: Array<any>}) {
   return (
     <>
       <Head>
@@ -21,8 +21,8 @@ export default function Search({subjects, students, tutors}: {subjects: any, stu
       <Navbar black={true} />
       <main className="flex-col justify-center min-h-screen container">
         <SearchPanel subjects={subjects} students={students} tutors={tutors} />
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 }
@@ -36,7 +36,7 @@ export async function getStaticProps() {
   const subjects = await Subject.find();
   const students = await Student.find();
   const tutors = await Tutor.find();
-  await db.disconnect();
+  // await db.disconnect();
 
   return {
     props: {
