@@ -46,7 +46,7 @@ const getTutors = async (res: NextApiResponse) => {
  * @param {Array<any>} arr
  * @return {Array<any>} sorted items
  */
-const quickSort = (arr: Array<any>) => {
+const quickSort: any = (arr: Array<any>) => {
   if (arr.length <= 1) {
     return arr;
   }
