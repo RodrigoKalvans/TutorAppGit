@@ -1,6 +1,6 @@
 import {format} from "date-fns";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
-import { StarIcon } from "@/utils/icons";
+import {StarIcon} from "@/utils/icons";
 
 
 const TrendingTutorReview = ({review, reviewer}: {review: any, reviewer: any}) => {

@@ -143,12 +143,11 @@ export async function getStaticProps() {
       $in: TRENDING_TUTOR_IDS,
     },
   });
-  const reviews = await Review.find();
-
-  console.log(reviews);
 
   // TODO: filter reviews to only include the necessary ones
+  // TODO: preselect reviews??
 
+  const reviews = await Review.find();
   const reviewerIds = reviews.map((r: any) => {
     return r.reviewerUserId;
   });

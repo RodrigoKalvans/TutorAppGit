@@ -2,8 +2,8 @@ import Link from "next/link";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import Rating from "../profilePage/helpingComponents/Rating";
 import useSWR from "swr";
-import { isPromoted } from "@/utils/promotion";
-import { PromoIcon } from "@/utils/icons";
+import {isPromoted} from "@/utils/promotion";
+import {PromoIcon} from "@/utils/icons";
 
 const FeedPageTopTutor = ({tutor}: any) => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());

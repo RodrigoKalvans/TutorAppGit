@@ -15,8 +15,8 @@ export default function TutorCard({tutor, subjects, reviews, reviewers}: {tutor:
     <div className="carousel-item relative overflow-">
       <div className="bg-blue-920 w-[700px] h-[680px] text-white rounded-3xl flex">
         <div className="w-1/2 h-[680px] flex flex-col justify-center gap-6">
-          <ProfilePicture user={tutor} rounded={false} style="rounded-b-[3.5rem] rounded-tl-3xl -mt-[2.65rem]" />
-          <div className="flex justify-around mx-10 text-[14px] text-gray-300">
+          <ProfilePicture user={tutor} rounded={false} style="rounded-b-[3.5rem] rounded-tl-3xl -mt-[3rem]" />
+          <div className="flex justify-around mx-10 -mt-3 text-[14px] text-gray-400">
             <div>Followers: {tutor.followers.length}</div>
             <div>Following: {tutor.following.length}</div>
           </div>
@@ -25,7 +25,7 @@ export default function TutorCard({tutor, subjects, reviews, reviewers}: {tutor:
             {subject.name}
           </div>
           <div className="flex justify-center gap-3 text-[16px]">
-            <EmailIcon fill="orange" className="text-[30px]"/>
+            <EmailIcon fill="#F97316" className="text-[30px]"/>
             {tutor.email}
           </div>
           <div className="flex justify-center">
