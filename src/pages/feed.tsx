@@ -21,7 +21,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
   const [general, setGeneral] = useState<boolean>(true);
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data, error, isLoading} = useSWR("/api/tutors/topTutorsByFollowers", fetcher);
+  const {data, error, isLoading} = useSWR("/api/tutors?topTutors=true", fetcher);
 
   return (
     <>

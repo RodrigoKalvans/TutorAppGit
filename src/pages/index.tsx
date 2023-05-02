@@ -8,24 +8,15 @@ import Image from "next/image";
 import LandingPageBgImage from "@/public/images/landing-background-image-fixed.jpg";
 import TutorCard from "@/components/landingPage/TutorCard";
 import Subject from "@/models/Subject";
-import Tutor from "@/models/Tutor";
 import db from "@/utils/db";
-import Review from "@/models/Review";
-import Student from "@/models/Student";
-
-
-const TRENDING_TUTOR_IDS = [
-  "63f8d074297967f427883506", // John Doe
-  "64394b5eb6a88bc9453a234e", // Peter Giovani
-  "644050304930cc8f7feef806", // Tim Misign
-  "64493963d108355557b4eacc", // Ronald Gates
-];
+import {getLandingPageTutors} from "@/utils/featuredTutors";
+import {LandingPageCard} from "@/types/ambiguous-types";
 
 /**
  * placeholder docs
  * @return {any} JSX landing page
  */
-export default function Home({subjects, tutors, reviews, reviewers}: {subjects: Array<any>, tutors: Array<any>, reviews: Array<any>, reviewers: Array<any>}) {
+export default function Home({subjects, carouselItems}: {subjects: Array<any>, carouselItems: Array<any>}) {
   return (
     <>
       <Head>
@@ -86,8 +77,8 @@ export default function Home({subjects, tutors, reviews, reviewers}: {subjects: 
               <h1>Take a look at our&nbsp;<span className="text-orange-500">Featured Tutors</span></h1>
             </div>
             <div className="carousel rounded-box flex gap-10 overflow-y-hidden">
-              {tutors && tutors.map((tutor) =>
-                <TutorCard tutor={tutor} key={tutor._id} subjects={subjects} reviews={reviews} reviewers={reviewers}/>,
+              {carouselItems && carouselItems.map((item: LandingPageCard) =>
+                <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
               )}
             </div>
           </div>
@@ -138,39 +129,14 @@ export default function Home({subjects, tutors, reviews, reviewers}: {subjects: 
 export async function getStaticProps() {
   await db.connect();
   const subjects = await Subject.find();
-  const trendingTutors = await Tutor.find({
-    _id: {
-      $in: TRENDING_TUTOR_IDS,
-    },
-  });
-
-  // TODO: filter reviews to only include the necessary ones
-  // TODO: preselect reviews??
-
-  const reviews = await Review.find();
-  const reviewerIds = reviews.map((r: any) => {
-    return r.reviewerUserId;
-  });
-
-  const tutorReviewers = await Tutor.find({
-    _id: {
-      $in: reviewerIds,
-    },
-  });
-  const studentReviewers = await Student.find({
-    _id: {
-      $in: reviewerIds,
-    },
-  });
-
   // await db.disconnect();
+
+  const carouselItems = await getLandingPageTutors();
 
   return {
     props: {
       subjects: JSON.parse(JSON.stringify(subjects.slice(0, 9))),
-      tutors: JSON.parse(JSON.stringify(trendingTutors)),
-      reviews: JSON.parse(JSON.stringify(reviews)),
-      reviewers: JSON.parse(JSON.stringify([...tutorReviewers, ...studentReviewers])),
+      carouselItems: JSON.parse(JSON.stringify(carouselItems)),
     },
   };
 }

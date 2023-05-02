@@ -40,7 +40,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
         number: {type: Number, default: 0},
         ratingCount: {type: Number, default: 0},
       },
-      reviews: [{reviewId: {type: String}}],
+      reviews: [{type: String}],
       activity: [{
         activityId: {type: String},
         activityType: {type: String, enum: {
