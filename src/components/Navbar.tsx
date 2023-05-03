@@ -2,17 +2,30 @@ import Image from "next/image";
 import Link from "next/link";
 import NavbarSearch from "./NavbarSearch";
 import logo from "@/public/images/tcorvus-logo-transparent.png";
-import profile from "@/public/images/profile-icon-transparent.png";
 import MobileNavbar from "./MobileNavbar";
 import {useState} from "react";
+import useSWR from "swr";
+import {ProfileIcon} from "@/utils/icons";
+import {signOut, useSession} from "next-auth/react";
+import ProfilePicture from "./profilePage/helpingComponents/ProfilePicture";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 /**
- *
+ * Navbar
  * @param {any} param0 plc
  * @return {any} plc
  */
-export default function Navbar({black = false}: {black?: boolean}) {
+const Navbar = ({black = false}: {black?: boolean}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [dropdown, setDropdown] = useState<boolean>(false);
+  const {data: session, status} = useSession();
+
+  const {data} = useSWR(
+    (session?.user && status === "authenticated") ? `/api/${session.user.role}s/${session.user.id}` : null,
+    fetcher,
+  );
+
   return (
     <>
       <nav
@@ -42,16 +55,27 @@ export default function Navbar({black = false}: {black?: boolean}) {
               <Link href="/about" className="normal-case text-base p-2 hover:text-orange-500 transition-all">About us</Link>
               <Link href="/support" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Support us</Link>
             </span>
-            <span className="avatar">
-              <Link href="/" className="w-8 rounded-full items-center justify-center overflow-hidden">
-                <Image
-                  src={profile}
-                  alt="profile"
-                  width={1}
-                  height={1}
-                />
-              </Link>
-            </span>
+
+            {/** Avatar */}
+            {status == "authenticated" && data ? (
+                  <div className="dropdown dropdown-end">
+                    <span className="avatar relative cursor-pointer" onClick={() => setDropdown(!dropdown)}>
+                      <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full border-2 border-orange-400">
+                        <ProfilePicture user={data} />
+                      </div>
+                    </span>
+                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-orange-400  text-white rounded-box w-52 z-50">
+                      <li><Link href={`/${session.user.role}s/${session.user.id}`}>Profile</Link></li>
+                      <li><div onClick={async () => await signOut()}>Logout</div></li>
+                    </ul>
+                  </div>
+                  ) : (
+                    <span className="avatar relative cursor-pointer">
+                      <Link href={"/signin"}>
+                        <ProfileIcon className="text-[32px] text-orange-400" />
+                      </Link>
+                    </span>
+                  )}
           </div>
           <button type="button" className="md:hidden" onClick={() => {
             console.log("open");
@@ -66,4 +90,6 @@ export default function Navbar({black = false}: {black?: boolean}) {
       <MobileNavbar handleClose={() => setIsOpen(false)} isOpen={isOpen} />
     </>
   );
-}
+};
+
+export default Navbar;

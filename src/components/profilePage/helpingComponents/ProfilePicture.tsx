@@ -4,10 +4,11 @@ import useSWR from "swr";
 import Image from "next/image";
 import ProfilePictureEdit from "@/components/profilePage/helpingComponents/ProfilePictureEdit";
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const ProfilePicture = ({session, user, rounded = true, style = ""}: {session?: Session | null, user: any, rounded?: boolean, style?: string}) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data} = useSWR(
       (user && user.picture) ? `/api/${user.role}s/${user._id}/picture?key=${user.picture}` : null,
       fetcher,

@@ -45,6 +45,7 @@ export default function SearchPanel({subjects, students, tutors}: {subjects: any
     return () => {
       setProfiles(null);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]); // I don't understand this error
 
   return (
