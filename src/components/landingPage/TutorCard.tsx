@@ -16,7 +16,7 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
     <div className="carousel-item relative overflow-">
       <div className="bg-blue-920 w-[700px] h-[680px] text-white rounded-3xl flex">
         <div className="w-1/2 h-[680px] flex flex-col justify-center gap-6">
-          <ProfilePicture user={card.tutor} rounded={false} style="rounded-b-[3.5rem] rounded-tl-3xl -mt-[3rem]" />
+          <ProfilePicture user={card.tutor} rounded={false} style="rounded-b-[3.5rem] rounded-tl-3xl -mt-[3.3rem]" />
           <div className="flex justify-around mx-10 -mt-3 text-[14px] text-gray-400">
             <div>Followers: {card.tutor.followers.length}</div>
             <div>Following: {card.tutor.following.length}</div>
