@@ -77,7 +77,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
               <h1>Take a look at our&nbsp;<span className="text-orange-500">Featured Tutors</span></h1>
             </div>
             <div className="carousel rounded-box flex gap-10 overflow-y-hidden">
-              {carouselItems && carouselItems.map((item: LandingPageCard) =>
+              {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
                 <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
               )}
             </div>
