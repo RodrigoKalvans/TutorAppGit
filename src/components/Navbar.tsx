@@ -18,7 +18,6 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
  */
 const Navbar = ({black = false}: {black?: boolean}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [dropdown, setDropdown] = useState<boolean>(false);
   const {data: session, status} = useSession();
 
   const {data} = useSWR(
@@ -59,7 +58,7 @@ const Navbar = ({black = false}: {black?: boolean}) => {
             {/** Avatar */}
             {status == "authenticated" && data ? (
                   <div className="dropdown dropdown-end">
-                    <span className="avatar relative cursor-pointer" onClick={() => setDropdown(!dropdown)}>
+                    <span className="avatar relative cursor-pointer">
                       <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full border-2 border-orange-400">
                         <ProfilePicture user={data} />
                       </div>
