@@ -24,14 +24,11 @@
   }
 }
 
-@layer components {
+@layer utilities {
   .bgimage {
     @apply bg-scroll bg-contain bg-no-repeat bg-top;
   }
 
-}
-
-@layer utilities {
   .hov {
     @apply hover:shadow-xl transition-all duration-500
   }

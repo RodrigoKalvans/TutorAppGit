@@ -29,6 +29,7 @@ const PostManager = ({posts: postsArr}: {posts: any[]}) => {
       console.log(await response.json());
     }
   };
+
   return (
     <div className="mx-auto h-fit flex flex-col-reverse gap-10">
       {posts.length > 0 ?

@@ -24,6 +24,13 @@ module.exports = {
       },
       colors: {
         "light": "#F7F7F7",
+        "blue": {
+          910: "rgb(22, 48, 92)",
+          920: "rgb(26, 49, 84)",
+        },
+        "orange": {
+          310: "rgb(255, 156, 81)",
+        },
       },
       textColor: {
         "subtitle": "#505050",

@@ -4,10 +4,11 @@ import useSWR from "swr";
 import Image from "next/image";
 import ProfilePictureEdit from "@/components/profilePage/helpingComponents/ProfilePictureEdit";
 
-const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) => {
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+const ProfilePicture = ({session, user, rounded = true, style = ""}: {session?: Session | null, user: any, rounded?: boolean, style?: string}) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data} = useSWR(
       (user && user.picture) ? `/api/${user.role}s/${user._id}/picture?key=${user.picture}` : null,
       fetcher,
@@ -30,7 +31,7 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
           className={`avatar w-full aspect-square ${(session?.user.id === user._id.toString()) ? "cursor-pointer": ""}`}
           onClick={handlePictureClick}
         >
-          <div className="rounded-full w-full">
+          <div className={`${rounded && "rounded-full"} ${style} w-full`}>
             <Image src={data.presignedUrl} alt="profile picture" width={600} height={600} priority />
           </div>
         </div>

@@ -8,8 +8,9 @@ import ContactDetails from "./helpingComponents/ContactDetails";
 import Languages from "./helpingComponents/Languages";
 import Subjects from "./helpingComponents/Subjects";
 import {Session} from "next-auth";
-import {EditIcon} from "@/utils/icons";
+import {EditIcon, PromoIcon} from "@/utils/icons";
 import EditProfileModal from "./EditProfileModal";
+import {isPromoted} from "@/utils/promotion";
 
 const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {user: any, isFollowing: boolean, subjects: Array<any>, session: Session | null, allSubjects: Array<any>}) => {
   const [followers, setFollowers] = useState(user.followers.length);
@@ -28,24 +29,26 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
           <ProfilePicture user={user} session={session} />
         </div>
         <div className="w-9/20">
-          {canEdit ? (
-            <div className="flex justify-between items-center">
-              <h1 className="text-3xl font-medium">{user.firstName} {user.lastName}</h1>
-              <button
-                className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-all"
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                <EditIcon size={20} color="#505050"></EditIcon>
-              </button>
-              {isEditing && (
-                <div className="absolute">
-                  <EditProfileModal closeModal={closeModal} allSubjects={allSubjects} user={user} session={session} userSubjects={subjects} />
-                </div>
-              )}
-            </div>
-          ) : (
-            <h1 className="text-3xl font-medium">{user.firstName} {user.lastName}</h1>
-          )}
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-medium flex items-center">{user.firstName} {user.lastName}
+              {isPromoted(user.donations) && <PromoIcon size={15} className="mx-2" fill="orange"></PromoIcon>}
+            </h1>
+            {canEdit && (
+              <>
+                <button
+                  className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-all"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
+                  <EditIcon size={20} color="#505050"></EditIcon>
+                </button>
+                {isEditing && (
+                  <div className="absolute">
+                    <EditProfileModal closeModal={closeModal} allSubjects={allSubjects} user={user} session={session} userSubjects={subjects} />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
 
           <p className="m-0 text-xl text-subtitle capitalize">{user.role}</p>
           {user.location && (

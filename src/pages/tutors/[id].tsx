@@ -105,16 +105,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   // Get all subjects
   const allSubjects = await Subject.find();
 
-  // Get reviews
-  const arr: Array<string> = [];
-
-  for (let i = 0; i < tutor.reviews.length; i++) {
-    arr.push(tutor.reviews[i].reviewId);
-  }
-
   const reviews = await Review.find({
     _id: {
-      $in: arr,
+      $in: tutor.reviews,
     },
   });
 
