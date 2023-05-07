@@ -46,7 +46,7 @@ const ProfilePicture = ({session, user}: {session?: Session | null, user: any}) 
       )}
 
       {modalOpen && (
-        <ProfilePictureEdit session={session!} imageSrc={data.presignedUrl || undefined} closeModal={closeModal} />
+        <ProfilePictureEdit session={session!} imageSrc={data ? data.presignedUrl : undefined} closeModal={closeModal} />
       )}
     </>
   );
