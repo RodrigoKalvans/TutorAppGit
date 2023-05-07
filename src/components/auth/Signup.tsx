@@ -104,7 +104,8 @@ export default function SignUp({subjects}: {subjects: any}) {
           setError(null);
         }
       } else {
-        console.log(res);
+        // TODO: handle errors better
+        console.log(json);
       }
 
       // if user is a tutor, send patch request to update subjects
