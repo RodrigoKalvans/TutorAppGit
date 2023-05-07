@@ -7,7 +7,6 @@ import {useState} from "react";
 import useSWR from "swr";
 import {ProfileIcon} from "@/utils/icons";
 import {signOut, useSession} from "next-auth/react";
-import ProfilePicture from "./profilePage/helpingComponents/ProfilePicture";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -19,10 +18,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const Navbar = ({black = false}: {black?: boolean}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdown, setDropdown] = useState<boolean>(false);
-  const {data: session, status} = useSession();
+  const {data: session} = useSession();
 
-  const {data} = useSWR(
-    (session?.user && status === "authenticated") ? `/api/${session.user.role}s/${session.user.id}` : null,
+  const {data: avatar} = useSWR(
+    (session && session.user.picture) ? `/api/${session.user.role}s/${session.user.id}/picture?key=${session.user.picture}` : null,
     fetcher,
   );
 
@@ -57,25 +56,34 @@ const Navbar = ({black = false}: {black?: boolean}) => {
             </span>
 
             {/** Avatar */}
-            {status == "authenticated" && data ? (
-                  <div className="dropdown dropdown-end">
-                    <span className="avatar relative cursor-pointer" onClick={() => setDropdown(!dropdown)}>
-                      <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full border-2 border-orange-400">
-                        <ProfilePicture user={data} />
-                      </div>
-                    </span>
-                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-orange-400  text-white rounded-box w-52 z-50">
-                      <li><Link href={`/${session.user.role}s/${session.user.id}`}>Profile</Link></li>
-                      <li><div onClick={async () => await signOut()}>Logout</div></li>
-                    </ul>
-                  </div>
-                  ) : (
-                    <span className="avatar relative cursor-pointer">
-                      <Link href={"/signin"}>
-                        <ProfileIcon className="text-[32px] text-orange-400" />
-                      </Link>
-                    </span>
-                  )}
+            {session ? (
+                <div className="dropdown dropdown-end">
+                  <span className="avatar relative cursor-pointer" onClick={() => setDropdown(!dropdown)}>
+                    <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full">
+                      {avatar && avatar.presignedUrl ? (
+                          <Image src={avatar.presignedUrl} alt="profile image" width={45} height={45} />
+
+                        ) : (
+                          <div className="avatar placeholder w-full aspect-square">
+                            <div className="bg-neutral-focus text-neutral-content rounded-full w-full">
+                              <span className="text-2xl">{session.user.firstName[0]}</span>
+                            </div>
+                          </div>
+                          )}
+                    </div>
+                  </span>
+                  <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-orange-400  text-white rounded-box w-52 z-50">
+                    <li><Link href={`/${session.user.role}s/${session.user.id}`}>Profile</Link></li>
+                    <li><div onClick={async () => await signOut()}>Logout</div></li>
+                  </ul>
+                </div>
+              ) : (
+                <span className="avatar relative cursor-pointer">
+                  <Link href={"/signin"}>
+                    <ProfileIcon className="text-[32px] text-orange-400" />
+                  </Link>
+                </span>
+              )}
           </div>
           <button type="button" className="md:hidden" onClick={() => {
             setIsOpen(true);

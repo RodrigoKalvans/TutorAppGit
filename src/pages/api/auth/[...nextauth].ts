@@ -67,12 +67,22 @@ export const authOptions: NextAuthOptions = {
         // await db.disconnect();
 
         // Returning the object to jwt
-        return {
+        const res: {
+          id: string
+          firstName: string,
+          lastName: string,
+          role: string,
+          picture?: string,
+        } = {
           id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,
         };
+
+        if (user.picture) res.picture = user.picture;
+
+        return res;
       },
     }),
   ],
@@ -93,6 +103,7 @@ export const authOptions: NextAuthOptions = {
       if (user?.firstName) token.firstName = user.firstName;
       if (user?.lastName) token.lastName = user.lastName;
       if (user?.role) token.role = user.role;
+      if (user?.picture) token.picture = user.picture;
 
       return token;
     },
@@ -106,6 +117,7 @@ export const authOptions: NextAuthOptions = {
       if (token?.firstName) session.user.firstName = token.firstName;
       if (token?.lastName) session.user.lastName = token.lastName;
       if (token?.role) session.user.role = token.role;
+      if (token?.picture) session.user.picture = token.picture;
 
       return session;
     },
