@@ -16,8 +16,27 @@ import db from "@/utils/db";
 import Post from "@/models/Post";
 import PostManager from "@/components/posts/PostManager";
 import CreatePostButton from "@/components/CreatePostButton";
+import Comment from "@/models/Comment";
+import Like from "@/models/Like";
 
-const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: {tutor: any, isFollowing: boolean, subjects: Array<any>, reviews: Array<any>, allSubjects: Array<any>, posts: Array<any>}) => {
+const TutorPage = (
+    {
+      tutor,
+      isFollowing,
+      subjects,
+      reviews,
+      allSubjects,
+      posts,
+      activityArray,
+    }: {
+      tutor: any,
+      isFollowing: boolean,
+      subjects: Array<any>,
+      reviews: Array<any>,
+      allSubjects: Array<any>,
+      posts: Array<any>,
+      activityArray: Array<any>,
+    }) => {
   const {data: session} = useSession();
 
   if (!tutor) {
@@ -42,7 +61,7 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
             <section className="basis-[40rem]">
               <div className="flex flex-col gap-5">
                 <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
-                <Activity fullName={fullName} activity={tutor.activity} />
+                <Activity fullName={fullName} activity={activityArray} />
                 <ReviewsSection reviews={reviews} session={session}
                   reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
 
@@ -113,7 +132,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   });
 
   // Get reviewers
-  const newArr = await fetchReviewers(reviews);
+  const newReviewsArr = await fetchReviewers(reviews);
+
+  // Get all related activity
+  const activityArray: Array<any> = [];
+
+  await populateActivityArray(tutor.activity, activityArray);
 
   return {
     props: {
@@ -121,8 +145,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       isFollowing,
       subjects: JSON.parse(JSON.stringify(subjects)),
       allSubjects: JSON.parse(JSON.stringify(allSubjects)),
-      reviews: JSON.parse(JSON.stringify(newArr)),
+      reviews: JSON.parse(JSON.stringify(newReviewsArr)),
       posts: JSON.parse(JSON.stringify(posts)),
+      activityArray: JSON.parse(JSON.stringify(activityArray)),
     },
   };
 };
@@ -146,4 +171,39 @@ const fetchReviewers = async (reviews: Array<any>) => {
     }
   }
   return newArr;
+};
+
+const populateActivityArray = async (
+    activities: Array<{
+      activityId: string,
+      activityType: string
+    }>,
+    activityArray: Array<any>) => {
+  for (let i = activities.length - 1; i >= 0; i--) {
+    const reference = activities[i];
+    let activity;
+    let action: string;
+
+    switch (reference.activityType) {
+      case "comment":
+        activity = await Comment.findById(reference.activityId);
+        action = "commented on post";
+        break;
+
+      case "like":
+        activity = await Like.findById(reference.activityId);
+        action = "liked post";
+        break;
+
+      case "review":
+        activity = await Review.findById(reference.activityId);
+        action = "reviewed a user";
+        break;
+
+      default:
+        return;
+    }
+
+    activityArray.push({activityType: reference.activityType, action, activity});
+  }
 };
