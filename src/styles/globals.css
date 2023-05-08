@@ -21,6 +21,9 @@
   input {
     @apply p-3 rounded-md;
   }
+  input::placeholder {
+    @apply text-gray-700
+  }
   label {
     @apply uppercase text-sm text-gray-600 font-bold
   }
