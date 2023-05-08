@@ -17,11 +17,17 @@ type Values = {
 
 const schema = Yup.object({
   role: Yup
-      .string(),
+      .string()
+      .max(8),
   firstName: Yup
-      .string(),
+      .string()
+      .max(25),
   lastName: Yup
-      .string(),
+      .string()
+      .max(25),
+  location: Yup
+      .string()
+      .max(50),
   rating: Yup
       .number()
       .min(0)
@@ -45,26 +51,25 @@ export default function Filter({
   allUsers: Array<any>
 }) {
   const router: NextRouter = useRouter();
-  const [role, setRole] = useState<string>(router.query.role ? router.query.role.toString() : "tutor");
+  const role = router.query.role ? router.query.role.toString() : "tutor";
   const [chosenSubjects, setChosenSubjects] = useState<Array<any>>();
   const [chosenLanguages, setChosenLanguages] = useState<Array<any>>();
 
   const initValues = { // for the form
     role: role,
-    firstName: "",
-    lastName: "",
+    firstName: undefined,
+    lastName: undefined,
+    location: undefined,
     rating: undefined,
   };
 
   const handleSubmit = (values: any) => {
     const query = {
-      role: role,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      rating: values.rating,
+      ...values,
       subjects: chosenSubjects,
       languages: chosenLanguages,
     };
+    console.log(query);
     setProfileState(filterProfiles(query, allUsers));
   };
 
@@ -119,107 +124,111 @@ export default function Filter({
 
   return (
     <>
-      <div className="w-[16rem] md:w-[18rem] lg:w-[20rem] h-fit rounded-2xl shadow-xl bg-white p-2">
-        <div className="flex justify-center">
-          <Formik
-            initialValues={initValues}
-            validationSchema={schema}
-            onSubmit={async (values: Values) => handleSubmit(values)}
-          >
-            {(formik: {
-              isSubmitting: boolean | undefined;
-            }) => (
-              <Form className="w-4/5 flex-col justify-center ">
-                <h2 className="uppercase w-full flex justify-center my-3 font-bold text-lg">filter</h2>
-                <label
-                  htmlFor="role"
-                  className="uppercase text-sm flex-col text-gray-600 font-bold"
+      <div className="h-fit rounded-2xl shadow-xl bg-white p-2">
+        <Formik
+          initialValues={initValues}
+          validationSchema={schema}
+          onSubmit={async (values: Values) => handleSubmit(values)}
+        >
+          {(formik: {
+            isSubmitting: boolean | undefined;
+          }) => (
+            <Form className="px-5 flex flex-col gap-2">
+              <h2 className="uppercase flex justify-center my-3 font-bold">filter</h2>
+
+              <label
+                htmlFor="role"
+              >role
+                <Field
+                  as="select"
+                  className="p-2 ml-2 rounded-xl bg-gray-300 text-black"
+                  name="role"
                 >
-                                role
-                  <select
-                    className="p-2 w-fit ml-3 rounded-xl bg-gray-300 mt-0  text-gray-900"
-                    name="role"
-                    defaultValue={"tutor"}
-                    onChange={(e) => setRole(e.target.value)}
-                  >
-                    <option value="tutor">Tutors</option>
-                    <option value="student">Students</option>
-                    <option value="both">Both</option>
-                  </select>
-                  <br/>
-                </label>
-                <label
-                  htmlFor="firstName"
-                  className="uppercase text-sm flex-col text-gray-600 font-bold"
-                >
-                                first name
-                  <Field
-                    name="firstName"
-                    aria-label="First name"
-                    aria-required="false"
-                    type="text"
-                    className="w-full bg-gray-300 mt-0 text-gray-900 p-2 ml-0"
-                  />
-                </label>
-                <label
-                  htmlFor="lastName"
-                  className="uppercase text-sm text-gray-600 font-bold"
-                >
-                                last name
-                  <Field
-                    name="lastName"
-                    aria-label="Last name"
-                    aria-required="false"
-                    type="text"
-                    className="w-full bg-gray-300 mt-0  text-gray-900 p-2 ml-0"
-                  />
-                </label>
-                <label
-                  htmlFor="rating"
-                  className="uppercase text-sm text-gray-600 font-bold"
-                >
-                                rating
-                  <Field
-                    name="rating"
-                    aria-label="Rating"
-                    aria-required="false"
-                    type="numeric"
-                    className="w-full bg-gray-300 mt-0 text-gray-900 p-2 ml-0"
-                  />
-                </label>
-                <label
-                  htmlFor="subjects"
-                  className="uppercase text-sm text-gray-600 font-bold"
-                >
-                                Subjects
-                  <SubjectSelect setFunction={setChosenSubjects} subjects={subjects}/>
-                </label>
-                <div className="text-red-600 text-sm">
-                  <ErrorMessage name="subjects" />
+                  <option value="tutor" selected>Tutors</option>
+                  <option value="student">Students</option>
+                  <option value="both">Both</option>
+                </Field>
+              </label>
+
+              <label
+                htmlFor="firstName"
+              >first name
+                <Field
+                  name="firstName"
+                  type="text"
+                  className="w-full bg-gray-300 text-gray-900"
+                />
+                <div className="text-xs text-red-600">
+                  <ErrorMessage name="firstName" />
                 </div>
-                <label
-                  htmlFor="languages"
-                  className="uppercase text-sm text-gray-600 font-bold"
-                >
-                                Languages
-                  <LanguageSelect setFunction={setChosenLanguages} />
-                </label>
-                <div className="text-red-600 text-sm">
-                  <ErrorMessage name="languages" />
+              </label>
+
+              <label
+                htmlFor="lastName"
+              >last name
+                <Field
+                  name="lastName"
+                  type="text"
+                  className="w-full bg-gray-300 text-gray-900"
+                />
+                <div className="text-xs text-red-600">
+                  <ErrorMessage name="lastName" />
                 </div>
-                <br/>
-                <div className="w-full flex items-center justify-center mb-3">
-                  <button
-                    type="submit"
-                    className="btn hover:bg-orange-600 bg-orange-500 text-gray-100 p-3 rounded-lg w-full"
-                  >
-                    {formik.isSubmitting ? "Please wait..." : "Filter"}
-                  </button>
+              </label>
+
+              <label
+                htmlFor="rating"
+              >rating
+                <Field
+                  name="rating"
+                  type="numeric"
+                  className="w-full bg-gray-300 text-gray-900"
+                />
+                <div className="text-xs text-red-600">
+                  <ErrorMessage name="rating" />
                 </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
+              </label>
+
+              <label
+                htmlFor="location"
+              >location
+                <Field
+                  name="location"
+                  type="text"
+                  className="w-full bg-gray-300 text-gray-900"
+                />
+                <div className="text-xs text-red-600">
+                  <ErrorMessage name="location" />
+                </div>
+              </label>
+
+              <label
+                htmlFor="subjects"
+              >Subjects
+                <SubjectSelect setFunction={setChosenSubjects} subjects={subjects} />
+              </label>
+              <div className="text-red-600 text-sm">
+                <ErrorMessage name="subjects" />
+              </div>
+
+              <label
+                htmlFor="languages"
+              >Languages
+                <LanguageSelect setFunction={setChosenLanguages} />
+              </label>
+              <div className="text-red-600 text-sm">
+                <ErrorMessage name="languages" />
+              </div>
+
+              <button
+                type="submit"
+                className="btn hover:bg-orange-600 bg-orange-500 p-3 my-3 rounded-lg w-full"
+              >
+                {formik.isSubmitting ? "Please wait..." : "Filter"}
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </>
   );

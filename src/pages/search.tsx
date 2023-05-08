@@ -10,8 +10,10 @@ import SearchProfile from "@/components/search/SearchProfile";
 import {useState, useMemo} from "react";
 
 /**
- * TODO: fill this in
- * @param {any} param0
+ * Search page
+ * @param {Array<any>} subjects
+ * @param {Array<any>} students
+ * @param {Array<any>} tutors
  * @return {JSX} search page
  */
 export default function Search({
@@ -34,9 +36,11 @@ export default function Search({
       <Navbar black={true} />
       <main className="flex flex-wrap justify-around min-h-screen pt-2">
         {/** filter */}
-        <Filter subjects={subjects} setProfileState={setProfiles} allUsers={allUsers} />
+        <div className="w-[22rem] md:w-[26rem]">
+          <Filter subjects={subjects} setProfileState={setProfiles} allUsers={allUsers} />
+        </div>
 
-        <div className="w-[36rem] md:w-[40rem] lg:w-[44rem]">
+        <div className="w-[34rem] md:w-[38rem] lg:w-[44rem]">
           {/** profiles */}
           {profiles && (profiles.map((user: any) => (
             <SearchProfile user={user} allSubjects={subjects} key={user._id}/>
