@@ -1,5 +1,5 @@
 import Select from "react-tailwindcss-select";
-import {useState} from "react";
+import {Dispatch, useState} from "react";
 
 /**
  * TODO: 1. add user's subjects --
@@ -11,7 +11,15 @@ import {useState} from "react";
  * @param {any} param0
  * @return {any} yo
  */
-export default function SubjectSelect({setFunction, subjects, userSubjects}: {setFunction: any, subjects: any[], userSubjects?: any[]}) {
+export default function SubjectSelect({
+  setFunction,
+  subjects,
+  userSubjects,
+} : {
+  setFunction: Dispatch<any>,
+  subjects: Array<any>,
+  userSubjects?: Array<any>
+}) {
   const usedSubjects = [];
 
   if (userSubjects) {

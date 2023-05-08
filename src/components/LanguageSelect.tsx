@@ -1,5 +1,5 @@
 import Select from "react-tailwindcss-select";
-import {useState} from "react";
+import {Dispatch, useState} from "react";
 import languages from "@/utils/languages.json";
 import {ObjectId} from "mongoose";
 
@@ -7,12 +7,17 @@ import {ObjectId} from "mongoose";
  * yo
  * @return {JSX} component
  */
-export default function LanguageSelect({setFunction, userLanguages}: {
-    setFunction: any,
-    userLanguages?: {
-      code: string, name: string, _id: ObjectId
-    }[]
-  }) {
+export default function LanguageSelect({
+  setFunction,
+  userLanguages,
+} : {
+  setFunction: Dispatch<any>,
+  userLanguages?: {
+    code: string,
+    name: string,
+    _id: ObjectId
+  }[]
+}) {
   // Create the state and populate it with languages of the user if exist.
   // Will make the user's languages display as chosen by default
   const [chosenLanguages, setChosenLanguages] = useState<any>(userLanguages?.map(

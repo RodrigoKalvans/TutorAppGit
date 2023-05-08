@@ -11,11 +11,15 @@ import {signOut, useSession} from "next-auth/react";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 /**
- * Navbar
- * @param {any} param0 plc
- * @return {any} plc
+ * Navbar component
+ * @param {boolean} black will determine a change in style
+ * @return {JSX} Navbar
  */
-const Navbar = ({black = false}: {black?: boolean}) => {
+const Navbar = ({
+  black = false,
+} : {
+  black?: boolean
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const {data: session} = useSession();
 
