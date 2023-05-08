@@ -1,26 +1,57 @@
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import Navbar from "@/components/Navbar";
-import SearchPanel from "@/components/search/SearchPanel";
 import Subject from "@/models/Subject";
 import Student from "@/models/Student";
 import Tutor from "@/models/Tutor";
 import db from "@/utils/db";
+import Filter from "@/components/search/Filter";
+import SearchProfile from "@/components/search/SearchProfile";
+import {useState, useMemo} from "react";
 
 /**
- * TODO: fill this in
- * @param {any} param0
- * @return {any} search page
+ * Search page
+ * @param {Array<any>} subjects
+ * @param {Array<any>} students
+ * @param {Array<any>} tutors
+ * @return {JSX} search page
  */
-export default function Search({subjects, students, tutors}: {subjects: Array<any>, students: Array<any>, tutors: Array<any>}) {
+export default function Search({
+  subjects,
+  students,
+  tutors,
+} : {
+  subjects: Array<any>,
+  students: Array<any>,
+  tutors: Array<any>,
+}) {
+  const [profiles, setProfiles] = useState<any>(); // these will be displayed
+  const allUsers = useMemo(() => [...tutors, ...students], [tutors, students]); // cache optimization for when there are a lot of profiles
+
   return (
     <>
       <Head>
         <title>Search</title>
       </Head>
       <Navbar black={true} />
-      <main className="flex-col justify-center min-h-screen container">
-        <SearchPanel subjects={subjects} students={students} tutors={tutors} />
+      <main className="flex flex-wrap justify-around min-h-screen pt-2">
+        {/** filter */}
+        <div className="w-[22rem] md:w-[26rem]">
+          <Filter subjects={subjects} setProfileState={setProfiles} allUsers={allUsers} />
+        </div>
+
+        <div className="w-[34rem] md:w-[38rem] lg:w-[44rem]">
+          {/** profiles */}
+          {profiles && (profiles.map((user: any) => (
+            <SearchProfile user={user} allSubjects={subjects} key={user._id}/>
+          ))) }
+          {profiles && profiles.length === 0 &&
+              <div className="w-full flex justify-center">
+                <div className="w-fit m-2 mt-5 uppercase text-xl">
+                  no profiles found
+                </div>
+              </div>}
+        </div>
       </main>
       <Footer />
     </>
@@ -28,7 +59,7 @@ export default function Search({subjects, students, tutors}: {subjects: Array<an
 }
 
 /**
- * plc jsdoc
+ * Load necessary data
  * @return {any} props
  */
 export async function getStaticProps() {

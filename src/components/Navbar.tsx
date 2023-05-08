@@ -11,13 +11,16 @@ import {signOut, useSession} from "next-auth/react";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 /**
- * Navbar
- * @param {any} param0 plc
- * @return {any} plc
+ * Navbar component
+ * @param {boolean} black will determine a change in style
+ * @return {JSX} Navbar
  */
-const Navbar = ({black = false}: {black?: boolean}) => {
+const Navbar = ({
+  black = false,
+} : {
+  black?: boolean
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [dropdown, setDropdown] = useState<boolean>(false);
   const {data: session} = useSession();
 
   const {data: avatar} = useSWR(
@@ -58,7 +61,7 @@ const Navbar = ({black = false}: {black?: boolean}) => {
             {/** Avatar */}
             {session ? (
                 <div className="dropdown dropdown-end">
-                  <span className="avatar relative cursor-pointer" onClick={() => setDropdown(!dropdown)}>
+                  <span className="avatar cursor-pointer">
                     <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full">
                       {avatar && avatar.presignedUrl ? (
                           <Image src={avatar.presignedUrl} alt="profile image" width={45} height={45} />

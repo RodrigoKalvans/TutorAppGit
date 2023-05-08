@@ -247,7 +247,7 @@ export default function SignUp({subjects}: {subjects: any}) {
                       className="uppercase text-sm text-gray-600 font-bold"
                     >
                     Subjects
-                      <SubjectSelect setFunction={setSubjects} subjects={subjects}/>
+                      <SubjectSelect setSubjectsState={setSubjects} subjects={subjects}/>
                     </label>
                     <div className="text-red-600 text-sm">
                       <ErrorMessage name="subjects" />
