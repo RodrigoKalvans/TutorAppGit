@@ -37,11 +37,6 @@ const Post = ({post, index, handleDelete, session}:
     return () => setCommentsArray([]);
   }, [comments]);
 
-  if (imagesError) {
-    console.log(imagesError.error);
-  }
-
-
   useEffect(() => {
     if (session && post.likes.findIndex((like: {likeId: string, userId: string}) => like.userId === session.user.id) > -1) {
       setIsLiked(true);
@@ -144,6 +139,7 @@ const Post = ({post, index, handleDelete, session}:
                   ))}
                 </div>
               )}
+              {imagesError && <p>Error occurred while fetching the images for this post.</p>}
             </div>
             {/** everything below the pics */}
             <div className="mt-1 flex items-center justify-between">

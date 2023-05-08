@@ -24,17 +24,20 @@ const Review = ({review}: {review: any}) => {
       </div>
 
       <div className="px-5">
-        <div className="flex justify-between">
-          <div className="w-1/5 flex items-center">
-            <RatingStar colorStyle="text-orange-500" title="i" />
-            <p className="text-xs font-light m-0">{review.rating}</p>
-          </div>
+        {review.rating && (
+          <div className="flex justify-between">
+            <div className="w-1/5 flex items-center">
+              <RatingStar colorStyle="text-orange-500" title="i" />
+              <p className="text-xs font-light m-0">{review.rating}</p>
+            </div>
 
-          <div>
-            <p className="text-xs font-light m-0">{format(new Date(review.createdAt), "dd/MM/yyyy")}</p>
-          </div>
+            <div>
+              <p className="text-xs font-light m-0">{format(new Date(review.createdAt), "dd/MM/yyyy")}</p>
+            </div>
 
-        </div>
+          </div>
+        )}
+
         <div className="">
           <p className="text-base font-normal">{review.text}</p>
         </div>
