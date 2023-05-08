@@ -65,14 +65,14 @@ export const createReview = async (req: NextApiRequest, res: NextApiResponse, ro
     // If so, then update the rating by setting a new average
     if (reqReview.rating) {
       const newRatingCount = (reviewedUser.rating.ratingCount + 1);
-      const newRatingNumber = ((reviewedUser.rating.number + parseFloat(reqReview.rating)) / newRatingCount);
+      const newRatingNumber = ((reviewedUser.rating.number * reviewedUser.rating.ratingCount + parseFloat(reqReview.rating)) / newRatingCount);
 
       reviewedUser.rating.number = newRatingNumber;
       reviewedUser.rating.ratingCount = newRatingCount;
     }
 
     // Push the review to the reviews array
-    reviewedUser.reviews.push({reviewId: newReview._id});
+    reviewedUser.reviews.push(newReview._id);
 
     await reviewedUser.save();
     await newReview.save();
@@ -171,13 +171,13 @@ export const deleteReviewFromReviewedUser = async (reviewId: String, role: Strin
   // TODO: UPDATE RATING AFTER DELETING REVIEW
   if (role === "student") {
     await Student.findByIdAndUpdate(userId, {
-      $pull: {reviews: {reviewId: reviewId}},
+      $pull: {reviews: reviewId},
     },
     {safe: true},
     );
   } else {
     await Tutor.findByIdAndUpdate(userId, {
-      $pull: {reviews: {reviewId: reviewId}},
+      $pull: {reviews: reviewId},
     },
     {safe: true},
     );
