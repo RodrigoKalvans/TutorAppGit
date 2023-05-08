@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
-import { supportText } from "@/public/support";
+import {supportText} from "@/public/support";
 import Footer from "@/components/Footer";
 
 /**
