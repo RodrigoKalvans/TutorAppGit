@@ -1,6 +1,6 @@
 import {SchoolIcon} from "@/utils/icons";
 import ProfilePicture from "./ProfilePicture";
-import RatingStar from "./ratingStars/RatingStar";
+import RatingStar from "../../ratingStars/RatingStar";
 import {format} from "date-fns";
 
 const Review = ({review}: {review: any}) => {

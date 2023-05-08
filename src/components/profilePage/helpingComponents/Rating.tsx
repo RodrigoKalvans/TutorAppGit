@@ -1,5 +1,5 @@
-import HalfRatingStar from "./ratingStars/HalfRatingStar";
-import RatingStar from "./ratingStars/RatingStar";
+import HalfRatingStar from "../../ratingStars/HalfRatingStar";
+import RatingStar from "../../ratingStars/RatingStar";
 
 const Rating = ({rating}: {rating: {number: number, ratingCount: number}}) => {
   const fullStars = Math.trunc(rating.number);
