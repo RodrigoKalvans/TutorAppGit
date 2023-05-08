@@ -8,7 +8,6 @@ const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}
    {closeModal: MouseEventHandler, allSubjects: Array<any>, user: any, session: Session | null, userSubjects: any[]}) => {
   const [selectedSubjects, setSelectedSubjects] = useState();
   const [selectedLanguages, setSelectedLanguages] = useState();
-  console.log(user.priceForLessons);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();

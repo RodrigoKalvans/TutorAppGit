@@ -43,7 +43,8 @@ const TutorPage = ({tutor, isFollowing, subjects, reviews, allSubjects, posts}: 
               <div className="flex flex-col gap-5">
                 <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
                 <Activity fullName={fullName} activity={tutor.activity} />
-                <ReviewsSection reviews={reviews} />
+                <ReviewsSection reviews={reviews} session={session}
+                  reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
 
               </div>
             </section>

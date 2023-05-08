@@ -44,7 +44,8 @@ const StudentPage = ({student, isFollowing, subjects, allSubjects, reviews, post
               <div className="flex flex-col gap-5">
                 <ProfileSection user={student} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
                 <Activity fullName={fullName} activity={student.activity} />
-                <ReviewsSection reviews={reviews} />
+                <ReviewsSection reviews={reviews} session={session}
+                  reviewedUserId={student._id.toString()} reviewedUserRole="student" />
 
               </div>
             </section>
