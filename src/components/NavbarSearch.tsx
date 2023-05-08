@@ -19,7 +19,7 @@ export default function NavbarSearch() {
     const checkIfClickedOutside = (e: any) => {
       // If the menu is open and the clicked target is not within the menu,
       // then close the menu
-      if (isOpen && menuRef.current && e.target.name !== "dropdown" && !menuRef.current.contains(e.target)) {
+      if (isOpen && menuRef.current && e.target.id !== "dropdownBtn" && !menuRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
@@ -45,7 +45,7 @@ export default function NavbarSearch() {
     });
   };
 
-  const arrowSvg = <svg name="dropdown" aria-hidden="true" className={`w-4 h-4 ml-1 transition-all ${isOpen ? "rotate-180" : ""}`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>;
+  const arrowSvg = <svg aria-hidden="true" className={`w-4 h-4 ml-1 transition-all ${isOpen ? "rotate-180" : ""} pointer-events-none`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>;
 
   return (
 
@@ -56,7 +56,7 @@ export default function NavbarSearch() {
         </button>
         <input type="text" id="search" className="w-full h-full mr-0 pl-10 rounded-full bg-white-200 text-black focus:outline-none" placeholder="Search" required />
 
-        <button type="button" name="dropdown" id="dropdownBtn" onClick={() => setIsOpen(!isOpen)} className={`capitalize absolute -right-1 min-h-0 h-full px-5 rounded-full max-w-fit ${isOpen ? "bg-[#43607a]" : "bg-[#527695]"} text-light font-normal black focus:outline-none flex items-center hover:bg-[#5980a3] transition-all focus:bg-[#43607a]`}>
+        <button type="button" name="dropdown" id="dropdownBtn" onClick={() => setIsOpen(!isOpen)} className={`capitalize absolute -right-1 min-h-0 h-full px-5 rounded-full max-w-fit ${isOpen ? "bg-[#43607a]" : "bg-[#527695]"} text-light font-normal black focus:outline-none flex items-center hover:bg-[#5980a3] transition-all focus:bg-[#43607a] active:bg-[#395268]`}>
           {role} {arrowSvg}
         </button>
 
