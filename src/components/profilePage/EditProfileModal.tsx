@@ -107,12 +107,12 @@ const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}
             </div>
             <div>
               <label className="font-light mb-2 block">Subjects</label>
-              <SubjectSelect setFunction={setSelectedSubjects} subjects={allSubjects} userSubjects={userSubjects} />
+              <SubjectSelect setSubjectsState={setSelectedSubjects} subjects={allSubjects} userSubjects={userSubjects} />
             </div>
             <div>
               <label className="font-light mb-2 block">Languages</label>
               {/* <input type="text" defaultValue={user.languages} className="w-full border h-8" /> */}
-              <LanguageSelect setFunction={setSelectedLanguages} userLanguages={user.languages} />
+              <LanguageSelect setLanguagesState={setSelectedLanguages} userLanguages={user.languages} />
             </div>
             {user.role === "tutor" && (
               <>
