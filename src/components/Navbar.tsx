@@ -13,9 +13,13 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 /**
  * Navbar component
  * @param {boolean} black will determine a change in style
- * @return {JSX} plc
+ * @return {JSX} Navbar
  */
-const Navbar = ({black = false}: {black?: boolean}) => {
+const Navbar = ({
+  black = false,
+} : {
+  black?: boolean
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const {data: session} = useSession();
