@@ -1,14 +1,18 @@
 import {useSession} from "next-auth/react";
 import Post from "./Post";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 /**
  * contains Post components and controls the data flow to and from Posts
- * @param {any[]} posts
+ * @param {Array<any>} posts as postsProp
  * @return {JSX} component
  */
-const PostManager = ({posts: postsArr}: {posts: any[]}) => {
-  const [posts, setPosts] = useState<any[]>(postsArr);
+const PostManager = ({
+  posts: postsProp,
+} : {
+  posts: Array<any>,
+}) => {
+  const [posts, setPosts] = useState<Array<any>>(postsProp);
   const {data: session} = useSession();
 
   const handleDeletePost = async (index: number) => {
@@ -29,6 +33,13 @@ const PostManager = ({posts: postsArr}: {posts: any[]}) => {
       console.log(await response.json());
     }
   };
+
+  useEffect(() => {
+    setPosts(postsProp);
+    return () => {
+      setPosts([]);
+    };
+  }, [postsProp]);
 
   return (
     <div className="mx-auto h-fit flex flex-col-reverse gap-10">
