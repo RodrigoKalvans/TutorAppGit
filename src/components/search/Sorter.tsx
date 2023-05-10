@@ -1,5 +1,12 @@
 import {Dispatch, useEffect, useRef, useState} from "react";
 
+/**
+ * This component is used on the search page to sort the displayed users
+ * @param {Array<any>} inputProfiles is used as the collection that is sorted
+ * @param {Dispatch<any>} setProfileState is used to update the displayed
+ * profiles with the newly sorted collection
+ * @return {JSX}
+ */
 const Sorter = ({
   inputProfiles,
   setProfileState,
@@ -9,7 +16,7 @@ const Sorter = ({
 }) => {
   const [sortMetric, setSortMetric] = useState<string | undefined>(undefined);
   const lastSortMetric = useRef<typeof sortMetric>(sortMetric);
-  const repeat = useRef<boolean>(false);
+  const repeat = useRef<boolean>(false); // used to know if same sort is applied over again, in this case the result should be inverted
 
   // track the previous metric
   useEffect(() => {
@@ -33,7 +40,7 @@ const Sorter = ({
 
   return (
     <>
-      <div className="h-fit rounded-b-2xl bg-white p-2">
+      <div className="h-fit rounded-b-2xl bg-white p-2 pb-4">
         <hr className="" />
         <h2 className="uppercase flex justify-center my-3 font-bold">Sort</h2>
         <div className="flex justify-center my-1">
@@ -53,7 +60,7 @@ export default Sorter;
  * Sort profiles based on first lesson price
  * @param {Array<any>} arr pre-sort array
  * @param {boolean} invert sort direction
- * @return {Array<any>} sorter arr
+ * @return {Array<any>} sorted arr
  */
 const priceQuickSort: any = (arr: Array<any>, invert: boolean) => {
   if (arr.length <= 1) return arr;
@@ -63,6 +70,8 @@ const priceQuickSort: any = (arr: Array<any>, invert: boolean) => {
   const rightArr = [];
 
   for (let i = 1; i < arr.length; i++) {
+    // only perform this if the profile has the price field (only tutors do)
+    // this way those who do not will not be included in the result
     if (arr.at(i).priceForLessons && pivot.priceForLessons) {
       if (invert) {
         Object.values(arr[i].priceForLessons).at(0)! < Object.values(pivot.priceForLessons).at(0)! ? leftArr.push(arr[i]) : rightArr.push(arr[i]);
