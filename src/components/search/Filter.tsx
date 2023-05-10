@@ -138,7 +138,7 @@ export default function Filter({
 
   return (
     <>
-      <div className="h-fit rounded-2xl shadow-xl bg-white p-2">
+      <div className="h-fit rounded-t-2xl bg-white p-2">
         <Formik
           initialValues={initValues}
           validationSchema={schema}
@@ -226,7 +226,7 @@ export default function Filter({
 
               <button
                 type="submit"
-                className="btn hover:bg-orange-600 bg-orange-500 p-3 my-3 rounded-lg w-full"
+                className="btn hover:bg-orange-600 bg-orange-500 my-2 rounded-lg w-full"
               >
                 {formik.isSubmitting ? "Please wait..." : "Filter"}
               </button>

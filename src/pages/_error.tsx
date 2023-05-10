@@ -1,4 +1,3 @@
-import logo from "@/public/images/tcorvus-logo-transparent.png";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,9 +13,10 @@ const Error = ({statusCode}: {statusCode: number}) => {
         <div className="w-96 h-[36rem] bg-orange-100 flex flex-col rounded-3xl p-5 border-2 border-orange-400 shadow-xl relative">
           <div className="flex justify-center">
             <Image
-              src={logo}
+              src={"/favicon.ico"}
               alt="logo"
               width={140}
+              height={140}
             />
           </div>
           <div className="text-red-500 flex justify-center text-[40px] my-5">{statusCode}</div>

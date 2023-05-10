@@ -8,6 +8,7 @@ import db from "@/utils/db";
 import Filter from "@/components/search/Filter";
 import SearchProfile from "@/components/search/SearchProfile";
 import {useState, useMemo} from "react";
+import Sorter from "@/components/search/Sorter";
 
 /**
  * Search page
@@ -36,8 +37,9 @@ export default function Search({
       <Navbar black={true} />
       <main className="flex flex-wrap justify-around min-h-screen pt-2">
         {/** filter */}
-        <div className="w-[22rem] md:w-[26rem]">
+        <div className="w-[22rem] md:w-[26rem] flex flex-col">
           <Filter subjects={subjects} setProfileState={setProfiles} allUsers={allUsers} />
+          <Sorter inputProfiles={profiles} setProfileState={setProfiles} />
         </div>
 
         <div className="w-[34rem] md:w-[38rem] lg:w-[44rem]">

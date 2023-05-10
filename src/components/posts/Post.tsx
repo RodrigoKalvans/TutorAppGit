@@ -4,7 +4,6 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 import {format} from "date-fns";
 import Link from "next/link";
-import commentImage from "@/public/icons/commentsIcon.png";
 import Comment from "./Comment";
 import {DeleteIcon, LikeIcon, LoadingIcon, PromoIcon} from "@/utils/icons";
 import {Session} from "next-auth";
@@ -158,9 +157,10 @@ const Post = ({post, index, handleDelete, session}:
                 <div className="text-xs flex items-center cursor-pointer" onClick={() => setIsExtended(!isExtended)}
                 >
                   <Image
-                    src={commentImage}
+                    src={"/icons/commentsIcon.png"}
                     alt={"comment"}
                     width={18}
+                    height={18}
                   />&nbsp;:
                   <div className="text-xs font-normal">&nbsp;{commentsArray.length}</div>
                 </div>
