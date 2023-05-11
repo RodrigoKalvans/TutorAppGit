@@ -12,6 +12,7 @@ import CreatePostButton from "@/components/CreatePostButton";
 import FeedPageTopTutor from "@/components/feed/FeedPageTopTutor";
 import Tutor from "@/models/Tutor";
 import Student from "@/models/Student";
+import Head from "next/head";
 /**
  * Feed page
  * @param {Array<any>} posts
@@ -25,6 +26,9 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
 
   return (
     <>
+      <Head>
+        <title>Feed</title>
+      </Head>
       <Navbar black/>
       <main className="min-h-screen w-full flex-col pt-5 -mt-5 container">
         <div className="flex justify-center gap-10 pt-3">

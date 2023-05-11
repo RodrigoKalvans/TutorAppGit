@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
 import Footer from "@/components/Footer";
-import {aboutText} from "@/lib/about";
+import {aboutText} from "@/lib/aboutContent";
 
 /**
  * About us page

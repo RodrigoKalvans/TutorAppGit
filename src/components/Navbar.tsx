@@ -38,10 +38,10 @@ const Navbar = ({
             <Link href="/">
               <Image
                 priority
-                src={"/favicon.ico"}
+                src={"/logo.png"}
                 alt="logo"
-                width={85}
-                height={85}
+                width={70}
+                height={70}
               />
             </Link>
           </div>
@@ -64,7 +64,6 @@ const Navbar = ({
                     <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full">
                       {avatar && avatar.presignedUrl ? (
                           <Image src={avatar.presignedUrl} alt="profile image" width={45} height={45} />
-
                         ) : (
                           <div className="avatar placeholder w-full aspect-square">
                             <div className="bg-neutral-focus text-neutral-content rounded-full w-full">

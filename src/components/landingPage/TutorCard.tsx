@@ -1,10 +1,12 @@
-import {EmailIcon, MathIcon} from "@/utils/icons";
+import {EmailIcon} from "@/utils/icons";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
 import Button from "../Button";
 import TrendingTutorReview from "./TrendingTutorReview";
+import Icon from "../Icon";
 // import {LandingPageCard} from "@/types/ambiguous-types"; // card: LandingPageCard
 
 /**
+ * This component is used on the landing page to display featured tutors
  * @param {any} card.tutor
  * @param {string} styles
  * @return {JSX}
@@ -22,7 +24,7 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
             <div>Following: {card.tutor.following.length}</div>
           </div>
           <div className="flex items-center justify-center mt-5 gap-5 text-[25px] text-gray-100 capitalize">
-            <MathIcon width={30} className="text-[50px] h-full" color="#F97316" key={subject._id}/>
+            <Icon subject={subject} style="text-[50px] h-full text-orange-600" key={subject._id} />
             {subject.name}
           </div>
           <div className="flex justify-center gap-3 text-[16px]">

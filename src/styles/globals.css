@@ -42,7 +42,7 @@
   }
 
   .nav-link {
-    @apply normal-case text-base p-2 hover:text-orange-500 transition-all
+    @apply normal-case text-base p-2 hover:text-orange-500 transition-all cursor-pointer
   }
 
   .modal {

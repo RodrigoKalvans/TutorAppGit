@@ -8,7 +8,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="favicon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo.png" />
       </Head>
       <body>
         <Main />

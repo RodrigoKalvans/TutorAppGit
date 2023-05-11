@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
-import {supportText} from "@/lib/support";
+import {supportText} from "@/lib/supportContent";
 import Footer from "@/components/Footer";
 
 const PAYMENT_LINK = "https://donate.stripe.com/test_3csaFe1p67sL0b69AA";

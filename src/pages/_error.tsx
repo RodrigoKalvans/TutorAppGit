@@ -13,7 +13,7 @@ const Error = ({statusCode}: {statusCode: number}) => {
         <div className="w-96 h-[36rem] bg-orange-100 flex flex-col rounded-3xl p-5 border-2 border-orange-400 shadow-xl relative">
           <div className="flex justify-center">
             <Image
-              src={"/favicon.ico"}
+              src={"/logo.png"}
               alt="logo"
               width={140}
               height={140}
@@ -25,12 +25,14 @@ const Error = ({statusCode}: {statusCode: number}) => {
             <p className="text-subtitle text-[18px] flex justify-center">Error {statusCode} has occured</p>
             <p className="text-subtitle text-[18px] flex justify-center">We will try to resolve this issue as soon as possible!</p>
           </div>
-          <Link
-            href="/"
-            className="text-subtitle text-[16px] hover:text-[20px] hover:font-bold hover:-translate-y-[0.4rem] transition-all duration-300 flex justify-center mt-10"
-          >
-            Home
-          </Link>
+          <div className="flex justify-center">
+            <Link
+              href="/"
+              className="text-subtitle text-[16px] hover:text-[20px] hover:font-bold hover:-translate-y-[0.2rem] transition-all duration-300 flex justify-center w-fit"
+            >
+              Home
+            </Link>
+          </div>
         </div>
       </div>
     </>
