@@ -13,16 +13,21 @@ import FeedPageTopTutor from "@/components/feed/FeedPageTopTutor";
 import Tutor from "@/models/Tutor";
 import Student from "@/models/Student";
 import Head from "next/head";
+
 /**
  * Feed page
- * @param {Array<any>} posts
+ * @param {Array<any>} allPosts
  * @return {JSX}
  */
-const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, followedPosts: Array<any>, loggedIn: boolean}) => {
+const Feed = ({
+  user,
+} : {
+  user?: any,
+}) => {
   const [general, setGeneral] = useState<boolean>(true);
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const {data, error, isLoading} = useSWR("/api/tutors?topTutors=true", fetcher);
+  const {data: topTutors, error, isLoading} = useSWR("/api/tutors?topTutors=true", fetcher);
 
   return (
     <>
@@ -41,7 +46,7 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
                 {isLoading && <div className="text-xl mt-10 w-full flex justify-center">Loading...</div>}
                 {error && <div className="text-xl mt-10 w-full flex justify-center text-red-600">Error...</div>}
                 <div className="w-full mt-3">
-                  {data && data.map((tutor: any) => (
+                  {topTutors && topTutors.map((tutor: any) => (
                     <FeedPageTopTutor tutor={tutor} key={tutor._id} />
                   ))}
                 </div>
@@ -56,9 +61,9 @@ const Feed = ({allPosts, followedPosts, loggedIn}: {allPosts: Array<any>, follow
             </div>
             <div className="w-full flex justify-center">
               <div className="w-full">
-                {general && <PostManager posts={allPosts}/>}
-                {!general && loggedIn && <PostManager posts={followedPosts}/>}
-                {!general && !loggedIn && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
+                {general && <PostManager loggedInUser={user} />}
+                {!general && user && <PostManager followed loggedInUser={user}/>}
+                {!general && !user && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
               </div>
             </div>
           </div>
@@ -76,29 +81,21 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
 
-  const allPosts = await Post.find();
-
-  let followedPosts = [];
-
   // get posts for follow feed
+  let loggedInUser: any;
   if (session) {
-    let loggedInUser: any;
     if (session.user.role === "tutor") {
       loggedInUser = await Tutor.findById(session.user.id);
     } else if (session.user.role === "student") {
       loggedInUser = await Student.findById(session.user.id);
     }
-
-    followedPosts = allPosts.filter((post: any) => loggedInUser.following.some((following: any) => post.userId == following.userId));
   }
 
   // await db.disconnect();
 
   return {
     props: {
-      allPosts: JSON.parse(JSON.stringify(allPosts)),
-      followedPosts: JSON.parse(JSON.stringify(followedPosts)),
-      loggedIn: (session ? true : false),
+      user: loggedInUser ? JSON.parse(JSON.stringify(loggedInUser)) : undefined,
     },
   };
 };

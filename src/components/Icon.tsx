@@ -13,21 +13,18 @@ const Icon = ({
   subject: any,
   style: string
 }) => {
-  const getIcon = () => {
-    switch (subject.name) {
-      case "Math": return <MathIcon className={style} />;
-      case "History": return <HistoryIcon className={style} />;
-      case "Biology": return <BiologyIcon className={style} />;
-      case "English": return <EnglishIcon className={style} />;
-      case "Programming": return <ProgrammingIcon className={style} />;
-      case "Geography": return <GeographyIcon className={style} />;
-      case "Chemistry": return <ChemistryIcon className={style} />;
-      case "Literature": return <LiteratureIcon className={style} />;
-      case "Physics": return <PhysicsIcon className={style} />;
-      default: return <QuestionIcon className={style} />;
-    }
-  };
-  return getIcon();
+  switch (subject.name) {
+    case "Math": return <MathIcon className={style} />;
+    case "History": return <HistoryIcon className={style} />;
+    case "Biology": return <BiologyIcon className={style} />;
+    case "English": return <EnglishIcon className={style} />;
+    case "Programming": return <ProgrammingIcon className={style} />;
+    case "Geography": return <GeographyIcon className={style} />;
+    case "Chemistry": return <ChemistryIcon className={style} />;
+    case "Literature": return <LiteratureIcon className={style} />;
+    case "Physics": return <PhysicsIcon className={style} />;
+    default: return <QuestionIcon className={style} />;
+  }
 };
 
 export default Icon;
