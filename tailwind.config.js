@@ -35,6 +35,7 @@ module.exports = {
       textColor: {
         "subtitle": "#505050",
         "current": "#282828",
+        "light": "#F6FCFF",
       },
       backgroundColor: {
         "container": "#F2F2F2",
