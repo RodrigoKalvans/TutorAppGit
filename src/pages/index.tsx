@@ -9,11 +9,6 @@ import Subject from "@/models/Subject";
 import db from "@/utils/db";
 import {getLandingPageTutors} from "@/utils/featuredTutors";
 import {LandingPageCard} from "@/types/ambiguous-types";
-import StarImage from "@/public/icons/trending_tutors_star.svg";
-import TeachingImage from "@/public/images/teaching.jpg";
-import LittleBirdImage from "@/public/images/little-bird.png";
-import TrendingTutorBgCircles from "@/public/images/circle-background.png";
-import BirdsBgImage from "@/public/images/birds-bg.png";
 import styles from "@/styles/Home.module.css";
 
 /**
@@ -64,8 +59,8 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
       </section>
 
       {/* Top subjects */}
-      <section className="container mb-16">
-        <h1 className="mb-10 lg:mb-20 text-center font-medium">Browse tutors by&nbsp;<span className="text-blue-900">subject.</span></h1>
+      <section className="container mb-14 md:mb-28">
+        <h1 className="mb-10 text-center font-medium">Browse tutors by&nbsp;<span className="text-blue-900">subject.</span></h1>
 
         <div className="grid grid-cols-2 md:grid-cols-3 justify-items-center">
           {subjects && subjects.map((subject) => <SubjectBox subject={subject} key={subject._id}/>)}
@@ -73,11 +68,11 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
       </section>
 
       {/* Top tutors */}
-      <section className="container mb-16">
-        <Image src={LittleBirdImage} alt="little bird" className="ml-4" />
+      <section className="container mb-14 md:mb-28">
+        <Image src={"/images/little-bird.png"} width={50} height={50} alt="little bird" className="ml-4" />
         <div className="relative">
           <Image
-            src={TrendingTutorBgCircles}
+            src={"/images/circle-background.png"}
             alt="circles"
             fill
             style={{
@@ -86,8 +81,8 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
           />
           <div className={`${styles.gradientTrending} ${styles.box} flex flex-col z-10`}>
             <div className="flex justify-between items-center mb-10">
-              <h1 className="text-light">Take a look at our&nbsp;<span className="text-[#F0AD51]">featured tutors.</span></h1>
-              <Image src={StarImage} alt="star image" />
+              <h1 className="text-light">Take a look at our&nbsp;<span className="text-orange-400">featured tutors.</span></h1>
+              <Image src={"/icons/trending_tutors_star.svg"} width={50} height={50} alt="star image" />
             </div>
             <div className="carousel rounded-box flex gap-10 overflow-y-hidden">
               {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
@@ -99,11 +94,11 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
       </section>
 
       {/** Discover more about us */}
-      <section className="container mb-16">
+      <section className="container mb-14 md:mb-28">
         <div
           className={`${styles.box} h-[615px] flex flex-col lg:items-end justify-center`}
           style={{
-            background: `url(${TeachingImage.src}) top / cover`,
+            background: "url(/images/teaching.jpg) top / cover",
           }}>
           <h1 className="text-center lg:text-right font-medium">Discover more <br/><div className="text-blue-900">about us.</div></h1>
           <p className="lg:w-1/2 md:text-2xl my-10 text-center lg:text-right ">
@@ -119,7 +114,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
       <section className="container">
         <div className="relative">
           <Image
-            src={BirdsBgImage}
+            src={"/images/birds-bg.png"}
             alt="circles"
             fill
             style={{
