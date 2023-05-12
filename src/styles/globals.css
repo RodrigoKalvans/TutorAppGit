@@ -19,7 +19,7 @@
     @apply list-disc;
   }
   input {
-    @apply p-3 rounded-md;
+    @apply p-3 py-1 rounded-md;
   }
   input::placeholder {
     @apply text-gray-700
@@ -39,6 +39,10 @@
 
   .hov {
     @apply hover:shadow-xl transition-all duration-500
+  }
+
+  .nav-link {
+    @apply normal-case text-base p-2 hover:text-orange-500 transition-all cursor-pointer
   }
 
   .modal {

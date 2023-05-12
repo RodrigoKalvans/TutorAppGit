@@ -1,7 +1,5 @@
 import {useRouter} from "next/router";
 import {useEffect, useRef, useState} from "react";
-import TutorsIcon from "@/public/icons/tutors.svg";
-import EveryoneIcon from "@/public/icons/everyone.svg";
 import Image from "next/image";
 
 /**
@@ -68,7 +66,7 @@ export default function NavbarSearch() {
             <ul className="list-none">
               <li>
                 <button type="button" className="text-current flex items-center gap-3 p-3 hover:bg-gray-200 transition-all w-full rounded-t-lg" onClick={() => setRole("tutor")} value={"tutors"}>
-                  <Image src={TutorsIcon} alt="Tutors icon" width={25} height={25}></Image>
+                  <Image src={"/icons/tutors.svg"} alt="Tutors icon" width={25} height={25}></Image>
                   <div className="text-left">
                     <p className="text-sm p-0 m-0">Tutors</p>
                     <p className="text-[10px] leading-none p-0 m-0">Search amongst tutors only</p>
@@ -77,7 +75,7 @@ export default function NavbarSearch() {
               </li>
               <li>
                 <button type="button" className="text-current flex items-center gap-3 p-3 hover:bg-gray-200 transition-all w-full rounded-b-lg" onClick={() => setRole("both")} value={"both"}>
-                  <Image src={EveryoneIcon} alt="Everyone icon" width={25} height={25}></Image>
+                  <Image src={"/icons/everyone.svg"} alt="Everyone icon" width={25} height={25}></Image>
                   <div className="text-left">
                     <p className="text-sm p-0 m-0">Both</p>
                     <p className="text-[10px] leading-none p-0 m-0">Search amongst all users</p>

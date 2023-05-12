@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import NavbarSearch from "./NavbarSearch";
-import logo from "@/public/images/tcorvus-logo-transparent.png";
 import MobileNavbar from "./MobileNavbar";
 import {useState} from "react";
 import useSWR from "swr";
@@ -12,7 +11,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 /**
  * Navbar component
- * @param {boolean} black will determine a change in style
+ * @param {boolean} black will determine a change in style for the lighter pages
  * @return {JSX} Navbar
  */
 const Navbar = ({
@@ -39,10 +38,10 @@ const Navbar = ({
             <Link href="/">
               <Image
                 priority
-                src={logo}
+                src={"/logo.png"}
                 alt="logo"
-                width={85}
-                height={85}
+                width={70}
+                height={70}
               />
             </Link>
           </div>
@@ -53,9 +52,9 @@ const Navbar = ({
               <NavbarSearch />
             </div>
             <span className="p-1 w-2/5 flex justify-around">
-              <Link href="/feed" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Feed</Link>
-              <Link href="/about" className="normal-case text-base p-2 hover:text-orange-500 transition-all">About us</Link>
-              <Link href="/support" className="normal-case text-base p-2 hover:text-orange-500 transition-all">Support us</Link>
+              <Link href="/feed" className="nav-link">Feed</Link>
+              <Link href="/about" className="nav-link">About us</Link>
+              <Link href="/support" className="nav-link">Support us</Link>
             </span>
 
             {/** Avatar */}
@@ -65,7 +64,6 @@ const Navbar = ({
                     <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full">
                       {avatar && avatar.presignedUrl ? (
                           <Image src={avatar.presignedUrl} alt="profile image" width={45} height={45} />
-
                         ) : (
                           <div className="avatar placeholder w-full aspect-square">
                             <div className="bg-neutral-focus text-neutral-content rounded-full w-full">

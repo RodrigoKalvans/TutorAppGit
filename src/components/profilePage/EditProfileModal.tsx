@@ -4,8 +4,28 @@ import {AiOutlineClose} from "react-icons/ai";
 import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
 
-const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}:
-   {closeModal: MouseEventHandler, allSubjects: Array<any>, user: any, session: Session | null, userSubjects: any[]}) => {
+/**
+ * This component is mounted whenever the user tries to edit their profile details from their profile page
+ * @param {MouseEventHandler} closeModal
+ * @param {Array<any>} allSubjects
+ * @param {any} user
+ * @param {Session | null} session
+ * @param {Array<any>} userSubjects
+ * @return {JSX}
+ */
+const EditProfileModal = ({
+  closeModal,
+  allSubjects,
+  user,
+  session,
+  userSubjects,
+} : {
+  closeModal: MouseEventHandler,
+  allSubjects: Array<any>,
+  user: any,
+  session: Session | null,
+  userSubjects: Array<any>,
+}) => {
   const [selectedSubjects, setSelectedSubjects] = useState();
   const [selectedLanguages, setSelectedLanguages] = useState();
 
@@ -35,7 +55,6 @@ const EditProfileModal = ({closeModal, allSubjects, user, session, userSubjects}
       }
 
       updatedUser.priceForLessons = map;
-      console.log(map);
 
       const response = await fetch(`/api/tutors/${session!.user.id}`, {
         method: "PUT",
