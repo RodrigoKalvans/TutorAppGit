@@ -10,9 +10,6 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-inter)"],
       },
-      backgroundImage: {
-        "landing": "url('../public/images/landing-background-image.jpg')",
-      },
       width: {
         "9/10": "90%",
         "3/5": "60%",

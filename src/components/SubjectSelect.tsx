@@ -1,35 +1,41 @@
 import Select from "react-tailwindcss-select";
-import {Dispatch, useState} from "react";
+import {Dispatch, useEffect, useState} from "react";
 
 /**
- * TODO: 1. add user's subjects --
- * 2. populate the array for state with user's subjects --
- * 2.1 map through each element adn return the right object {value, label} --
- * 2.2 put it into state --
- * 3. change the backend api subscribe to completely override the subject
- * 3.1 delete the subjects that are not in the request and add the new once
- * @param {any} param0
- * @return {any} yo
+ * Subject select element
+ * @param {Array<any>} subjects all
+ * @param {Dispatch<any>} setSubjectsState for setting selected subjects
+ * @param {Array<any>?} userSubjects in case values should be pre-loaded into selected subjects
+ * @return {JSX} SubjectSelect
  */
 export default function SubjectSelect({
-  setFunction,
   subjects,
+  setSubjectsState,
   userSubjects,
 } : {
-  setFunction: Dispatch<any>,
   subjects: Array<any>,
+  setSubjectsState: Dispatch<any>,
   userSubjects?: Array<any>
 }) {
-  const usedSubjects = [];
+  const [chosenSubjects, setChosenSubjects] = useState<Array<any> | null>([]);
 
-  if (userSubjects) {
-    for (let i = 0; i < userSubjects.length; i++) {
-      const option = {value: `${userSubjects[i]._id}`, label: `${userSubjects[i].name}`};
-      usedSubjects.push(option);
+  /**
+   * In case there need to be preloaded values
+   */
+  useEffect(() => {
+    if (userSubjects && userSubjects.length > 0) {
+      if (!chosenSubjects) setChosenSubjects([]);
+      for (let i = 0; i < userSubjects.length; i++) {
+        const option = {value: `${userSubjects[i]._id}`, label: `${userSubjects[i].name}`};
+        chosenSubjects!.push(option);
+      }
     }
-  }
+    return () => {
+      setChosenSubjects(null);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userSubjects]);
 
-  const [chosenSubjects, setChosenSubjects] = useState<any>(usedSubjects);
 
   /** turn subjects into parsable data by Select element
      * is called when subject Select element is initialized
@@ -45,12 +51,16 @@ export default function SubjectSelect({
      * @param {string[]} value is the new string[] containing chosen options objects
      */
   const setSelectedSubjects = (value: any) => {
-    setChosenSubjects(value);
     if (value) {
-      setFunction(value.map((option: {value: string, label: string, disabled: boolean}) => option.value));
+      setSubjectsState(value.map((option: {
+        value: string,
+        label: string,
+        disabled: boolean
+      }) => option.value));
     } else {
-      setFunction([]);
+      setSubjectsState([]);
     }
+    setChosenSubjects(value);
   };
 
   return (
@@ -63,6 +73,7 @@ export default function SubjectSelect({
           isMultiple={true}
           isSearchable={true}
           value={chosenSubjects}
+          placeholder="Subjects"
           classNames={{
             tagItemText: "text-sm m-1",
           }}

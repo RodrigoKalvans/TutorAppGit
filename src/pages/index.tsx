@@ -4,7 +4,6 @@ import Head from "next/head";
 import Navbar from "@/components/Navbar";
 import SubjectBox from "@/components/landingPage/SubjectBox";
 import Image from "next/image";
-import LandingPageBgImage from "@/public/images/landing-background-image-fixed.jpg";
 import TutorCard from "@/components/landingPage/TutorCard";
 import Subject from "@/models/Subject";
 import db from "@/utils/db";
@@ -32,13 +31,12 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
       {/* Top part of page (everything in front of bg image) */}
       <section className="h-[calc(100vh-64px)] mb-14 lg:mb-28 z-0">
         <Image
-          src={LandingPageBgImage}
-          alt="Landing page background image"
+          src={"/images/landing-background-image.jpg"}
+          alt={"Landing page background image"}
+          fill
           style={
             {
               objectFit: "cover",
-              height: "100vh",
-              width: "100vw",
               position: "absolute",
               top: 0,
               left: 0,
@@ -149,7 +147,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
 }
 
 /**
- * Get 2 tutors and 9 subjects
+ * Get carousel tutors and 9 subjects
  * @return {any} props
  */
 export async function getStaticProps() {

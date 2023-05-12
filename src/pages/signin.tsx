@@ -4,22 +4,33 @@ import SignUp from "@/components/auth/Signup";
 import {useState} from "react";
 import Subject from "@/models/Subject";
 import db from "@/utils/db";
+import Image from "next/image";
 
 /** Login page
- * @return {any} yo
+ * @param {Array<any>} subjects
+ * @return {JSX} yo
  */
-export default function LoginPage({subjects}: {subjects: any}) {
+export default function LoginPage({
+  subjects,
+} : {
+  subjects: Array<any>
+}) {
   const [login, setLogin] = useState(true);
 
   return (
     <>
       <Head>
-        <title>Sign in | TCorvus</title>
+        <title>Sign in</title>
       </Head>
 
-      <main className=" w-full h-screen flex-col justify-center">
-        <div className="font-bold flex justify-center p-5">
-                TCorvus
+      <main className=" w-full h-fit min-h-screen flex-col justify-center">
+        <div className="flex justify-center items-center pt-5">
+          <Image
+            src="/logo.png"
+            width={100}
+            height={100}
+            alt={"logo"}
+          />
         </div>
 
         <div className=" flex justify-center">
@@ -39,8 +50,8 @@ export default function LoginPage({subjects}: {subjects: any}) {
 }
 
 /**
- * yo
- * @return {any}
+ * pre-load subjects
+ * @return {any} props
  */
 export async function getStaticProps() {
   await db.connect();

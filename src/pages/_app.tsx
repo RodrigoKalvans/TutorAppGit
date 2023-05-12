@@ -10,7 +10,7 @@ const inter = Inter({
 
 /**
  * App
- * @param {any} props
+ * @param {AppProps} props
  * @return {JSX} App
  */
 export default function App({
