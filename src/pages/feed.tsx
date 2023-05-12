@@ -6,7 +6,6 @@ import Navbar from "@/components/Navbar";
 import {useState} from "react";
 import Footer from "@/components/Footer";
 import db from "@/utils/db";
-import Post from "@/models/Post";
 import useSWR from "swr";
 import CreatePostButton from "@/components/CreatePostButton";
 import FeedPageTopTutor from "@/components/feed/FeedPageTopTutor";

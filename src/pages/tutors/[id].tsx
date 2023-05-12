@@ -60,7 +60,8 @@ const TutorPage = (
           <main className="container flex py-2 gap-14">
             <section className="basis-[40rem]">
               <div className="flex flex-col gap-5">
-                <ProfileSection user={tutor} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
+                <ProfileSection user={tutor} isFollowing={isFollowing}
+                  subjects={subjects} session={session} allSubjects={allSubjects} />
                 <Activity fullName={fullName} activity={activityArray} />
                 <ReviewsSection reviews={reviews} session={session}
                   reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
@@ -76,7 +77,7 @@ const TutorPage = (
                 )}
               </div>
               <div>
-                {posts.length === 0 ? <div className="mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
+                <PostManager userId={tutor._id.toString()} />
               </div>
             </section>
           </main>

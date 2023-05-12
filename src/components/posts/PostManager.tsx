@@ -11,19 +11,19 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
  * @return {JSX} component
  */
 const PostManager = ({
-  posts: postsProp = undefined,
   followed = false,
   loggedInUser,
+  userId = undefined,
 } : {
-  posts?: Array<any>,
   followed?: boolean,
   loggedInUser?: any,
+  userId?: string | undefined,
 }) => {
   const [posts, setPosts] = useState<Array<any> | undefined>(undefined);
   const {data: session} = useSession();
 
   const handleDeletePost = async (index: number) => {
-    const post = posts.at(index);
+    const post = posts!.at(index);
 
     if (session && session.user.id !== post.userId) return;
 
@@ -32,7 +32,7 @@ const PostManager = ({
     });
 
     if (response.ok) {
-      const arr = new Array(...posts);
+      const arr = new Array(...posts!);
       arr.splice(index, 1);
       setPosts(arr);
     } else {
@@ -41,13 +41,11 @@ const PostManager = ({
     }
   };
 
-  const {data, error, isLoading} = useSWR("/api/posts", fetcher);
+  const {data, error, isLoading} = useSWR(`/api/posts${userId ? `?userId=${userId}` : ""}`, fetcher);
 
   useEffect(() => {
     try {
-      if (postsProp) {
-        setPosts(postsProp);
-      } else if (followed) {
+      if (followed) {
         setPosts(data.filter((post: any) => loggedInUser.following.some((following: any) => post.userId == following.userId)));
       } else {
         setPosts(data);
@@ -56,9 +54,9 @@ const PostManager = ({
       console.error(err);
     }
     return () => {
-      setPosts([]);
+      setPosts(undefined);
     };
-  }, [data, followed, loggedInUser?.following, postsProp]);
+  }, [data, followed, loggedInUser?.following]);
 
   return (
     <div className="h-fit flex flex-col-reverse gap-10">
@@ -68,7 +66,7 @@ const PostManager = ({
         posts.map((post: any, index: number) =>
           <Post post={post} key={post._id} index={index} handleDelete={handleDeletePost} session={session} />) :
         <div className="text-black text-xl m-5 flex justify-center">
-            Follow other users in order to view their posts in this feed!
+            No posts found!
         </div>
       }
     </div>

@@ -77,7 +77,7 @@ const StudentPage = (
                 )}
               </div>
               <div>
-                {posts.length === 0 ? <div className="mt-10 flex justify-center text-xl">This user has not made any posts</div> : <PostManager posts={posts} />}
+                <PostManager userId={student._id.toString()} />
               </div>
             </section>
           </main>
