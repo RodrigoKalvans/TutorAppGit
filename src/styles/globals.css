@@ -57,6 +57,23 @@
   .open {
     @apply opacity-100 -translate-x-[0%];
   }
+
+  .buttonLink {
+    @apply btn px-9 md:px-14 p-2 rounded-full border-0 text-white ;
+    @apply text-lg font-medium normal-case;
+  }
+  
+  .orange {
+    @apply bg-orange-400 hover:bg-orange-400 hover:bg-opacity-80
+  }
+  
+  .blue {
+    @apply bg-[#4486EC] hover:bg-[#4486EC] hover:bg-opacity-80
+  }
+
+  .darkOrange {
+    @apply bg-orange-600 hover:bg-orange-700;
+  }
 }
 
 .bord {
