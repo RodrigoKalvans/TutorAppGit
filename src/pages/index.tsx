@@ -53,7 +53,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
           </div>
           <div className="flex gap-8">
             <Link href="/feed" className="buttonLink orange">Browse</Link>
-            <Link href="/signin" className="buttonLink blue">Join us</Link>
+            <Link href="/auth/signup" className="buttonLink blue">Join us</Link>
           </div>
         </div>
       </section>

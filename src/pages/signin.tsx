@@ -23,7 +23,7 @@ export default function LoginPage({
         <title>Sign in</title>
       </Head>
 
-      <main className=" w-full h-fit min-h-screen flex-col justify-center">
+      <main className="flex flex-col justify-center">
         <div className="flex justify-center items-center pt-5">
           <Image
             src="/logo.png"
