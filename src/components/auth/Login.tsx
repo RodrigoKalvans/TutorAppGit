@@ -4,6 +4,7 @@ import {useRef, useState} from "react";
 import {getSession, signIn} from "next-auth/react";
 import {Session} from "next-auth";
 import {useRouter} from "next/router";
+import styles from "@/styles/Login.module.css";
 
 interface Values {
   email: string,
@@ -71,7 +72,7 @@ export default function Login() {
                 name="email"
                 as="input"
                 placeholder="Email"
-                className="w-full bg-gray-300 text-gray-900 mt-2 p-3"
+                className={`${styles.inputField} mt-2`}
               />
               <div className="text-red-600 text-sm">
                 <ErrorMessage name="email" />
@@ -81,16 +82,16 @@ export default function Login() {
                 type="password"
                 as="input"
                 placeholder="Password"
-                className="w-full bg-gray-300 text-gray-900 mt-2 p-3"
+                className={`${styles.inputField} mt-2`}
               />
               <div className="text-red-600 text-sm">
                 <ErrorMessage name="password" />
               </div>
               <button
                 type="submit"
-                className="btn bg-orange-500 hover:bg-orange-600 my-2 rounded-lg w-full"
+                className={`${styles.button} my-8`}
               >
-                {formik.isSubmitting ? "Logging in..." : "Sign In"}
+                {loading.current ? "Signing in..." : "Sign In"}
               </button>
             </div>
           </Form>

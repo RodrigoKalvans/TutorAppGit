@@ -17,10 +17,17 @@ export default function App({
   Component, pageProps: {session, ...pageProps},
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <main className={`${inter.variable} font-sans`}>
-        <Component {...pageProps} />
-      </main>
-    </SessionProvider>
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${inter.style.fontFamily};
+        }
+      `}</style>
+      <SessionProvider session={session}>
+        <main className={`${inter.variable} font-sans`}>
+          <Component {...pageProps} />
+        </main>
+      </SessionProvider>
+    </>
   );
 }
