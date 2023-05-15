@@ -1,4 +1,3 @@
-import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import Navbar from "@/components/Navbar";
@@ -10,6 +9,7 @@ import db from "@/utils/db";
 import {getLandingPageTutors} from "@/utils/featuredTutors";
 import {LandingPageCard} from "@/types/ambiguous-types";
 import styles from "@/styles/Home.module.css";
+import Link from "next/link";
 
 /**
  * placeholder docs
@@ -52,8 +52,8 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
             </p>
           </div>
           <div className="flex gap-8">
-            <Button style="bg-orange-500 text-lg font-medium normal-case" link="/feed">Browse</Button>
-            <Button style="bg-blue-600 text-lg font-medium normal-case" link="/signin">Join us</Button>
+            <Link href="/feed" className="buttonLink orange">Browse</Link>
+            <Link href="/auth/signup" className="buttonLink blue">Join us</Link>
           </div>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
                     If you want to know more about our mission,
                     values, and the story behind our platform, visit our about us page!
           </p>
-          <Button style="bg-blue-600 hover:bg-blue-700" link="/aboutUs">Learn more about us</Button>
+          <Link href="/signin" className="buttonLink blue">Learn more about us</Link>
         </div>
       </section>
 
@@ -130,7 +130,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
                     Your support will help us to continue to improve and expand our services
                     to reach more students who need our help.
             </p>
-            <Button style="bg-blue-600 hover:bg-blue-700" link="/supportUs">Support us now</Button>
+            <Link href="/signin" className="buttonLink blue">Support us now</Link>
           </div>
         </div>
       </section>

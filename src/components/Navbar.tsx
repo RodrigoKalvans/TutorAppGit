@@ -80,7 +80,7 @@ const Navbar = ({
                 </div>
               ) : (
                 <span className="avatar relative cursor-pointer">
-                  <Link href={"/signin"}>
+                  <Link href={"/auth/signin"}>
                     <ProfileIcon className="text-[32px] text-orange-400" />
                   </Link>
                 </span>
