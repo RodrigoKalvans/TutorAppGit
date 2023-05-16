@@ -21,10 +21,6 @@ const Sorter = ({
   // track the previous metric
   useEffect(() => {
     lastSortMetric.current = sortMetric;
-    return () => {
-      setSortMetric(undefined);
-      lastSortMetric.current = undefined;
-    };
   }, [sortMetric]);
 
 
