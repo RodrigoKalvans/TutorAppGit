@@ -64,11 +64,11 @@
   }
   
   .orange {
-    @apply bg-orange-400 hover:bg-orange-400 hover:bg-opacity-80
+    @apply bg-orange-400 hover:bg-orange-400 hover:bg-opacity-80;
   }
   
   .blue {
-    @apply bg-[#4486EC] hover:bg-[#4486EC] hover:bg-opacity-80
+    @apply bg-[#4486EC] hover:bg-[#4486EC] hover:bg-opacity-80;
   }
 
   .darkOrange {
