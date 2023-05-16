@@ -12,11 +12,22 @@ import {isPromoted} from "@/utils/promotion";
 /**
  * Post component
  * @param {Post} post
- * @param {any} user tutor or student
+ * @param {number} index
+ * @param {Function} handleDelete
+ * @param {Session | null} session
  * @return {JSX} component
  */
-const Post = ({post, index, handleDelete, session}:
-      {post: any, index: number, handleDelete: Function, session: Session | null}) => {
+const Post = ({
+  post,
+  index,
+  handleDelete,
+  session,
+} : {
+  post: any,
+  index: number,
+  handleDelete: Function,
+  session: Session | null
+}) => {
   const [isExtended, setIsExtended] = useState<boolean>(false);
   const [commentsArray, setCommentsArray] = useState<any[]>([]);
   const [comment, setComment] = useState<string>("");

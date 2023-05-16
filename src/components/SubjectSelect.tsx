@@ -17,25 +17,23 @@ export default function SubjectSelect({
   setSubjectsState: Dispatch<any>,
   userSubjects?: Array<any>
 }) {
-  const [chosenSubjects, setChosenSubjects] = useState<Array<any> | null>([]);
+  let usedSubjects = null;
 
-  /**
-   * In case there need to be preloaded values
-   */
-  useEffect(() => {
-    if (userSubjects && userSubjects.length > 0) {
-      if (!chosenSubjects) setChosenSubjects([]);
-      for (let i = 0; i < userSubjects.length; i++) {
-        const option = {value: `${userSubjects[i]._id}`, label: `${userSubjects[i].name}`};
-        chosenSubjects!.push(option);
-      }
+  if (userSubjects) {
+    usedSubjects = [];
+    for (let i = 0; i < userSubjects.length; i++) {
+      const option = {value: `${userSubjects[i]._id}`, label: `${userSubjects[i].name}`};
+      usedSubjects.push(option);
     }
+  }
+
+  const [chosenSubjects, setChosenSubjects] = useState<Array<any> | null>(usedSubjects);
+
+  useEffect(() => {
     return () => {
       setChosenSubjects(null);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userSubjects]);
-
+  }, []);
 
   /** turn subjects into parsable data by Select element
      * is called when subject Select element is initialized
