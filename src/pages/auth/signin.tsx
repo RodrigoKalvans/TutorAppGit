@@ -35,7 +35,7 @@ const SignIn = () => {
           </div>
 
         </div>
-        <div className="min-h-screen h-full w-full bg-blue-900 flex items-center md:hidden">
+        <div className="min-h-screen h-full w-full bg-blue-900 hidden md:flex items-center">
 
           <div className="ml-8">
             <p className="font-black text-6xl text-light">Welcome back!</p>

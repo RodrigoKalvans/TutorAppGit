@@ -94,7 +94,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   return {
     props: {
-      user: loggedInUser ? JSON.parse(JSON.stringify(loggedInUser)) : undefined,
+      user: loggedInUser ? JSON.parse(JSON.stringify(loggedInUser)) : null,
     },
   };
 };

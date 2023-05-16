@@ -7,5 +7,6 @@
 }
 
 .button {
-  @apply btn orange border-none rounded-lg capitalize w-full;
+  @apply btn border-none rounded-lg capitalize w-full;
+  @apply bg-orange-400 hover:bg-orange-400 hover:bg-opacity-80;
 }
