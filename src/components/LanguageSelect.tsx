@@ -22,10 +22,12 @@ export default function LanguageSelect({
 }) {
   // Create the state and populate it with languages of the user if exist.
   // Will make the user's languages display as chosen by default
-  const [chosenLanguages, setChosenLanguages] = useState<Array<any> | null>(userLanguages ? userLanguages.map(
-      (languageObj: {code: string, name: string, _id: ObjectId}) => {
-        return {value: languageObj.code, label: languageObj.name};
-      }) : null);
+  const [chosenLanguages, setChosenLanguages] = useState<Array<any> | null>(
+    userLanguages ?
+    userLanguages.map((languageObj: {code: string, name: string, _id: ObjectId}) => {
+      return {value: languageObj.code, label: languageObj.name};
+    }) : null,
+  );
 
   /** turn subjects into parsable data by Select element
      * is called when subject Select element is initialized
