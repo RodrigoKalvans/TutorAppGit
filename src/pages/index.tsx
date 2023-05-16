@@ -10,12 +10,17 @@ import {getLandingPageTutors} from "@/utils/featuredTutors";
 import {LandingPageCard} from "@/types/ambiguous-types";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
+import {useSession} from "next-auth/react";
 
 /**
  * placeholder docs
  * @return {any} JSX landing page
  */
 export default function Home({subjects, carouselItems}: {subjects: Array<any>, carouselItems: Array<any>}) {
+  const {data: session} = useSession();
+
+  const path = session ? `/${session.user.role}s/${session.user.id}` : "/auth/signup";
+
   return (
     <>
       <Head>
@@ -53,7 +58,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
           </div>
           <div className="flex gap-8">
             <Link href="/feed" className="buttonLink orange">Browse</Link>
-            <Link href="/auth/signup" className="buttonLink blue">Join us</Link>
+            <Link as="/auth/signup" href={path} className="buttonLink blue">Join us</Link>
           </div>
         </div>
       </section>
