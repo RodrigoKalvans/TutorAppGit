@@ -1,5 +1,5 @@
 import Select from "react-tailwindcss-select";
-import {Dispatch, useEffect, useState} from "react";
+import {Dispatch, useState} from "react";
 
 /**
  * Subject select element
@@ -17,25 +17,13 @@ export default function SubjectSelect({
   setSubjectsState: Dispatch<any>,
   userSubjects?: Array<any>
 }) {
-  const [chosenSubjects, setChosenSubjects] = useState<Array<any> | null>([]);
-
-  /**
-   * In case there need to be preloaded values
-   */
-  useEffect(() => {
-    if (userSubjects && userSubjects.length > 0) {
-      if (!chosenSubjects) setChosenSubjects([]);
-      for (let i = 0; i < userSubjects.length; i++) {
-        const option = {value: `${userSubjects[i]._id}`, label: `${userSubjects[i].name}`};
-        chosenSubjects!.push(option);
-      }
-    }
-    return () => {
-      setChosenSubjects(null);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userSubjects]);
-
+  const [chosenSubjects, setChosenSubjects] = useState<Array<any> | null>(
+    userSubjects ?
+    userSubjects.map((s: {_id: string, name: string}) => {
+      console.log(s);
+      return {value: s._id, label: s.name};
+    }) : null,
+  );
 
   /** turn subjects into parsable data by Select element
      * is called when subject Select element is initialized

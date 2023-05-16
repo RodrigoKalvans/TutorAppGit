@@ -19,9 +19,9 @@ export default function SearchProfile({user, allSubjects}: {user: any, allSubjec
     <>
       <Link href={`/${user.role}s/${user._id}`}>
         {user && (
-          <div className="w-full min-w-40 h-30 bg-gray-200 rounded-full shadow flex overflow-hidden p-2 my-2 hov">
+          <div className="w-full min-w-40 h-30 bg-gray-200 rounded-full shadow flex items-center overflow-hidden p-2 my-2 hov">
             {/** profile image */}
-            <div className="w-[6.5rem] h-[6.5rem] flex justify-center align-middle aspect-square">
+            <div className="w-[6.5rem] h-full flex justify-center align-middle aspect-square">
               <ProfilePicture user={user} />
             </div>
 
