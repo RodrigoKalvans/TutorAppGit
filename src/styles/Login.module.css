@@ -1,0 +1,12 @@
+.inputField {
+  @apply w-full bg-gray-200 bg-opacity-0 border-b-2 rounded-none transition text-gray-900 p-3;
+}
+
+.inputField:focus {
+  @apply bg-opacity-80 rounded-sm;
+}
+
+.button {
+  @apply btn border-none rounded-lg capitalize w-full;
+  @apply bg-orange-400 hover:bg-orange-400 hover:bg-opacity-80;
+}

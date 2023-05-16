@@ -1,0 +1,15 @@
+.gradientTrending {
+  background: linear-gradient(180deg, rgba(29, 55, 79, 0.8) 0%, rgba(34, 61, 89, 0.784) 7.14%, rgba(36, 65, 94, 0.76) 14.29%, rgba(38, 69, 99, 0.744) 21.43%, rgba(40, 73, 104, 0.72) 28.57%, rgba(43, 78, 111, 0.704) 35.71%, rgba(45, 82, 116, 0.688) 42.86%, rgba(46, 84, 121, 0.672) 50%, rgba(46, 86, 124, 0.664) 57.14%, rgba(48, 90, 132, 0.648) 64.29%, rgba(49, 93, 137, 0.64) 71.43%, rgba(52, 99, 145, 0.64) 78.57%, rgba(54, 103, 150, 0.64) 85.71%, rgba(56, 108, 158, 0.64) 92.86%, rgba(60, 115, 168, 0.64) 100%);
+  backdrop-filter: blur(25.5px);
+}
+
+.bgSupport {
+  background: rgba(217, 217, 217, 0.7);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12.5px);
+}
+
+.box {
+  @apply rounded-4xl shadow-xl;
+  @apply p-10 lg:p-14;
+}

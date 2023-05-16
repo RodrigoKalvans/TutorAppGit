@@ -1,8 +1,8 @@
 import {EmailIcon} from "@/utils/icons";
 import ProfilePicture from "../profilePage/helpingComponents/ProfilePicture";
-import Button from "../Button";
 import TrendingTutorReview from "./TrendingTutorReview";
 import Icon from "../Icon";
+import Link from "next/link";
 // import {LandingPageCard} from "@/types/ambiguous-types"; // card: LandingPageCard
 
 /**
@@ -32,9 +32,7 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
             {card.tutor.email}
           </div>
           <div className="flex justify-center">
-            <Button style="btn btn-primary bg-orange-600 hover:bg-orange-700" link={`/tutors/${card.tutor._id}`}>
-              View Profile
-            </Button>
+            <Link href={`/tutors/${card.tutor._id}`} className="buttonLink darkOrange">View Profile</Link>
           </div>
         </div>
         <div className="w-1/2 h-[680px] relative">
