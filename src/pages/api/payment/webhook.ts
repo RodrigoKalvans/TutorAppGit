@@ -82,12 +82,11 @@ const handleRequest = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 /**
- * plc
+ * Save payment in database
  * @param {string} customerEmail
  * @param {number} amount
  * @param {string} paymentId
  * @param {NextApiResponse} res
- * @return {any} plc
  */
 const savePayment = async (customerEmail: string, amount: number, paymentId: string, res: NextApiResponse) => {
   await db.connect();

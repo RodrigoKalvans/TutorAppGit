@@ -11,13 +11,13 @@ const TRENDING_TUTOR_IDS = [
 ];
 
 // TODO: Once our tutors have reviews, we can use this to dynamically select reviews
-// const NR_OF_REVIEWS = 2;
+const NR_OF_REVIEWS = 2;
 
 // TODO: Used while under development
-const PLACEHOLDER_REVIEW_IDS = [
-  "63e0e1d0b39271740d1ea873",
-  "63e0e420b39271740d1ea87f",
-];
+// const PLACEHOLDER_REVIEW_IDS = [
+//   "63e0e1d0b39271740d1ea873",
+//   "63e0e420b39271740d1ea87f",
+// ];
 
 /**
  * Used in the landing page
@@ -45,8 +45,7 @@ export const getLandingPageTutors = async () => {
     };
 
     // get reviews
-    // reviewIds = tutors.at(i).reviews.splice(0, NR_OF_REVIEWS); // this could be made to use preselected reviews
-    reviewIds = PLACEHOLDER_REVIEW_IDS;
+    reviewIds = tutors.at(i).reviews.splice(0, NR_OF_REVIEWS); // this could be made to use preselected reviews
 
     const reviewsForCurrentTutor = await Review.find({ // review objects from the array of review IDs
       _id: {

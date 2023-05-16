@@ -26,7 +26,7 @@ const SignIn = () => {
               }}
             />
           </Link>
-          <div className="w-1/2 text-center">
+          <div className="w-3/5 text-center">
             <h1 className="text-2xl mb-4">Sign in</h1>
             <Login />
             <p className="text-sm">
