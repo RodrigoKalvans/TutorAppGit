@@ -74,6 +74,18 @@
   .darkOrange {
     @apply bg-orange-600 hover:bg-orange-700;
   }
+
+  .inputField {
+    @apply w-full bg-gray-200 bg-opacity-0 border-b-2 rounded-none transition text-gray-900 p-3;
+  }
+  
+  .inputField:focus {
+    @apply bg-opacity-80 rounded-sm;
+  }
+
+  .signInButton {
+    @apply btn orange border-none rounded-lg capitalize w-full;
+  }
 }
 
 .bord {
