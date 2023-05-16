@@ -1,9 +1,10 @@
 import * as Yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {useRef, useState} from "react";
-import {getSession, signIn} from "next-auth/react";
-import {Session} from "next-auth";
-import {useRouter} from "next/router";
+import {signIn} from "next-auth/react";
+// import {getSession, signIn} from "next-auth/react";
+// import {Session} from "next-auth";
+// import {useRouter} from "next/router";
 import styles from "@/styles/Login.module.css";
 
 interface Values {
@@ -32,24 +33,24 @@ const initValues = {
 export default function Login() {
   const [error, setError] = useState<string>();
   const loading = useRef<boolean>(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (values: any) => {
     loading.current = true;
     const res = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false,
     });
 
     if (res?.error) {
       setError(res.error);
       loading.current = false;
-    } else {
-      const session: Session | null = await getSession();
-
-      router.push(`/${session?.user.role}s/${session?.user.id}`);
     }
+    // else {
+    //   const session: Session | null = await getSession();
+
+    //   router.push(`/${session?.user.role}s/${session?.user.id}`);
+    // }
   };
 
   return (
@@ -91,7 +92,7 @@ export default function Login() {
                 type="submit"
                 className={`${styles.button} my-8`}
               >
-                {loading.current ? "Signing in..." : "Sign In"}
+                {(loading.current || formik.isSubmitting) ? "Signing in..." : "Sign In"}
               </button>
             </div>
           </Form>
