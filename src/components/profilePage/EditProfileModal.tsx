@@ -38,11 +38,13 @@ const EditProfileModal = ({
       languages?: string[],
       phoneNumber?: string,
       priceForLessons?: Map<string, string>,
+      location?: string,
     } = {
       firstName: event.target.firstName.value,
       lastName: event.target.lastName.value,
       description: event.target.about.value,
       languages: selectedLanguages,
+      location: event.target.location.value,
     };
 
     if (user.role === "tutor") {
