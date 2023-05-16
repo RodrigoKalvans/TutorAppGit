@@ -15,8 +15,8 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
   const subject = subjects.find((s: any) => s._id === card.tutor.subjects.at(0));
 
   return (
-    <div className="carousel-item relative overflow-">
-      <div className="bg-blue-920 w-[700px] h-[680px] text-white rounded-3xl flex">
+    <div className="carousel-item relative">
+      <div className="bg-blue-920 w-[700px] h-[680px] text-white rounded-3xl rounded-br-xl flex">
         <div className="w-1/2 h-[680px] flex flex-col gap-6">
           <ProfilePicture user={card.tutor} rounded={false} style="rounded-b-[3.5rem] rounded-tl-3xl" />
           <div className="flex justify-around mx-10 -mt-3 text-[14px] text-gray-400">
@@ -44,13 +44,13 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
             <p className="text-gray-300 text-[16px] h-48 overflow-hidden">{card.tutor.description}</p>
           </div>
 
-          <div className="w-full flex flex-col gap-3 pt-5">
+          <div className="w-full flex flex-col gap-3 pt-5 text-clip">
             {card.reviews && card.reviews.map((review: any) => (
               <TrendingTutorReview review={review} key={review.review._id} />
             ))}
           </div>
         </div>
-        <div className="absolute -bottom-2 right-0 h-24 w-1/2 bg-gradient-to-t from-blue-920 to-transparent backdrop-blur-xs"></div>
+        <div className="absolute bottom-0 rounded-br-xl right-0 h-24 w-1/2 bg-gradient-to-t from-blue-920 to-transparent backdrop-blur-xs"></div>
       </div>
     </div>
   );
