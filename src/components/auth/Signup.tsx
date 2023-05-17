@@ -317,6 +317,7 @@ export default function SignUp({
                   <button
                     type="submit"
                     className="signInButton my-8"
+                    disabled={formik.isSubmitting}
                   >
                     {formik.isSubmitting ? "Please wait..." : "Sign Up"}
                   </button>
