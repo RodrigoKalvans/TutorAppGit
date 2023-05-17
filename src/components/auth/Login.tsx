@@ -88,6 +88,7 @@ export default function Login() {
               <button
                 type="submit"
                 className="signInButton my-8"
+                disabled={(loading.current || formik.isSubmitting)}
               >
                 {(loading.current || formik.isSubmitting) ? "Signing in..." : "Sign In"}
               </button>
