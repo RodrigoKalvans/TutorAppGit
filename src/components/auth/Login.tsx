@@ -1,7 +1,8 @@
 import * as Yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {useRef, useState} from "react";
-import {signIn} from "next-auth/react";
+import {getSession, signIn} from "next-auth/react";
+import {useRouter} from "next/router";
 
 interface Values {
   email: string,
@@ -29,18 +30,23 @@ const initValues = {
 export default function Login() {
   const [error, setError] = useState<string>();
   const loading = useRef<boolean>(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (values: any) => {
     loading.current = true;
     const res = await signIn("credentials", {
       email: values.email,
       password: values.password,
+      redirect: false,
     });
 
     if (res?.error) {
       setError(res.error);
       loading.current = false;
+    } else {
+      const session = await getSession();
+
+      router.push(`/${session?.user.role}s/${session?.user.id}`);
     }
   };
 
