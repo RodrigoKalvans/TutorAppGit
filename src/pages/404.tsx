@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 /**
- * Custom error page
+ * Custom 500 error page
  * @param {number} statusCode
  * @return {JSX}
  */
-const Error = ({statusCode}: {statusCode: number}) => {
+const Custom404 = () => {
   return (
     <>
       <div className="flex justify-center my-10 bg-white">
@@ -19,11 +19,9 @@ const Error = ({statusCode}: {statusCode: number}) => {
               height={140}
             />
           </div>
-          <div className="text-red-500 flex justify-center text-[40px] my-5">{statusCode}</div>
           <div className="h-64 flex flex-col">
-            <b className="flex justify-center text-[24px]">Apologies for that!</b>
-            <p className="text-subtitle text-[18px] flex justify-center">Error {statusCode} has occured</p>
-            <p className="text-subtitle text-[18px] flex justify-center">We will try to resolve this issue as soon as possible!</p>
+            <p className="text-subtitle text-[18px] flex justify-center">Error 404 has occured</p>
+            <p className="text-subtitle text-[18px] flex justify-center">The resource you are trying to access does not exist. Please try again later.</p>
           </div>
           <div className="flex justify-center">
             <Link
@@ -39,9 +37,4 @@ const Error = ({statusCode}: {statusCode: number}) => {
   );
 };
 
-Error.getInitialProps = ({res, err}: {res?: any, err?: any}) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-  return {statusCode};
-};
-
-export default Error;
+export default Custom404;
