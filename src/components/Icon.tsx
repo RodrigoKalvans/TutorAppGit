@@ -1,4 +1,5 @@
 import {MathIcon, HistoryIcon, BiologyIcon, EnglishIcon, ProgrammingIcon, GeographyIcon, ChemistryIcon, LiteratureIcon, PhysicsIcon, QuestionIcon} from "@/utils/icons";
+// import Image from "next/image";
 
 /**
  * This can be used to display a subject's corresponding icon
@@ -13,6 +14,7 @@ const Icon = ({
   subject: any,
   style: string
 }) => {
+  // return <Image width={50} height={50} src={`/icons/subjectIcons/${subject.name.toLowerCase()}.svg`} alt={"icon"} className={style} />;
   switch (subject.name) {
     case "Math": return <MathIcon className={style} />;
     case "History": return <HistoryIcon className={style} />;

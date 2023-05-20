@@ -37,7 +37,7 @@ const PostManager = ({
       setPosts(arr);
     } else {
       alert("Error appeared while deleting the post.");
-      console.log(await response.json());
+      console.error(await response.json());
     }
   };
 

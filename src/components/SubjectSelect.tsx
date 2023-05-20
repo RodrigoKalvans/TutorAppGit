@@ -20,7 +20,6 @@ export default function SubjectSelect({
   const [chosenSubjects, setChosenSubjects] = useState<Array<any> | null>(
     userSubjects ?
     userSubjects.map((s: {_id: string, name: string}) => {
-      console.log(s);
       return {value: s._id, label: s.name};
     }) : null,
   );
