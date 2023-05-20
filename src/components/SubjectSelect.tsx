@@ -1,5 +1,7 @@
 import Select from "react-tailwindcss-select";
-import {Dispatch, useState} from "react";
+import {Dispatch, useCallback, useState} from "react";
+
+const MAXIMUM_SELECTED_SUBJECTS = 3;
 
 /**
  * Subject select element
@@ -28,16 +30,18 @@ export default function SubjectSelect({
      * is called when subject Select element is initialized
      * @return {JSX} component
      */
-  const getSubjectOptions = () => {
+  const getSubjectOptions = useCallback(() => {
     const options: { value: string; label: string; }[] = [];
     subjects.map((subject: any) => options.push({value: `${subject._id}`, label: `${subject.name}`}));
     return options;
-  };
+  }, [subjects]);
 
   /** is called onChange in subject Select element
-     * @param {string[]} value is the new string[] containing chosen options objects
+     * @param {Array<string>} value is the new string[] containing chosen options objects
      */
-  const setSelectedSubjects = (value: any) => {
+  const setSelectedSubjects = useCallback((value: any) => {
+    // make sure user does not add more subjects than is allowed
+    if (chosenSubjects && chosenSubjects.length >= MAXIMUM_SELECTED_SUBJECTS && value.length > chosenSubjects.length) return;
     if (value) {
       setSubjectsState(value.map((option: {
         value: string,
@@ -48,7 +52,7 @@ export default function SubjectSelect({
       setSubjectsState([]);
     }
     setChosenSubjects(value);
-  };
+  }, [chosenSubjects, setSubjectsState]);
 
   return (
     <>
