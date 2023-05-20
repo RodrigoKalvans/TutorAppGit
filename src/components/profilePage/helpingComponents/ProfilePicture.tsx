@@ -32,7 +32,7 @@ const ProfilePicture = ({session, user, rounded = true, style = ""}: {session?: 
           onClick={handlePictureClick}
         >
           <div className={`${rounded && "rounded-full"} ${style} w-full`}>
-            <Image src={data.presignedUrl} alt="profile picture" width={600} height={600} priority />
+            <Image src={data.presignedUrl} unoptimized alt="profile picture" width={600} height={600} priority />
           </div>
         </div>
       ) : (

@@ -1,11 +1,8 @@
 import * as Yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {useRef, useState} from "react";
-import {signIn} from "next-auth/react";
-// import {getSession, signIn} from "next-auth/react";
-// import {Session} from "next-auth";
-// import {useRouter} from "next/router";
-import styles from "@/styles/Login.module.css";
+import {getSession, signIn} from "next-auth/react";
+import {useRouter} from "next/router";
 
 interface Values {
   email: string,
@@ -27,30 +24,30 @@ const initValues = {
 };
 
 /**
- * This component is displayed to the user on the signin page during login, not sign-up
+ * This component is displayed to the user on the signin page during login
  * @return {any}
  */
 export default function Login() {
   const [error, setError] = useState<string>();
   const loading = useRef<boolean>(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (values: any) => {
     loading.current = true;
     const res = await signIn("credentials", {
       email: values.email,
       password: values.password,
+      redirect: false,
     });
 
     if (res?.error) {
       setError(res.error);
       loading.current = false;
-    }
-    // else {
-    //   const session: Session | null = await getSession();
+    } else {
+      const session = await getSession();
 
-    //   router.push(`/${session?.user.role}s/${session?.user.id}`);
-    // }
+      router.push(`/${session?.user.role}s/${session?.user.id}`);
+    }
   };
 
   return (
@@ -73,7 +70,7 @@ export default function Login() {
                 name="email"
                 as="input"
                 placeholder="Email"
-                className={`${styles.inputField} mt-2`}
+                className="inputField mt-2"
               />
               <div className="text-red-600 text-sm">
                 <ErrorMessage name="email" />
@@ -83,14 +80,15 @@ export default function Login() {
                 type="password"
                 as="input"
                 placeholder="Password"
-                className={`${styles.inputField} mt-2`}
+                className="inputField mt-2"
               />
               <div className="text-red-600 text-sm">
                 <ErrorMessage name="password" />
               </div>
               <button
                 type="submit"
-                className={`${styles.button} my-8`}
+                className="signInButton my-8"
+                disabled={(loading.current || formik.isSubmitting)}
               >
                 {(loading.current || formik.isSubmitting) ? "Signing in..." : "Sign In"}
               </button>

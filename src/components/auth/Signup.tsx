@@ -66,7 +66,7 @@ export default function SignUp({
   const onSubmit = async (values: any) => {
     try {
       // define object to be sent via HTTP
-      const user: TUser = {
+      const userToSignUp: TUser = {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
@@ -87,51 +87,65 @@ export default function SignUp({
           map[key] = val;
         });
 
-        user.priceForLessons = map;
+        userToSignUp.priceForLessons = map;
       }
 
       // post new user to the database
       const res = await fetch("/api/auth/signup", {
         method: "POST",
-        body: JSON.stringify(user),
+        body: JSON.stringify(userToSignUp),
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      const json = await res.json();
+      const json= await res.json();
 
-      // sign the user in and redirect
-      if (res.ok) {
+      // sign the user in and redirect to their profile
+      if (res.ok && role === "student") {
+        const {user: createdStudent} = json;
         const res = await signIn("credentials", {
           email: values.email,
           password: values.password,
-          // callbackUrl: `/${role}s/${json.user._id.toString()}`,
+          callbackUrl: `/${createdStudent.role}s/${createdStudent._id.toString()}`,
         });
         if (res?.error) {
           setError(res.error);
         } else {
           setError(null);
         }
-      } else {
-        // TODO: handle errors better
-        console.error(json);
-      }
-
-      if (role == "tutor") {
-        const res = await fetch("/api/subjects/subscribeTutorToSubjects", {
-          method: "PUT",
-          body: JSON.stringify({
-            subjectIds: chosenSubjects,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
+      } else if (res.ok && role === "tutor") {
+        const res = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
         });
-        if (!res.ok) {
-          console.warn(res);
-          throw res;
+
+        if (res?.error) {
+          setError(res.error);
+        } else {
+          setError(null);
+          const subscribeRes = await fetch("/api/subjects/subscribeTutorToSubjects", {
+            method: "PUT",
+            body: JSON.stringify({
+              subjectIds: chosenSubjects,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (!subscribeRes.ok) {
+            console.warn(res);
+            throw res;
+          } else {
+            const {user: createdTutor} = json;
+
+            router.push(`/${createdTutor.role}s/${createdTutor._id.toString()}`);
+          }
         }
+      } else if (!res.ok) {
+        const {message} = json;
+        setError(message);
       }
     } catch (e) {
       console.log(e);
@@ -141,9 +155,21 @@ export default function SignUp({
 
   return (
     <>
-      <div className="btn-group w-full">
-        <button onClick={() => setRole("student")} className="btn w-1/2 bg-orange-400 hover:bg-orange-500" >Student</button>
-        <button onClick={() => setRole("tutor")} className="btn w-1/2 bg-orange-400 hover:bg-orange-500">Tutor</button>
+      <div className="btn-group gap-[3px] w-full mb-4">
+        <button
+          type="button"
+          onClick={() => setRole("student")}
+          className={`btn btn-sm w-1/2 border-none capitalize
+            ${role === "student" ? "blue" : " bg-gray-400 hover:bg-gray-500"}`} >
+          Student
+        </button>
+        <button
+          type="button"
+          onClick={() => setRole("tutor")}
+          className={`btn btn-sm w-1/2 border-none capitalize
+            ${role === "tutor" ? "blue" : " bg-gray-400 hover:bg-gray-500"}`}>
+            Tutor
+        </button>
       </div>
       <Formik
         initialValues={{firstName: "", lastName: "", email: "", password: "", tenantKey: ""}}
@@ -154,15 +180,18 @@ export default function SignUp({
           <>
             <Form onSubmit={formik.handleSubmit}>
               <div >
-                <div className="text-red-400 text-md text-center rounded p-2">
-                  {error}
-                </div>
+                {error && (
+                  <div className="text-red-600 text-md text-center rounded p-2">
+                    {error}
+                  </div>
+                )}
+                {/*  */}
                 <div>
                   <Field
                     name="firstName"
                     as="input"
                     placeholder="First name"
-                    className="w-full bg-gray-300 text-gray-900 mt-2 p-3"
+                    className="inputField mt-2"
                   />
                   <div className="text-red-600 text-sm">
                     <ErrorMessage name="firstName" />
@@ -173,7 +202,7 @@ export default function SignUp({
                     name="lastName"
                     as="input"
                     placeholder="Last name"
-                    className="w-full bg-gray-300 text-gray-900 mt-2 p-3"
+                    className="inputField mt-2"
                   />
                   <div className="text-red-600 text-sm">
                     <ErrorMessage name="lastName" />
@@ -184,7 +213,7 @@ export default function SignUp({
                     name="email"
                     as="input"
                     placeholder="Email"
-                    className="w-full bg-gray-300 text-gray-900 mt-2 p-3"
+                    className="inputField mt-2"
                   />
                   <div className="text-red-600 text-sm">
                     <ErrorMessage name="email" />
@@ -196,7 +225,7 @@ export default function SignUp({
                     type="password"
                     as="input"
                     placeholder="Password"
-                    className="w-full bg-gray-300 text-gray-900 mt-2 p-3"
+                    className="inputField mt-2"
                   />
                   <div className="text-red-600 text-sm">
                     <ErrorMessage name="password" />
@@ -205,14 +234,14 @@ export default function SignUp({
 
                 {role === "tutor" && (
                   <>
-                    <div className="mt-1">
+                    <div className="mt-5">
                       <SubjectSelect setSubjectsState={setChosenSubjects} subjects={subjects} />
                     </div>
                     <div className="text-sm text-red-600">
                       <ErrorMessage name="subjects" />
                     </div>
 
-                    <table className="table table-compact z-0">
+                    <table className="table table-compact mt-5">
                       <thead>
                         <tr className="text-left">
                           <th className="font-light text-sm capitalize">minutes</th>
@@ -258,12 +287,12 @@ export default function SignUp({
                   </>
                 )}
 
-                <div className="flex justify-center p-3">
+                <div className="flex gap-2 mt-5">
                   <input
                     type="checkbox"
                     id="terms"
                     value="check"
-                    className="checkbox-xs"
+                    className="cursor-pointer"
                     required
                   />
 
@@ -271,14 +300,14 @@ export default function SignUp({
                   <label htmlFor="terms" className="text-xs">Agree to our <Link href="/" >Terms</Link></label>
                 </div>
 
-                <div className="flex justify-center p-3">
+                <div className="flex gap-2 mt-5">
                   <input
                     type="checkbox"
                     id="newslettersCheck"
                     value="check"
-                    className="checkbox-xs"
+                    className="cursor-pointer"
                     onChange={() => setSubscribed(!subscribed)}
-                    checked
+                    defaultChecked
                   />
 
                   <label htmlFor="newslettersCheck" className="text-xs">Subscribe to our newsletters</label>
@@ -287,7 +316,8 @@ export default function SignUp({
                 <div className="flex items-center justify-center">
                   <button
                     type="submit"
-                    className="bg-orange-400 hover:bg-orange-500 w-full text-gray-100 p-3 rounded-lg"
+                    className="signInButton my-8"
+                    disabled={formik.isSubmitting}
                   >
                     {formik.isSubmitting ? "Please wait..." : "Sign Up"}
                   </button>

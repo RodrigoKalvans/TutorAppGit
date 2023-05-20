@@ -147,7 +147,7 @@ const Post = ({
                 {presignedUrls && (
                   <div className={`${presignedUrls.length > 1 && "carousel rounded-md"}`}>
                     {presignedUrls.map((url: string, index: number) => (
-                      <Image key={index} src={url} alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
+                      <Image key={index} src={url} unoptimized alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
                     ))}
                   </div>
                 )}
