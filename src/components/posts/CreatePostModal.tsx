@@ -2,12 +2,33 @@ import React, {ChangeEvent, MouseEventHandler, useState} from "react";
 import {AiOutlineClose} from "react-icons/ai";
 import Image from "next/image";
 
+// TODO: Max count of what? Need a clearer name
 const MAX_COUNT = 3;
 
+const MAX_DESCRIPTION_LENGTH = 750;
+
+/**
+ * This modal component allows the user to create a post
+ * @param {MouseEventHandler} closeModal button interaction
+ * @return {JSX}
+ */
 const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
-  const [fileLimit, setFileLimit] = useState(false);
+  const [fileLimit, setFileLimit] = useState<boolean>(false);
   const [previewImageUrls, setPreviewImageUrls] = useState<string[]>([]);
   const [chosenFiles, setChosenFiles] = useState<File[]>([]);
+  const [descriptionLengthError, setDescriptionLengthError] = useState<boolean>(false);
+
+  /**
+   * used to make sure description does not exceed allowed limit
+   * @param {string} description as entered by the user
+   */
+  const validateDescriptionLength = (description: string) => {
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+      setDescriptionLengthError(true);
+    } else {
+      setDescriptionLengthError(false);
+    }
+  };
 
   const uploadImages = async (files: File[], postId: string) => {
     // Create a FormData object to send the file to the API endpoint
@@ -62,6 +83,10 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    // TODO: Better way to do this?
+    console.log(e.target);
+    if (descriptionLengthError) return;
+
     const post: {
       description: string,
       images?: string[],
@@ -139,7 +164,8 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
 
             <div>
               <label>Description</label>
-              <input type="text" id="description" className="w-full border h-8"/>
+              <textarea id="description" className="w-full border h-20" onChange={(e) => validateDescriptionLength(e.target.value)}/>
+              {descriptionLengthError ? <div className="text-red-500 text-sm">{MAX_DESCRIPTION_LENGTH} character limit</div> : <></>}
             </div>
           </div>
           <div className="border-t-2">
