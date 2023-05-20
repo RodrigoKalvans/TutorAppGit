@@ -130,6 +130,7 @@ export default function Filter({
 
   useEffect(() => {
     const query = router.query;
+    // This is done such that you can search by subject through router
     if (router.query.subjects && !Array.isArray(router.query.subjects)) {
       query.subjects = router.query.subjects.split("~");
       console.log(query);

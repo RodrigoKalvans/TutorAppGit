@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 /**
- * Custom 500 error page
+ * Custom 404 error page
  * @param {number} statusCode
  * @return {JSX}
  */

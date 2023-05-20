@@ -5,7 +5,7 @@ import Student from "@/models/Student";
 import Tutor from "@/models/Tutor";
 import db from "@/utils/db";
 import {InferGetServerSidePropsType} from "next";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import Subject from "@/models/Subject";
 import AdminSection from "@/components/admin/AdminSection";
 
@@ -30,7 +30,7 @@ const Admin = (
   const commentFields = ["_id", "role", "userId", "postId", "text"];
   const subjectFields = ["_id", "name"];
 
-  const handleDeletePost = async (post: any) => {
+  const handleDeletePost = useCallback(async (post: any) => {
     const response = await fetch(`/api/posts/${post._id.toString()}`, {
       method: "DELETE",
     });
@@ -40,9 +40,9 @@ const Admin = (
     setPosts((oldValues) => {
       return oldValues.filter((p) => p._id.toString() !== post._id);
     });
-  };
+  }, []);
 
-  const handleDeleteUser = async (user: any) => {
+  const handleDeleteUser = useCallback(async (user: any) => {
     let response;
     if (user.role == "tutor") {
       response = await fetch(`/api/tutors/${user._id.toString()}`, {
@@ -63,9 +63,9 @@ const Admin = (
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
 
-  const handleDeleteComment = async (comment: any) => {
+  const handleDeleteComment = useCallback(async (comment: any) => {
     const response = await fetch(`/api/comments/${comment._id.toString()}`, {
       method: "DELETE",
     });
@@ -75,9 +75,9 @@ const Admin = (
     setComments((oldValues) => {
       return oldValues.filter((c) => c._id.toString() !== comment._id);
     });
-  };
+  }, []);
 
-  const handleDeleteReview = async (review: any) => {
+  const handleDeleteReview = useCallback(async (review: any) => {
     const response = await fetch(`/api/reviews/${review._id.toString()}`, {
       method: "DELETE",
     });
@@ -87,9 +87,9 @@ const Admin = (
     setReviews((oldValues) => {
       return oldValues.filter((r) => r._id.toString() !== review._id);
     });
-  };
+  }, []);
 
-  const handleDeleteSubject = async (subject: any) => {
+  const handleDeleteSubject = useCallback(async (subject: any) => {
     const response = await fetch(`/api/subjects/${subject._id.toString()}`, {
       method: "DELETE",
     });
@@ -99,7 +99,7 @@ const Admin = (
     setSubjects((oldValues) => {
       return oldValues.filter((s) => s._id.toString() !== subject._id);
     });
-  };
+  }, []);
 
   return (
     <>

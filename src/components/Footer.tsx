@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /**
  * Footer at the bottom of all content pages
  * @return {JSX}
@@ -11,10 +13,11 @@ export default function Footer() {
                             Navigation:
             <div>
               <ul>
-                <li>about us</li>
-                <li>testimonials</li>
-                <li>faq</li>
-                <li>contact us</li>
+                <li><Link href={"/about"}>About Us</Link></li>
+                <li><Link href={"/support"}>Support Us</Link></li>
+                <li><Link href={"/feed"}>Feed</Link></li>
+                {/** TODO: Add payment link */}
+                <li><a href={`${process.env.PAYMENT_LINK}`}>Donate</a></li>
               </ul>
             </div>
           </div>
@@ -23,6 +26,7 @@ export default function Footer() {
                             Contact Information:
             <div>
               <ul>
+                {/** TODO: Add contact info */}
                 <li>email</li>
                 <li>phone</li>
                 <li>address</li>
@@ -34,6 +38,7 @@ export default function Footer() {
                             Social Media Links:
             <div>
               <ul>
+                {/** TODO: Add social media links */}
                 <li>insta</li>
                 <li>facebook</li>
                 <li>twitter</li>
@@ -46,6 +51,7 @@ export default function Footer() {
                             Additional Information:
             <div>
               <ul>
+                {/** TODO: Add policies */}
                 <li>terms of service</li>
                 <li>privacy policy</li>
                 <li>refund policy</li>
