@@ -5,7 +5,7 @@ import {NextRouter, useRouter} from "next/router";
 
 import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
-import {Dispatch, useEffect, useState} from "react";
+import {Dispatch, useCallback, useEffect, useState} from "react";
 import {isPromoted} from "@/utils/promotion";
 
 type Values = {
@@ -96,7 +96,8 @@ export default function Filter({
  * @param {Array<any>} sourceArray is the array that will be sorted - passed by reference
  * @return {Array<any>} filtered array
  */
-  const filterProfiles = (filter: any | undefined) => {
+  const filterProfiles = useCallback((filter: any | undefined) => {
+    console.log(filter);
     if (filter == undefined) filter = router.query; // in case we got here from the navbar
     const keys = Object.keys(filter); // keys in the filter (eg  { firstName: "john" } )
     const arr = allUsers.filter((user: any) => { // do the following on every user object
@@ -116,7 +117,7 @@ export default function Filter({
     });
     // sort before returning
     return sortByDonation(arr);
-  };
+  }, [allUsers, router.query]);
 
   /**
  * This is used to sort profiles based on whether the fit the donation criteria outlined by isPromoted()
@@ -128,13 +129,17 @@ export default function Filter({
   };
 
   useEffect(() => {
-    setProfileState(filterProfiles(router.query));
+    const query = router.query;
+    if (router.query.subjects && !Array.isArray(router.query.subjects)) {
+      query.subjects = router.query.subjects.split("~");
+      console.log(query);
+    }
+    setProfileState(filterProfiles(query));
 
     return () => {
       setProfileState(null);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]); // I don't understand this error
+  }, [filterProfiles, router.query, setProfileState]);
 
   return (
     <>
