@@ -9,6 +9,8 @@ import {DeleteIcon, LikeIcon, LoadingIcon, PromoIcon} from "@/utils/icons";
 import {Session} from "next-auth";
 import {isPromoted} from "@/utils/promotion";
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json()).catch((res) => res.json());
+
 /**
  * Post component
  * @param {Post} post
@@ -34,7 +36,6 @@ const Post = ({
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(post.likes.length);
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json()).catch((res) => res.json());
   const {data: user, error, isLoading} = useSWR(post ?`/api/${post.role}s/${post.userId}` : null, fetcher);
   const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(post ? `/api/posts/${post._id.toString()}/image` : null, fetcher);
 
@@ -140,7 +141,7 @@ const Post = ({
                 <p>{post.description}</p>
               </div>
               <div className="w-full flex justify-center my-5">
-                {areImagesLoading && (
+                {post.images.length > 0 && areImagesLoading && (
                   <p>Images are loading</p>
                 )}
                 {presignedUrls && (
