@@ -24,9 +24,6 @@
   input::placeholder {
     @apply text-gray-700
   }
-  label {
-    @apply uppercase text-sm text-gray-600 font-bold
-  }
   option {
     @apply font-sans font-semibold
   }
@@ -86,10 +83,10 @@
   .signInButton {
     @apply btn orange border-none rounded-lg capitalize w-full;
   }
-}
 
-.bord {
-  outline-style: solid;
+  .bord {
+    @apply outline-1
+  }
 }
 
 .shadow-round {
