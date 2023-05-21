@@ -6,8 +6,7 @@ import {FormEventHandler, useState} from "react";
 import Link from "next/link";
 import SubjectSelect from "../SubjectSelect";
 import YupPassword from "yup-password";
-import {signIn} from "next-auth/react";
-import router from "next/router";
+import {useRouter} from "next/router";
 
 YupPassword(Yup);
 
@@ -63,6 +62,8 @@ export default function SignUp({
   // Newsletter checkbox
   const [subscribed, setSubscribed] = useState<boolean>(true);
 
+  const router = useRouter();
+
   const onSubmit = async (values: any) => {
     try {
       // define object to be sent via HTTP
@@ -104,45 +105,57 @@ export default function SignUp({
       // sign the user in and redirect to their profile
       if (res.ok && role === "student") {
         const {user: createdStudent} = json;
-        const res = await signIn("credentials", {
-          email: values.email,
-          password: values.password,
-          callbackUrl: `/${createdStudent.role}s/${createdStudent._id.toString()}`,
+
+        // router.push("/auth/verify", {query: {email: createdStudent.email}});
+        router.push({
+          pathname: "/auth/verify",
+          query: {email: createdStudent.email},
         });
-        if (res?.error) {
-          setError(res.error);
-        } else {
-          setError(null);
-        }
+        // const res = await signIn("credentials", {
+        //   email: values.email,
+        //   password: values.password,
+        //   callbackUrl: `/${createdStudent.role}s/${createdStudent._id.toString()}`,
+        // });
+        // if (res?.error) {
+        //   setError(res.error);
+        // } else {
+        //   setError(null);
+        // }
       } else if (res.ok && role === "tutor") {
-        const res = await signIn("credentials", {
-          email: values.email,
-          password: values.password,
-          redirect: false,
+        const {user: createdTutor} = json;
+
+        // router.push("/auth/verify", {query: {email: createdTutor.email}{email: createdTutor.email}});
+        router.push({
+          pathname: "/auth/verify",
+          query: {email: createdTutor.email},
         });
 
-        if (res?.error) {
-          setError(res.error);
-        } else {
-          setError(null);
-          const subscribeRes = await fetch("/api/subjects/subscribeTutorToSubjects", {
-            method: "PUT",
-            body: JSON.stringify({
-              subjectIds: chosenSubjects,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!subscribeRes.ok) {
-            console.warn(res);
-            throw res;
-          } else {
-            const {user: createdTutor} = json;
+        // const res = await signIn("credentials", {
+        //   email: values.email,
+        //   password: values.password,
+        //   redirect: false,
+        // });
 
-            router.push(`/${createdTutor.role}s/${createdTutor._id.toString()}`);
-          }
-        }
+        // if (res?.error) {
+        //   setError(res.error);
+        // } else {
+        //   setError(null);
+        //   const subscribeRes = await fetch("/api/subjects/subscribeTutorToSubjects", {
+        //     method: "PUT",
+        //     body: JSON.stringify({
+        //       subjectIds: chosenSubjects,
+        //     }),
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //   });
+        //   if (!subscribeRes.ok) {
+        //     console.warn(res);
+        //     throw res;
+        //   } else {
+        //     router.push(`/${createdTutor.role}s/${createdTutor._id.toString()}`);
+        //   }
+        // }
       } else if (!res.ok) {
         const {message} = json;
         setError(message);

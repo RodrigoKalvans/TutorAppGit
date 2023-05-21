@@ -1,6 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import crypto, {CipherKey} from "crypto";
-
 import {StatusCodes} from "http-status-codes";
 import Student from "../../../models/Student";
 import Tutor from "../../../models/Tutor";
@@ -8,6 +7,9 @@ import db from "../../../utils/db";
 import {getToken} from "next-auth/jwt";
 import {hash} from "argon2";
 import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHelper";
+import {Emailer} from "@/utils/emailer";
+import {v4 as uuidv4} from "uuid";
+import EmailVerification from "@/models/EmailVerification";
 
 /**
  * Sign up route
@@ -17,6 +19,7 @@ import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHel
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
+    res.status(StatusCodes.METHOD_NOT_ALLOWED);
     return;
   }
 
@@ -103,18 +106,41 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  newUser.emailVerified = false;
+  await newUser.save();
+
+  const emailer = new Emailer(process.env.GOOGLE_USER!, process.env.GOOGLE_APP_PASSWORD!);
+  const verificationToken = uuidv4();
+  const verificationDbEntry = new EmailVerification({
+    email: newUser.email,
+    token: verificationToken,
+    role: newUser.role,
+  });
+  verificationDbEntry.save();
+  const result = await emailer.sendVerificationEmail(newUser.email, verificationToken);
+
+  if (result.error) {
+    res.status(StatusCodes.BAD_REQUEST).send(
+        {
+          message: "Error occurred during sending the verification email",
+          error: result.error,
+        },
+    );
+    return;
+  }
+
   // Check if user wanted to subscribe to newsletters
   if (req.body.subscribeToNewsletters && req.body.subscribeToNewsletters === true) {
     try {
       const res = await subscribeUserToNewsletter(newUser.email, newUser.firstName, newUser.lastName, newUser.role);
       newUser.subscriberId = res.data.id;
+      await newUser.save();
     } catch (error) {
       res.status(StatusCodes.BAD_REQUEST)
           .send({message: "Error occurred while subscribing user to newsletter.", error: error});
       return;
     }
   }
-  await newUser.save();
 
   delete newUser.password;
   delete newUser.role;

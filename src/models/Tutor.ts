@@ -49,6 +49,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
         }},
       }],
       posts: [{type: String}],
+      emailVerified: {type: Boolean, default: false, required: true},
       isSuspended: {type: Boolean, default: false},
       subscriberId: {type: String},
       donations: [{

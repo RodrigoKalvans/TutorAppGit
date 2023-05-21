@@ -37,6 +37,9 @@ export const authOptions: NextAuthOptions = {
           if (!user) throw new Error("Wrong credentials!");
         }
 
+        if (!user.emailVerified) {
+          throw new Error("You need to verify your email address before you can sign in.");
+        }
         // Split the IV and the encrypted hashed password
         const [iv, encryptedHashedPassword] = user.password.split(":");
 
@@ -73,11 +76,13 @@ export const authOptions: NextAuthOptions = {
           lastName: string,
           role: string,
           picture?: string,
+          emailVerified: boolean,
         } = {
           id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,
+          emailVerified: user.emailVerified,
         };
 
         if (user.picture) res.picture = user.picture;
