@@ -136,7 +136,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (!emailVerificationEntry) {
       return {
         props: {
-          error: "User with this email is not registered or has already verified their account",
+          error: JSON.parse(
+            JSON.stringify("User with this email is not registered or has already verified their account")
+            ),
         },
       };
     }
