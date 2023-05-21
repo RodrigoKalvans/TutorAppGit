@@ -68,7 +68,6 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     }
 
     emailVerificationEntry.updatedAt = new Date();
-    console.log(emailVerificationEntry.updatedAt);
 
     await emailVerificationEntry.save();
     res.status(StatusCodes.OK).send({message: "Verification email has been sent"});

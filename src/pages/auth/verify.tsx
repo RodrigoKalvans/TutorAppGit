@@ -5,16 +5,13 @@ import {GetServerSidePropsContext} from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 
-const VerificationPage = ({success, error}: {success?: boolean, error?: string}) => {
+const VerificationPage = ({success, error, email}: {success?: boolean, error?: string, email? : string}) => {
   const [disabled, setDisabled] = useState(true);
   const [counter, setCounter] = useState(15);
   const [requestError, setRequestError] = useState<String>();
-
-  const router = useRouter();
-  const {email} = router.query;
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     let timer: number;
@@ -38,7 +35,7 @@ const VerificationPage = ({success, error}: {success?: boolean, error?: string})
     });
 
     if (res.ok) {
-      alert("Email has been sent");
+      setOpen(true);
       setDisabled(true);
       setCounter(15);
     } else {
@@ -85,7 +82,7 @@ const VerificationPage = ({success, error}: {success?: boolean, error?: string})
 
                 {(email && !error) && (
                   <>
-                    <p className="text-sm mt-4">
+                    <p className="text-sm mt-8">
               If you have not received the link you can request another one in {counter}
                     </p>
                     <button
@@ -116,6 +113,16 @@ const VerificationPage = ({success, error}: {success?: boolean, error?: string})
           </div>
         </div>
       </main>
+
+      {open && (
+        <div className="alert alert-success shadow-lg fixed left-1/2 w-[90%] -translate-x-1/2 top-2">
+          <div className="flex w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>New verification email has been sent!</span>
+            <button type="button" onClick={() => setOpen(false)} className="ml-auto">&#10006;</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
@@ -128,7 +135,15 @@ export default VerificationPage;
  * @return {Promise<{props: object}>} A promise that resolves to an object with the server-side props.
  */
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  if (!context.query.token) {
+  if (!context.query.token && !context.query.email) {
+    return {
+      props: {},
+    };
+  }
+
+  await db.connect();
+
+  if (!context.query.token && context.query.email) {
     const {email} = context.query;
 
     const emailVerificationEntry = await EmailVerification.findOne({email: email});
@@ -142,10 +157,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       };
     }
-    return {props: {}};
+    return {
+      props: {
+        email: JSON.parse(JSON.stringify(context.query.email)),
+      },
+    };
   }
-
-  await db.connect();
 
   const {token} = context.query;
   const result = await verifyEmailToken(token as string);
