@@ -1,13 +1,12 @@
 import * as Yup from "yup";
 
 import {ErrorMessage, Field, Form, Formik} from "formik";
-import {FormEventHandler, useState} from "react";
+import {FormEventHandler, useRef, useState} from "react";
 
 import Link from "next/link";
 import SubjectSelect from "../SubjectSelect";
 import YupPassword from "yup-password";
-import {signIn} from "next-auth/react";
-import router from "next/router";
+import {useRouter} from "next/router";
 
 YupPassword(Yup);
 
@@ -18,7 +17,7 @@ type TUser = {
   password: string,
   role: string,
   priceForLessons?: {},
-  subjects: Array<any>,
+  subjectIds: Array<any>,
   subscribeToNewsletters?: boolean,
 }
 
@@ -63,8 +62,13 @@ export default function SignUp({
   // Newsletter checkbox
   const [subscribed, setSubscribed] = useState<boolean>(true);
 
+  const loading = useRef<boolean>(false);
+
+  const router = useRouter();
+
   const onSubmit = async (values: any) => {
     try {
+      loading.current = true;
       // define object to be sent via HTTP
       const userToSignUp: TUser = {
         firstName: values.firstName,
@@ -72,7 +76,7 @@ export default function SignUp({
         email: values.email,
         password: values.password,
         role: role,
-        subjects: chosenSubjects || [],
+        subjectIds: chosenSubjects || [],
         subscribeToNewsletters: subscribed,
       };
 
@@ -101,49 +105,16 @@ export default function SignUp({
 
       const json= await res.json();
 
-      // sign the user in and redirect to their profile
+      // Subscribe a tutor to subjects
       if (res.ok && role === "student") {
-        const {user: createdStudent} = json;
-        const res = await signIn("credentials", {
-          email: values.email,
-          password: values.password,
-          callbackUrl: `/${createdStudent.role}s/${createdStudent._id.toString()}`,
-        });
-        if (res?.error) {
-          setError(res.error);
-        } else {
-          setError(null);
-        }
-      } else if (res.ok && role === "tutor") {
-        const res = await signIn("credentials", {
-          email: values.email,
-          password: values.password,
-          redirect: false,
-        });
+        const {user} = json;
 
-        if (res?.error) {
-          setError(res.error);
-        } else {
-          setError(null);
-          const subscribeRes = await fetch("/api/subjects/subscribeTutorToSubjects", {
-            method: "PUT",
-            body: JSON.stringify({
-              subjectIds: chosenSubjects,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!subscribeRes.ok) {
-            console.warn(res);
-            throw res;
-          } else {
-            const {user: createdTutor} = json;
-
-            router.push(`/${createdTutor.role}s/${createdTutor._id.toString()}`);
-          }
-        }
+        router.push({
+          pathname: "/auth/verify",
+          query: {email: user.email},
+        });
       } else if (!res.ok) {
+        loading.current = false;
         const {message} = json;
         setError(message);
       }
@@ -241,49 +212,50 @@ export default function SignUp({
                       <ErrorMessage name="subjects" />
                     </div>
 
-                    <table className="table table-compact mt-5">
-                      <thead>
-                        <tr className="text-left">
-                          <th className="font-light text-sm capitalize">minutes</th>
-                          <th className="font-light text-sm capitalize">price (euro)</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <tr>
-                          <td className="w-fit"><input
-                            type="number"
-                            id="minutes"
-                            defaultValue={0}
-                            onChange = {
-                              (e) => {
-                                try {
-                                  setMinutes(e.target.value);
-                                } catch (e) {
-                                  alert("price must be a number");
+                    <div className="mt-5">
+                      <table className="table table-compact mt-5">
+                        <thead>
+                          <tr className="text-left">
+                            <th className="font-light text-sm capitalize">minutes</th>
+                            <th className="font-light text-sm capitalize">price (euro)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td className="w-fit"><input
+                              type="number"
+                              id="minutes"
+                              defaultValue={0}
+                              onChange = {
+                                (e) => {
+                                  try {
+                                    setMinutes(e.target.value);
+                                  } catch (e) {
+                                    alert("price must be a number");
+                                  }
                                 }
                               }
-                            }
-                            className="w-full"
-                          /></td>
-                          <td className="w-fit"><input
-                            type="number"
-                            id="price"
-                            defaultValue={0}
-                            onChange = {
-                              (e) => {
-                                try {
-                                  setPrice(e.target.value);
-                                } catch (e) {
-                                  alert("price must be a number");
+                              className="w-full"
+                            /></td>
+                            <td className="w-fit"><input
+                              type="number"
+                              id="price"
+                              defaultValue={0}
+                              onChange = {
+                                (e) => {
+                                  try {
+                                    setPrice(e.target.value);
+                                  } catch (e) {
+                                    alert("price must be a number");
+                                  }
                                 }
                               }
-                            }
-                            className="w-full"
-                          /></td>
-                        </tr>
-                      </tbody>
-                    </table>
+                              className="w-full"
+                            /></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </>
                 )}
 
@@ -317,6 +289,7 @@ export default function SignUp({
                   <button
                     type="submit"
                     className="signInButton my-8"
+                    disabled={formik.isSubmitting}
                   >
                     {formik.isSubmitting ? "Please wait..." : "Sign Up"}
                   </button>

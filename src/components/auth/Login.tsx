@@ -63,7 +63,7 @@ export default function Login() {
         }) => (
           <Form>
             <div className="flex flex-col ">
-              <div className="text-red-400 text-md text-center rounded p-2">
+              <div className="text-red-600 text-md text-center rounded p-2">
                 {error}
               </div>
               <Field
@@ -88,6 +88,7 @@ export default function Login() {
               <button
                 type="submit"
                 className="signInButton my-8"
+                disabled={(loading.current || formik.isSubmitting)}
               >
                 {(loading.current || formik.isSubmitting) ? "Signing in..." : "Sign In"}
               </button>

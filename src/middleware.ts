@@ -12,8 +12,18 @@ export async function middleware(req: NextRequest) {
   if (token) {
     return NextResponse.redirect(new URL(`/${token.role}s/${token.id}`, req.url));
   }
+
+  if (req.nextUrl.pathname.startsWith("/auth/verify")) {
+    const {nextUrl: {search}} = req;
+    const urlSearchParams = new URLSearchParams(search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+
+    if (!params.email && !params.token) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
 }
 
 export const config = {
-  matcher: ["/auth/signin", "/auth/signup"],
+  matcher: ["/auth/signin", "/auth/signup", "/auth/verify"],
 };

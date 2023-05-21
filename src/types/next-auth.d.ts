@@ -11,12 +11,12 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
-      /** The user's postal address. */
       id: string,
       firstName: string,
       lastName: string,
       role: string,
       picture?: string,
+      emailVerified: boolean,
     }
   }
 
@@ -26,6 +26,7 @@ declare module "next-auth" {
     lastName: string,
     role: string,
     picture?: string,
+    emailVerified: boolean,
   }
 }
 
@@ -37,6 +38,7 @@ declare module "next-auth/jwt" {
     lastName: string,
     role: string,
     picture?: string,
+    emailVerified: boolean,
   }
 }
 

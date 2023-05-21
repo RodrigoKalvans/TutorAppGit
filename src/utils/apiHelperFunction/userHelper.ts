@@ -8,6 +8,7 @@ import {ObjectId} from "mongoose";
 import {getToken} from "next-auth/jwt";
 import {NextApiRequest, NextApiResponse} from "next/types";
 import {deleteReviewFromReviewedUser} from "./reviewHelper";
+import Subject from "@/models/Subject";
 
 /**
  * Delete posts
@@ -52,6 +53,18 @@ export const deleteAllReferencesOfDeletedUser = async (user: any) => {
       console.log("LIKE FUNCTIONALITY TO BE ADDED");
     }
   });
+
+  // Unsubscribe tutor from subjects
+  if (user.role === "tutor") {
+    await Subject.updateMany({
+      _id: {
+        $in: user.subjects,
+      },
+    },
+    {
+      $pull: {tutors: user._id},
+    });
+  }
 };
 
 export const followUser = async (req: NextApiRequest, res: NextApiResponse, id: String, role: String) => {
