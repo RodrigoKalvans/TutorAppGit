@@ -63,7 +63,7 @@ export default function Login() {
         }) => (
           <Form>
             <div className="flex flex-col ">
-              <div className="text-red-400 text-md text-center rounded p-2">
+              <div className="text-red-600 text-md text-center rounded p-2">
                 {error}
               </div>
               <Field

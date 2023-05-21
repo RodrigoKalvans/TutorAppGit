@@ -86,6 +86,10 @@
   .signInButton {
     @apply btn orange border-none rounded-lg capitalize w-full;
   }
+
+  .table th:first-child {
+    @apply static;
+  }
 }
 
 .bord {
