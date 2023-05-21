@@ -80,10 +80,12 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
 
       </div>
 
-      <div>
-        <h2 className="text-xl font-medium pb-2">About</h2>
-        <p className="m-0 text-base">{user.description}</p>
-      </div>
+      {user.description && (
+        <div>
+          <h2 className="text-xl font-medium pb-2">About</h2>
+          <p className="m-0 text-base">{user.description}</p>
+        </div>
+      )}
 
     </BoxContainer>
   );

@@ -10,6 +10,7 @@ import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHel
 import {Emailer} from "@/utils/emailer";
 import {v4 as uuidv4} from "uuid";
 import EmailVerification from "@/models/EmailVerification";
+import Subject from "@/models/Subject";
 
 /**
  * Sign up route
@@ -104,6 +105,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } else {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "This role is not supported"});
     return;
+  }
+
+  // Add subjects to user if subjectsIds exists
+  if (req.body.subjectIds) {
+    const {subjectIds} = req.body;
+
+    // Add subject ids to user. Prevent duplicates
+    for (let i = 0; i < subjectIds.length; i++) {
+      if (!newUser.subjects.includes(subjectIds[i])) {
+        newUser.subjects.push(subjectIds[i]);
+      }
+    }
+
+    // Check if new user is a tutor
+    if (newUser.role === "tutor") {
+      // Add the tutor to new subjects
+      await Subject.updateMany({
+        _id: {
+          $in: newUser.subjects,
+        },
+      },
+      {
+        $addToSet: {
+          tutors: newUser._id,
+        },
+      });
+    }
   }
 
   newUser.emailVerified = false;

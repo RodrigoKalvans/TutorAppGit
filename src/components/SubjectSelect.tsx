@@ -53,20 +53,18 @@ export default function SubjectSelect({
 
   return (
     <>
-      <div className="shadow-none">
-        <Select
-          onChange={setSelectedSubjects}
-          options={getSubjectOptions()}
-          primaryColor={""}
-          isMultiple={true}
-          isSearchable={true}
-          value={chosenSubjects}
-          placeholder="Subjects"
-          classNames={{
-            tagItemText: "text-sm m-1",
-          }}
-        />
-      </div>
+      <Select
+        onChange={setSelectedSubjects}
+        options={getSubjectOptions()}
+        primaryColor={""}
+        isMultiple={true}
+        isSearchable={true}
+        value={chosenSubjects}
+        placeholder="Subjects"
+        classNames={{
+          tagItemText: "text-sm m-1",
+        }}
+      />
     </>
   );
 }
