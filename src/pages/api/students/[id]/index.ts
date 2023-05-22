@@ -56,6 +56,11 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
     return;
   }
 
+  if (req.body.password) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Password reset is not allowed with this request"});
+    return;
+  }
+
   try {
     const updatedStudent = await Student
         .findByIdAndUpdate(id,
