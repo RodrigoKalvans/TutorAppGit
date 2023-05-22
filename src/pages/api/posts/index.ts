@@ -6,6 +6,8 @@ import {getToken} from "next-auth/jwt";
 import Student from "@/models/Student";
 import Tutor from "@/models/Tutor";
 
+const MAX_DESCRIPTION_LENGTH = 750;
+
 /**
  * Posts route
  * @param {NextApiRequest} req HTTP request received from client side
@@ -57,10 +59,17 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   reqPost.role = token.role;
   reqPost.userId = token.id;
 
-  if ((reqPost.role !== "student" && reqPost.role !== "tutor") ||
-      (!reqPost.description && !reqPost.images)) {
+  if (reqPost.description.length > MAX_DESCRIPTION_LENGTH) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
-        .send({message: "Problem with provided information (Validation Error)"});
+        .send({message: `Post description exceeds ${MAX_DESCRIPTION_LENGTH} character limit`});
+    return;
+  } else if (reqPost.role !== "student" && reqPost.role !== "tutor" && reqPost.role !== "admin") {
+    res.status(StatusCodes.UNAUTHORIZED)
+        .send({message: "Invalid role"});
+    return;
+  } else if (!reqPost.description && !reqPost.images) {
+    res.status(StatusCodes.NO_CONTENT)
+        .send({message: "Content is missing"});
     return;
   }
 

@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const addTutorToSubjects = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const token = await getToken({req});
 
-  if (!token || token.role !== "tutor") {
+  if (!token || token.role !== "tutor" && token.role !== "admin") {
     res.status(StatusCodes.UNAUTHORIZED).send({message: "You are not logged in as a tutor! You cannot add yourself to the subject!"});
     return;
   }

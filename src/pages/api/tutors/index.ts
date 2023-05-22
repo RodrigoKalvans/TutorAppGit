@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
 
   // handle method
-  if (req.method !== "GET") res.status(StatusCodes.METHOD_NOT_ALLOWED);
+  if (req.method !== "GET") res.status(StatusCodes.METHOD_NOT_ALLOWED).send({message: "Only GET requests are allowed to this endpoint"});
 
   // handle querries
   if (req.query && req.query.topTutors) { // feed page top tutors

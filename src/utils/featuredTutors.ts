@@ -2,13 +2,7 @@ import Review from "@/models/Review";
 import Tutor from "@/models/Tutor";
 import Student from "@/models/Student";
 import {LandingPageCard, LandingPageCardReview} from "@/types/ambiguous-types";
-
-const TRENDING_TUTOR_IDS = [
-  "63f8d074297967f427883506", // John Doe
-  "64394b5eb6a88bc9453a234e", // Peter Giovani
-  "644050304930cc8f7feef806", // Tim Misign
-  "64493963d108355557b4eacc", // Ronald Gates
-];
+import {FEATURED_TUTOR_IDS} from "./consts";
 
 // TODO: Once our tutors have reviews, we can use this to dynamically select reviews
 const NR_OF_REVIEWS = 2;
@@ -28,7 +22,7 @@ export const getLandingPageTutors = async () => {
 
   const tutors: Array<any> = await Tutor.find({
     _id: {
-      $in: TRENDING_TUTOR_IDS,
+      $in: FEATURED_TUTOR_IDS,
     },
   });
 
@@ -52,6 +46,7 @@ export const getLandingPageTutors = async () => {
         $in: reviewIds,
       },
     });
+    console.log(reviewsForCurrentTutor, "what");
 
     for (let j = 0; j < reviewsForCurrentTutor.length; ++j) {
       let reviewer: any; // user that made the review

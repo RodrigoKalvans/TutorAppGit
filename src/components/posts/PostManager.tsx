@@ -20,6 +20,7 @@ const PostManager = ({
   userId?: string | undefined,
 }) => {
   const [posts, setPosts] = useState<Array<any> | undefined>(undefined);
+  const first = useRef(second)
   const {data: session} = useSession();
 
   const handleDeletePost = async (index: number) => {
@@ -59,17 +60,19 @@ const PostManager = ({
   }, [data, followed, loggedInUser?.following]);
 
   return (
-    <div className="h-fit flex flex-col-reverse gap-10">
-      {error && "error"}
-      {isLoading && "loading"}
-      {posts && posts.length > 0 ?
-        posts.map((post: any, index: number) =>
+    <>
+      <div className="h-fit flex flex-col-reverse gap-10">
+        {error && "error"}
+        {isLoading && "loading"}
+        {posts && posts.length > 0 ?
+          posts.map((post: any, index: number) =>
           <Post post={post} key={post._id} index={index} handleDelete={handleDeletePost} session={session} />) :
-        <div className="text-black text-xl m-5 flex justify-center">
-            No posts found!
-        </div>
-      }
-    </div>
+          <div className="text-black text-xl m-5 flex justify-center">
+              No posts found!
+          </div>
+        }
+      </div>
+    </>
   );
 };
 

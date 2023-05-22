@@ -49,8 +49,7 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
     if (response.ok) {
       return json;
     } else {
-      console.log(json);
-      alert("ERROR");
+      console.error(json);
     }
   };
 
@@ -118,11 +117,11 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
         }
         window.location.reload();
       } else {
-        console.log(json);
+        console.error(json);
         alert("An error ocurred during post creation! See console for more information.");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
       alert("ERROR");
     }
   };

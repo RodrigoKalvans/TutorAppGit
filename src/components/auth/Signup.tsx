@@ -147,8 +147,8 @@ export default function SignUp({
         const {message} = json;
         setError(message);
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.error(err);
       router.push("/_error");
     }
   };

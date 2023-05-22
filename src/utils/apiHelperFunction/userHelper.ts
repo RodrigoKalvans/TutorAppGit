@@ -49,6 +49,7 @@ export const deleteAllReferencesOfDeletedUser = async (user: any) => {
 
       await deleteReviewFromReviewedUser(deletedReview._id, deletedReview.reviewedUserRole, deletedReview.reviewedUserId);
     } else if (activity.activityType === "like") {
+      // TODO: Is this still needed?
       console.log("LIKE FUNCTIONALITY TO BE ADDED");
     }
   });

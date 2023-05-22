@@ -80,13 +80,13 @@ const EditProfileModal = ({
 
           if (!res.ok) {
             const json = await res.json();
-            console.log(json);
+            console.error(json);
           }
         }
         window.location.reload();
       } else {
         const json = await response.json();
-        console.log(json);
+        console.error(json);
       }
     } else {
       const response = await fetch(`/api/students/${session!.user.id}`, {
@@ -101,7 +101,7 @@ const EditProfileModal = ({
         window.location.reload();
       } else {
         const json = await response.json();
-        console.log(json);
+        console.error(json);
       }
     }
   };

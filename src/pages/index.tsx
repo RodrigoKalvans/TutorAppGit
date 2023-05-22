@@ -13,13 +13,16 @@ import Link from "next/link";
 import {useSession} from "next-auth/react";
 
 /**
- * placeholder docs
- * @return {any} JSX landing page
+ * Landing page
+ * @param {Array<any>} subjects
+ * @param {Array<any>} carouselItems for the featured tutors section
+ * @return {JSX}
  */
 export default function Home({subjects, carouselItems}: {subjects: Array<any>, carouselItems: Array<any>}) {
   const {data: session} = useSession();
 
   const path = session ? `/${session.user.role}s/${session.user.id}` : "/auth/signup";
+  console.log(carouselItems);
 
   return (
     <>

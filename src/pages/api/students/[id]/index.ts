@@ -4,6 +4,8 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import {deleteAllReferencesOfDeletedUser} from "@/utils/apiHelperFunction/userHelper";
+import {getToken} from "next-auth/jwt";
+import {MAX_SUBJECT_COUNT, MAX_LANGUAGE_COUNT} from "@/utils/consts";
 
 /**
  * Dynamic student route
@@ -55,6 +57,20 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
         });
     return;
   }
+  if (req.body.posts.length > MAX_SUBJECT_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum subject count exceeded",
+        });
+    return;
+  }
+  if (req.body.posts.length > MAX_LANGUAGE_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum language count exceeded",
+        });
+    return;
+  }
 
   try {
     const updatedStudent = await Student
@@ -81,9 +97,9 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
  * @return {null} returns null in case the method of request is incorrect
  */
 const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await validateUser(req);
+  const token = await getToken({req});
 
-  if (!check) {
+  if (!token || token?.id !== id && token?.role !== "admin") {
     res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authenticated/authorized to do this action!",

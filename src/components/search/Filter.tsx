@@ -107,7 +107,7 @@ export default function Filter({
           if (key == "rating") return filter[key] == user[key].number; // rating is a number
           if (key == "languages") return filter[key].every((filterLanguage: any) => user[key].some((userLanguage: any) => filterLanguage.name == userLanguage.name));
           if (key == "price") return Object.values(user["priceForLessons"]).some((price: any) => Number(price) <= Number(filter[key])); // any price in the user object must be below entered value
-          if (key == "role" && filter[key] == "both") return true; // handle role == "both"
+          if (key == "role" && filter[key] == "both" && user[key] !== "admin") return true; // handle role == "both"
           if (Array.isArray(user[key])) return filter[key].every((val: any) => user[key].includes(val)); // every value in filter must be present in user
           return user[key].toLowerCase().includes(filter[key].toLowerCase());
         } catch (err: any) {

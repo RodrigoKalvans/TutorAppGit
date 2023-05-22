@@ -1,6 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import crypto, {CipherKey} from "crypto";
-
 import {StatusCodes} from "http-status-codes";
 import Student from "../../../models/Student";
 import Tutor from "../../../models/Tutor";
@@ -8,6 +7,7 @@ import db from "../../../utils/db";
 import {getToken} from "next-auth/jwt";
 import {hash} from "argon2";
 import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHelper";
+import {MAX_SUBJECT_COUNT, MAX_LANGUAGE_COUNT} from "@/utils/consts";
 
 /**
  * Sign up route
@@ -33,6 +33,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         (req.body.role !== "student" && req.body.role !== "tutor")) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({message: "Not enough information (Validation Error)"});
+    return;
+  }
+
+  if (req.body.posts && req.body.posts.length > MAX_SUBJECT_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum subject count exceeded",
+        });
+    return;
+  }
+  if (req.body.posts && req.body.posts.length > MAX_LANGUAGE_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum language count exceeded",
+        });
     return;
   }
 
