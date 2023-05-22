@@ -44,10 +44,11 @@ const EditProfileModal = ({
       lastName: event.target.lastName.value,
       description: event.target.about.value,
       languages: selectedLanguages,
-      location: event.target.location.value,
     };
 
     if (user.role === "tutor") {
+      updatedUser.location = event.target.location.value;
+
       updatedUser.phoneNumber = event.target.phoneNumber.value;
       const map: any = {};
       map[event.target.minutes0.value] = event.target.price0.value;
@@ -57,52 +58,37 @@ const EditProfileModal = ({
       }
 
       updatedUser.priceForLessons = map;
+    }
 
-      const response = await fetch(`/api/tutors/${session!.user.id}`, {
-        method: "PUT",
-        body: JSON.stringify(updatedUser),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch(`/api/${session!.user.role}s/${session!.user.id}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedUser),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (response.ok) {
-        if (selectedSubjects) {
-          const res = await fetch("/api/subjects/subscribeTutorToSubjects", {
-            method: "PUT",
-            body: JSON.stringify({
-              subjectIds: selectedSubjects,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+    if (response.ok) {
+      if (selectedSubjects) {
+        const res = await fetch("/api/subjects/subscribeUserToSubjects", {
+          method: "PUT",
+          body: JSON.stringify({
+            subjectIds: selectedSubjects,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-          if (!res.ok) {
-            const json = await res.json();
-            console.error(json);
-          }
+        if (!res.ok) {
+          const json = await res.json();
+          console.log(json);
         }
-        window.location.reload();
-      } else {
-        const json = await response.json();
-        console.error(json);
       }
+      window.location.reload();
     } else {
-      const response = await fetch(`/api/students/${session!.user.id}`, {
-        method: "PUT",
-        body: JSON.stringify(updatedUser),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        window.location.reload();
-      } else {
-        const json = await response.json();
-        console.error(json);
-      }
+      const json = await response.json();
+      console.log(json);
     }
   };
 

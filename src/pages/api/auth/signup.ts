@@ -8,6 +8,10 @@ import {getToken} from "next-auth/jwt";
 import {hash} from "argon2";
 import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHelper";
 import {MAX_SUBJECT_COUNT, MAX_LANGUAGE_COUNT} from "@/utils/consts";
+import {Emailer} from "@/utils/emailer";
+import {v4 as uuidv4} from "uuid";
+import EmailVerification from "@/models/EmailVerification";
+import Subject from "@/models/Subject";
 
 /**
  * Sign up route
@@ -17,6 +21,7 @@ import {MAX_SUBJECT_COUNT, MAX_LANGUAGE_COUNT} from "@/utils/consts";
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
+    res.status(StatusCodes.METHOD_NOT_ALLOWED);
     return;
   }
 
@@ -118,18 +123,68 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  // Add subjects to user if subjectsIds exists
+  if (req.body.subjectIds) {
+    const {subjectIds} = req.body;
+
+    // Add subject ids to user. Prevent duplicates
+    for (let i = 0; i < subjectIds.length; i++) {
+      if (!newUser.subjects.includes(subjectIds[i])) {
+        newUser.subjects.push(subjectIds[i]);
+      }
+    }
+
+    // Check if new user is a tutor
+    if (newUser.role === "tutor") {
+      // Add the tutor to new subjects
+      await Subject.updateMany({
+        _id: {
+          $in: newUser.subjects,
+        },
+      },
+      {
+        $addToSet: {
+          tutors: newUser._id,
+        },
+      });
+    }
+  }
+
+  newUser.emailVerified = false;
+  await newUser.save();
+
+  const emailer = new Emailer(process.env.GOOGLE_USER!, process.env.GOOGLE_APP_PASSWORD!);
+  const verificationToken = uuidv4();
+  const verificationDbEntry = new EmailVerification({
+    email: newUser.email,
+    token: verificationToken,
+    role: newUser.role,
+  });
+  verificationDbEntry.save();
+  const result = await emailer.sendVerificationEmail(newUser.email, verificationToken);
+
+  if (result.error) {
+    res.status(StatusCodes.BAD_REQUEST).send(
+        {
+          message: "Error occurred during sending the verification email",
+          error: result.error,
+        },
+    );
+    return;
+  }
+
   // Check if user wanted to subscribe to newsletters
   if (req.body.subscribeToNewsletters && req.body.subscribeToNewsletters === true) {
     try {
       const res = await subscribeUserToNewsletter(newUser.email, newUser.firstName, newUser.lastName, newUser.role);
       newUser.subscriberId = res.data.id;
+      await newUser.save();
     } catch (error) {
       res.status(StatusCodes.BAD_REQUEST)
           .send({message: "Error occurred while subscribing user to newsletter.", error: error});
       return;
     }
   }
-  await newUser.save();
 
   delete newUser.password;
   delete newUser.role;
