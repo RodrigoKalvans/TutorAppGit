@@ -55,7 +55,7 @@ const PostManager = ({
       // This prevents double loading on mount
       if (page === 0) {
         setPosts(data);
-        setStartingPostId(data.at(0)._id);
+        setStartingPostId(data.at(0)._id); // store starting post so that no duplicates appear
       } else {
         setPosts((prevPosts) => [...prevPosts, ...data]);
       }

@@ -22,7 +22,6 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
   const {data: session} = useSession();
 
   const path = session ? `/${session.user.role}s/${session.user.id}` : "/auth/signup";
-  console.log(carouselItems);
 
   return (
     <>
@@ -92,11 +91,11 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
               <h1 className="text-light">Take a look at our&nbsp;<span className="text-orange-400">featured tutors.</span></h1>
               <Image src={"/icons/trending_tutors_star.svg"} width={50} height={50} alt="star image" />
             </div>
-            <div className="carousel rounded-box flex gap-10 overflow-y-hidden">
+            {/* <div className="carousel rounded-box flex gap-10 overflow-y-hidden">
               {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
                 <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

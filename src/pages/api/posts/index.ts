@@ -57,7 +57,9 @@ const getPosts = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // this ensures that duplicates are not added to the response in case a post is created while the user is scrolling
-  startingPost ? query._id = {$lte: startingPost.toString()} : false;
+  if (startingPost) {
+    query._id = {$lte: startingPost.toString()};
+  }
 
   const posts = await Post.find(query)
       .sort({createdAt: -1})
@@ -144,6 +146,7 @@ export default handler;
  */
 const followedIds = async (token: JWT | null) => {
   let user;
+  // admins should always start as tutors
   token?.role == "student" ?
   user = await Student.findById(token?.id) :
   user = await Tutor.findById(token?.id);
