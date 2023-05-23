@@ -56,12 +56,12 @@ const Feed = ({
           <div className="w-3/5 bg-white rounded-t-2xl">
             <div className="w-full rounded-b-none flex items-center mb-5">
               <button onClick={() => setGeneral(true)} className="border-solid border-r-2 border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tl-2xl hover:bg-gray-200 text-black transition-colors duration-500">General</button>
-              <button onClick={() => setGeneral(false)} className="border-solid border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tr-2xl hover:bg-gray-200 text-black transition-colors duration-500">Follow</button>
+              <button onClick={() => setGeneral(false)} className="border-solid border-l-2 border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tr-2xl hover:bg-gray-200 text-black transition-colors duration-500">Follow</button>
             </div>
             <div className="w-full flex justify-center">
               <div className="w-full">
-                {general && <PostManager loggedInUser={user} />}
-                {!general && user && <PostManager followed loggedInUser={user}/>}
+                {general && <PostManager />}
+                {!general && user && <PostManager followed />}
                 {!general && !user && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
               </div>
             </div>
