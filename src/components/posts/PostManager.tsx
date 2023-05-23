@@ -44,10 +44,8 @@ const PostManager = ({
     setLoading(true);
     try {
       const url = `/api/posts?page=${page}${startingPostId ? `&startingPost=${startingPostId.toString()}` : ""}${followed ? `&follow=${followed}` : ""}${userId ? `&userId=${userId}` : ""}`;
-      console.log("url", url);
       const response = await fetch(url);
       const data = await response.json();
-      console.log("data", data);
       // This occurs if there are no more posts
       if (data.length === 0) {
         // No more posts available
