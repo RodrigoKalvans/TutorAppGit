@@ -125,13 +125,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await newUser.save();
 
   const emailer = new Emailer(process.env.GOOGLE_USER!, process.env.GOOGLE_APP_PASSWORD!);
+
   const verificationToken = uuidv4();
+  const expirationTime = new Date();
+  expirationTime.setMinutes(expirationTime.getMinutes() + 30);
+
   const verificationDbEntry = new EmailVerification({
     email: newUser.email,
     token: verificationToken,
     role: newUser.role,
+    expiresAt: expirationTime,
   });
-  verificationDbEntry.save();
+  await verificationDbEntry.save();
+
   const result = await emailer.sendVerificationEmail(newUser.email, verificationToken);
 
   if (result.error) {

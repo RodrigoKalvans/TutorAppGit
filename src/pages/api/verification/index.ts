@@ -4,6 +4,7 @@ import db from "@/utils/db";
 import {Emailer} from "@/utils/emailer";
 import {StatusCodes} from "http-status-codes";
 import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
+import {v4 as uuidv4} from "uuid";
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Handle only "GET" and "POST" methods
@@ -39,14 +40,14 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       return;
     }
 
-    const emailVerificationEntry = await EmailVerification.findOne({email: email});
+    const emailVerificationRecord = await EmailVerification.findOne({email: email});
 
-    if (!emailVerificationEntry) {
+    if (!emailVerificationRecord) {
       res.status(StatusCodes.BAD_REQUEST).send({message: "This email address is not registered"});
       return;
     }
 
-    const lastSent = new Date(emailVerificationEntry.updatedAt);
+    const lastSent = new Date(emailVerificationRecord.updatedAt);
 
     // Check if the last verification email request was sent more than 15 seconds ago
     if (lastSent.getTime() + 15000 > new Date().getTime()) {
@@ -54,8 +55,15 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       return;
     }
 
+    // Create a new token for the record if the existing one expired
+    const expirationTime = new Date(emailVerificationRecord.expiresAt);
+
+    if (expirationTime.getTime() < new Date().getTime()) {
+      emailVerificationRecord.token = uuidv4();
+    }
+
     const emailer = new Emailer(process.env.GOOGLE_USER!, process.env.GOOGLE_APP_PASSWORD!);
-    const result = await emailer.sendVerificationEmail(emailVerificationEntry.email, emailVerificationEntry.token);
+    const result = await emailer.sendVerificationEmail(emailVerificationRecord.email, emailVerificationRecord.token);
 
     if (result.error) {
       res.status(StatusCodes.BAD_REQUEST).send(
@@ -67,9 +75,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       return;
     }
 
-    emailVerificationEntry.updatedAt = new Date();
+    emailVerificationRecord.updatedAt = new Date();
 
-    await emailVerificationEntry.save();
+    await emailVerificationRecord.save();
     res.status(StatusCodes.OK).send({message: "Verification email has been sent"});
   }
 };
