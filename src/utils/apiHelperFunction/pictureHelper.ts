@@ -11,7 +11,7 @@ import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
 const client = new S3Client({region: "eu-north-1"});
 const upload: Multer = multer({
   limits: {
-    fileSize: 10000000,
+    fileSize: 4000000,
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {

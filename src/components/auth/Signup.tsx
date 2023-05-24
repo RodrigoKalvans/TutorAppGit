@@ -106,7 +106,7 @@ export default function SignUp({
       const json= await res.json();
 
       // Subscribe a tutor to subjects
-      if (res.ok && role === "student") {
+      if (res.ok) {
         const {user} = json;
 
         router.push({
@@ -289,9 +289,9 @@ export default function SignUp({
                   <button
                     type="submit"
                     className="signInButton my-8"
-                    disabled={formik.isSubmitting}
+                    disabled={(formik.isSubmitting || loading.current)}
                   >
-                    {formik.isSubmitting ? "Please wait..." : "Sign Up"}
+                    {(formik.isSubmitting || loading.current) ? "Please wait..." : "Sign Up"}
                   </button>
                 </div>
 

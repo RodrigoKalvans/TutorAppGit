@@ -1,8 +1,10 @@
 import {Session} from "next-auth";
-import {MouseEventHandler, useState} from "react";
+import {MouseEventHandler, useRef, useState} from "react";
 import {AiOutlineClose} from "react-icons/ai";
 import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
+import {useRouter} from "next/router";
+import {signOut} from "next-auth/react";
 
 /**
  * This component is mounted whenever the user tries to edit their profile details from their profile page
@@ -28,9 +30,16 @@ const EditProfileModal = ({
 }) => {
   const [selectedSubjects, setSelectedSubjects] = useState();
   const [selectedLanguages, setSelectedLanguages] = useState();
+  const [isOnlineAvailable, setIsOnlineAvailable] = useState(false);
+  const [open, setOpen] = useState(false);
+  const loading = useRef(false);
+  const error = useRef<string>();
+
+  const router = useRouter();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    loading.current = true;
     const updatedUser: {
       firstName?: string,
       lastName?: string,
@@ -39,6 +48,7 @@ const EditProfileModal = ({
       phoneNumber?: string,
       priceForLessons?: Map<string, string>,
       location?: string,
+      isOnlineAvailable?: boolean,
     } = {
       firstName: event.target.firstName.value,
       lastName: event.target.lastName.value,
@@ -58,6 +68,10 @@ const EditProfileModal = ({
       }
 
       updatedUser.priceForLessons = map;
+
+      if (isOnlineAvailable) {
+        updatedUser.isOnlineAvailable = true;
+      }
     }
 
     const response = await fetch(`/api/${session!.user.role}s/${session!.user.id}`, {
@@ -92,92 +106,163 @@ const EditProfileModal = ({
     }
   };
 
+  const deleteProfile = async () => {
+    if (!session) return;
+
+    const res = await fetch(`/api/${user.role}s/${user._id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      await signOut();
+      router.push("/");
+    } else if (res.status === 401) {
+      error.current = "You have to log in first to delete the account";
+    } else if (res.status === 404) {
+      error.current = "Your profile was not found. If you are still logged in to your account, please log out";
+    }
+  };
+
   return (
-    <div className="fixed z-50 inset-0 overflow-y-auto bg-gray-700 bg-opacity-75 flex justify-center items-center">
-      <div className="bg-white rounded-lg px-6 w-full mx-3 md:w-1/2">
-        <div className="flex justify-between mt-6 pb-3 border-b-2">
-          <h1 className="text-xl">Edit your profile</h1>
-          <button onClick={closeModal}>
-            <AiOutlineClose color="#505050" />
-          </button>
+    <>
+      <div className="modal-container">
+        <div className="modal-content-box">
+          <div className="flex justify-between mt-6 pb-3 border-b-2">
+            <h1 className="text-xl">Edit your profile</h1>
+            <button onClick={closeModal}>
+              <AiOutlineClose color="#505050" />
+            </button>
+          </div>
+
+          <form className="mb-5" onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-y-7 py-3 max-h-[70vh] overflow-y-auto">
+              <div>
+                <label className="font-light mb-2 block">First Name</label>
+                <input type="text" defaultValue={user.firstName} id="firstName" className="w-full border h-8" />
+              </div>
+              <div>
+                <label className="font-light mb-2 block">Last Name</label>
+                <input type="text" defaultValue={user.lastName} id="lastName" className="w-full border h-8" />
+              </div>
+              <div>
+                <label className="font-light mb-2 block">Subjects</label>
+                <SubjectSelect setSubjectsState={setSelectedSubjects} subjects={allSubjects} userSubjects={userSubjects} />
+              </div>
+              <div>
+                <label className="font-light mb-2 block">Languages</label>
+                {/* <input type="text" defaultValue={user.languages} className="w-full border h-8" /> */}
+                <LanguageSelect setLanguagesState={setSelectedLanguages} userLanguages={user.languages} />
+              </div>
+              {user.role === "tutor" && (
+                <>
+                  <div>
+                    <label className="font-light mb-2 block">Location</label>
+                    <input type="text" defaultValue={(user.location ? user.location : null)} id="location" className="w-full border h-8" />
+                  </div>
+                  <div>
+                    <label className="font-light mb-2 block">Contact phone number</label>
+                    <input type="tel" defaultValue={user.phoneNumber} id="phoneNumber" className="w-full border h-8" />
+                  </div>
+                  <div>
+                    <label className="font-light mb-2 block">Contact email</label>
+                    <input type="email" defaultValue={user.email} id="contactEmail" className="w-full border h-8" />
+                  </div>
+                  <div>
+                    <label className="font-light mb-2 block">Prices</label>
+                    <table className="table table-compact">
+                      <thead>
+                        <tr className="text-left">
+                          <th className="font-light text-sm capitalize">Minutes</th>
+                          <th className="font-light text-sm capitalize">Price (euro)</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {Object.keys(user.priceForLessons).map((key: string, index: number) => (
+                          <tr key={index}>
+                            <td><input type="number" id={`minutes${index}`} defaultValue={key} /></td>
+                            <td><input type="number" id={`price${index}`} defaultValue={user.priceForLessons[key]} /></td>
+                          </tr>
+                        ),
+                        )}
+
+                        {(Object.keys(user.priceForLessons).length < 2) && (
+                          <tr>
+                            <td><input type="number" id="minutes1" /></td>
+                            <td><input type="number" id="price1" /></td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <input type="checkbox" id="online" onChange={() => setIsOnlineAvailable(!isOnlineAvailable)} />
+                    <label className="font-normal capitalize">Online lessons available</label>
+                  </div>
+                </>
+              )}
+
+              <div>
+                <label className="font-light mb-2 block">About me</label>
+                <textarea rows={4} defaultValue={(user.description ? user.description : "")} maxLength={200} id="about" className="w-full border" />
+              </div>
+            </div>
+
+            <div className="border-t-2 flex justify-between">
+              <button
+                type="submit"
+                className="btn btn-primary rounded-4xl btn-sm mt-3"
+                disabled={loading.current}
+              >
+                {loading.current ? "Saving..." : "Save"}
+              </button>
+
+              <button
+                type="button"
+                className="opacity-60 hover:opacity-100 hover:text-red-600 transition-all underline mt-3"
+                onClick={() => setOpen(true)}
+              >
+              Delete profile
+              </button>
+            </div>
+          </form>
         </div>
-
-        <form className="mb-5" onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-y-7 py-3 max-h-[70vh] overflow-y-auto">
-            <div>
-              <label className="font-light mb-2 block">First Name</label>
-              <input type="text" defaultValue={user.firstName} id="firstName" className="w-full border h-8" />
-            </div>
-            <div>
-              <label className="font-light mb-2 block">Last Name</label>
-              <input type="text" defaultValue={user.lastName} id="lastName" className="w-full border h-8" />
-            </div>
-            <div>
-              <label className="font-light mb-2 block">Subjects</label>
-              <SubjectSelect setSubjectsState={setSelectedSubjects} subjects={allSubjects} userSubjects={userSubjects} />
-            </div>
-            <div>
-              <label className="font-light mb-2 block">Languages</label>
-              {/* <input type="text" defaultValue={user.languages} className="w-full border h-8" /> */}
-              <LanguageSelect setLanguagesState={setSelectedLanguages} userLanguages={user.languages} />
-            </div>
-            {user.role === "tutor" && (
-              <>
-                <div>
-                  <label className="font-light mb-2 block">Location</label>
-                  <input type="text" defaultValue={(user.location ? user.location : null)} id="location" className="w-full border h-8" />
-                </div>
-                <div>
-                  <label className="font-light mb-2 block">Contact phone number</label>
-                  <input type="tel" defaultValue={user.phoneNumber} id="phoneNumber" className="w-full border h-8" />
-                </div>
-                <div>
-                  <label className="font-light mb-2 block">Contact email</label>
-                  <input type="email" defaultValue={user.email} id="contactEmail" className="w-full border h-8" />
-                </div>
-                <div>
-                  <label className="font-light mb-2 block">Prices</label>
-                  <table className="table table-compact">
-                    <thead>
-                      <tr className="text-left">
-                        <th className="font-light text-sm capitalize">Minutes</th>
-                        <th className="font-light text-sm capitalize">Price (euro)</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {Object.keys(user.priceForLessons).map((key: string, index: number) => (
-                        <tr key={index}>
-                          <td><input type="number" id={`minutes${index}`} defaultValue={key} /></td>
-                          <td><input type="number" id={`price${index}`} defaultValue={user.priceForLessons[key]} /></td>
-                        </tr>
-                      ),
-                      )}
-
-                      {(Object.keys(user.priceForLessons).length < 2) && (
-                        <tr>
-                          <td><input type="number" id="minutes1" /></td>
-                          <td><input type="number" id="price1" /></td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )}
-
-            <div>
-              <label className="font-light mb-2 block">About me</label>
-              <textarea rows={4} defaultValue={(user.description ? user.description : "")} maxLength={200} id="about" className="w-full border" />
-            </div>
-          </div>
-
-          <div className="border-t-2">
-            <button type="submit" className="btn btn-primary rounded-4xl btn-sm mt-3">Save</button>
-          </div>
-        </form>
       </div>
-    </div>
+
+      {open && <div className="modal-container">
+        <div className="modal-content-box p-7">
+          <h3 className="font-bold text-lg">Delete Profile</h3>
+          <p className="py-4">Are you sure you want to wipe your profile out from existence?</p>
+          <div className="flex gap-4 justify-end items-center">
+            <button
+              type="button"
+              className="btn btn-error rounded-4xl btn-sm capitalize"
+              onClick={deleteProfile}
+            >
+              Yes, delete!
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm rounded-4xl capitalize"
+              onClick={() => setOpen(false)}
+            >
+                No
+            </button>
+          </div>
+        </div>
+      </div>}
+
+      {error.current && (
+        <div className="alert alert-error shadow-lg fixed left-1/2 w-[90%] -translate-x-1/2 top-2">
+          <div className="flex w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>{error.current}</span>
+            <button type="button" onClick={() => setOpen(false)} className="ml-auto">&#10006;</button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

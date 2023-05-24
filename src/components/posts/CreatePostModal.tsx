@@ -1,4 +1,4 @@
-import React, {ChangeEvent, MouseEventHandler, useState} from "react";
+import React, {ChangeEvent, MouseEventHandler, useRef, useState} from "react";
 import {AiOutlineClose} from "react-icons/ai";
 import Image from "next/image";
 
@@ -29,6 +29,8 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
       setDescriptionLengthError(false);
     }
   };
+  const [isLoading, setIsLoading] = useState(false);
+  const error = useRef<String | null>();
 
   const uploadImages = async (files: File[], postId: string) => {
     // Create a FormData object to send the file to the API endpoint
@@ -49,7 +51,8 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
     if (response.ok) {
       return json;
     } else {
-      console.error(json);
+      const {error} = json;
+      return {error};
     }
   };
 
@@ -83,8 +86,8 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     // TODO: Better way to do this?
-    console.log(e.target);
     if (descriptionLengthError) return;
+    setIsLoading(true);
 
     const post: {
       description: string,
@@ -93,36 +96,34 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
       description: e.target.description.value,
     };
 
-    try {
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        body: JSON.stringify(post),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch("/api/posts", {
+      method: "POST",
+      body: JSON.stringify(post),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      const json = await response.json();
+    const json = await response.json();
 
-      if (response.ok) {
-        // Add images if chosen
-        if (chosenFiles) {
-          try {
-            const resData = await uploadImages(chosenFiles, json.post._id);
-            console.log("Image uploaded:", resData);
-          } catch (err) {
-            console.error(err);
-            alert("Error uploading file");
-          }
+    if (response.ok) {
+      // Add images if chosen
+      if (chosenFiles) {
+        const result = await uploadImages(chosenFiles, json.post._id);
+
+        if (result.error) {
+          error.current = "Error occurred while uploading the files";
+        } else {
+          window.location.reload();
         }
         window.location.reload();
       } else {
         console.error(json);
         alert("An error ocurred during post creation! See console for more information.");
       }
-    } catch (err) {
-      console.error(err);
-      alert("ERROR");
+    } else {
+      setIsLoading(false);
+      error.current = json.message;
     }
   };
 
@@ -135,6 +136,9 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
             <AiOutlineClose color="#505050" />
           </button>
         </div>
+        {error.current && (
+          <p className="text-red-900">{error.current}</p>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col py-3">
             {previewImageUrls && (
@@ -171,8 +175,9 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
             <button
               type="submit"
               className="btn btn-primary rounded-4xl btn-sm mt-3"
+              disabled={isLoading}
             >
-                Save
+              {isLoading ? "Saving..." : "Save"}
             </button>
           </div>
         </form>

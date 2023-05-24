@@ -103,7 +103,11 @@ export const authOptions: NextAuthOptions = {
      * @param {Object} param0 token and user passed from authorize function
      * @return {Token} token
      */
-    jwt: async ({token, user}) => {
+    jwt: async ({token, user, trigger, session}) => {
+      if (trigger === "update" && session.picture) {
+        token.picture = session.picture;
+      }
+
       if (user?.id) token.id = user.id;
       if (user?.firstName) token.firstName = user.firstName;
       if (user?.lastName) token.lastName = user.lastName;

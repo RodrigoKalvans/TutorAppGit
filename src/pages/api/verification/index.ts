@@ -35,7 +35,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
     // Validate email existence
     if (!email) {
-      res.status(StatusCodes.BAD_REQUEST).send({message: "Required body property [email] is not present"});
+      res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Required body property [email] is not present"});
       return;
     }
 

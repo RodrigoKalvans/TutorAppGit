@@ -59,6 +59,11 @@ const updatePostById = async (req: NextApiRequest, res: NextApiResponse, id: Str
 
   const updatingPost = await Post.findById(id);
 
+  if (!updatingPost) {
+    res.status(StatusCodes.NOT_FOUND).send({message: "The post to update was not found"});
+    return;
+  }
+
   if (updatingPost.userId !== token.id) {
     res.status(StatusCodes.FORBIDDEN)
         .send({
@@ -99,7 +104,22 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
   if (!token || token.id !== id && token.id !== "admin") {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authorized to do this action! It is not your post",
+          message: "You are not authenticated! Log in or create an account first!",
+        });
+    return;
+  }
+
+  const deletingPost = await Post.findById(id);
+
+  if (!deletingPost) {
+    res.status(StatusCodes.NOT_FOUND).send({message: "The post to delete was not found"});
+    return;
+  }
+
+  if (deletingPost.userId !== token.id) {
+    res.status(StatusCodes.FORBIDDEN)
+        .send({
+          message: "You are not authorized to do this action! It is not your post!",
         });
     return;
   }

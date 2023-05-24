@@ -21,7 +21,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       followers: [
         {
           userId: {type: String},
-          accountType: {type: String, enum: {
+          role: {type: String, enum: {
             values: ["student", "tutor"],
             message: "{VALUE} is not supported as an account type!",
           }},
@@ -30,7 +30,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
       following: [
         {
           userId: {type: String},
-          accountType: {type: String, enum: {
+          role: {type: String, enum: {
             values: ["student", "tutor"],
             message: "{VALUE} is not supported as an account type!",
           }},

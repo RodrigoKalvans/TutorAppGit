@@ -72,6 +72,11 @@ const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
     return;
   }
 
+  if (req.body.password) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Password reset is not allowed with this request"});
+    return;
+  }
+
   try {
     // Will have to be replaced by tutor.save(), as the current implementation does not use Mongoose validation
     const updatedTutors = await Tutor
@@ -122,9 +127,6 @@ const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
       message: "User has been deleted",
       user: deletedTutor,
     });
-
-    // Redirect user to main page
-    // res.redirect(307, "/");
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }

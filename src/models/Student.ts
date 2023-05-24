@@ -16,13 +16,13 @@ const StudentSchema: mongoose.Schema = new mongoose.Schema(
       followers: [
         {
           userId: {type: String},
-          accountType: {type: String},
+          role: {type: String},
         },
       ],
       following: [
         {
           userId: {type: String},
-          accountType: {type: String},
+          role: {type: String},
         },
       ],
       subjects: [{type: String}],
