@@ -1,16 +1,15 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import crypto, {CipherKey} from "crypto";
 import {StatusCodes} from "http-status-codes";
 import Student from "../../../models/Student";
 import Tutor from "../../../models/Tutor";
 import db from "../../../utils/db";
 import {getToken} from "next-auth/jwt";
-import {hash} from "argon2";
 import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHelper";
 import {Emailer} from "@/utils/emailer";
 import {v4 as uuidv4} from "uuid";
 import EmailVerification from "@/models/EmailVerification";
 import Subject from "@/models/Subject";
+import {hashAndEncryptPassword, validatePassword} from "@/utils/apiHelperFunction/authenticationHelper";
 
 /**
  * Sign up route
@@ -77,26 +76,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  // Hash the password with bcrypt
-  const hashedPassword = await hash(reqUser.password);
+  const isPasswordValid = validatePassword(reqUser.password);
 
-  // Encrypting the password using AES-256-CBC
-  let key = process.env.ENCRYPTION_KEY;
-  key = key?.slice(0, 32);
-
-  // Generate IV and create cipher
-  const iv = crypto.randomBytes(16).subarray(0, 16);
-  const cipher = crypto
-      .createCipheriv("aes-256-cbc", key as CipherKey, iv);
-
-  // Encrypt already hashed password for more security
-  let encrypted = cipher.update(hashedPassword);
-  encrypted = Buffer.concat([encrypted, cipher.final()]);
-  const encryptedHashedPassword = `${iv.toString("hex")}
-      :${encrypted.toString("hex")}`;
-
-  // Initializing a new user depending on their role
-  reqUser.password = encryptedHashedPassword;
+  if (!isPasswordValid) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Password does not meet the requirements"});
+    return;
+  }
+  // Hash and encrypt the password
+  reqUser.password = await hashAndEncryptPassword(reqUser.password);
   let newUser;
   if (reqUser.role === "student") {
     newUser = new Student(reqUser);

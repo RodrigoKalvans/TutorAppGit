@@ -4,6 +4,7 @@ import Tutor from "@/models/Tutor";
 import {StatusCodes} from "http-status-codes";
 import {NextApiRequest, NextApiResponse} from "next";
 import {getToken} from "next-auth/jwt";
+import {removeActivityFromUser} from "./userHelper";
 
 
 /**
@@ -137,8 +138,8 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
     const reviewToDelete = await Review.findByIdAndDelete(id);
 
     // Delete references from other models to the deleted review
-    await deleteActivityFromUser(reviewToDelete._id, reviewToDelete.reviewerUserRole, reviewToDelete.reviewerUserId);
-    await deleteReviewFromReviewedUser(reviewToDelete._id, reviewToDelete.reviewedUserRole, reviewToDelete.reviewedUserId);
+    await removeActivityFromUser(reviewToDelete._id, undefined, reviewToDelete.reviewerUserId, reviewToDelete.reviewerUserRole);
+    await deleteReviewFromReviewedUser(reviewToDelete);
 
     res.status(StatusCodes.OK).send({
       message: "Review and its references have been deleted.",
@@ -151,35 +152,28 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
   return;
 };
 
-const deleteActivityFromUser = async (reviewId: String, role: String, userId: String) => {
-  if (role === "student") {
-    await Student.findByIdAndUpdate(userId, {
-      $pull: {activity: {activityId: reviewId}},
-    },
-    {safe: true},
-    );
-  } else {
-    await Tutor.findByIdAndUpdate(userId, {
-      $pull: {activity: {activityId: reviewId}},
-    },
-    {safe: true},
-    );
-  }
-};
-
-export const deleteReviewFromReviewedUser = async (reviewId: String, role: String, userId: String) => {
+export const deleteReviewFromReviewedUser = async (review: any) => {
   // TODO: UPDATE RATING AFTER DELETING REVIEW
-  if (role === "student") {
-    await Student.findByIdAndUpdate(userId, {
-      $pull: {reviews: reviewId},
+  let reviewedUser;
+  if (review.reviewedUserRole === "student") {
+    reviewedUser = await Student.findByIdAndUpdate(review.reviewedUserId, {
+      $pull: {reviews: review._id},
     },
     {safe: true},
     );
-  } else {
-    await Tutor.findByIdAndUpdate(userId, {
-      $pull: {reviews: reviewId},
+  } else if (review.reviewedUserRole === "tutor") {
+    reviewedUser = await Tutor.findByIdAndUpdate(review.reviewedUserId, {
+      $pull: {reviews: review._id},
     },
     {safe: true},
     );
   }
+
+  const newRatingCount = (reviewedUser.rating.ratingCount - 1);
+  const newRatingNumber = ((reviewedUser.rating.number * reviewedUser.rating.ratingCount - parseFloat(review.rating)) / newRatingCount);
+
+  reviewedUser.rating.number = newRatingNumber;
+  reviewedUser.rating.ratingCount = newRatingCount;
+
+  await reviewedUser.save();
 };
