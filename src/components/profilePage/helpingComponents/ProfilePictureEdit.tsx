@@ -9,6 +9,8 @@ const ProfilePictureEdit = ({imageSrc, closeModal}:
   const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>(imageSrc);
   const [chosenFile, setChosenFile] = useState<File>();
   const {data: session, update} = useSession();
+  const [error, setError] = useState<string | null>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const uploadImage = async (file: File) => {
     // Create a FormData object to send the file to the API endpoint
@@ -35,16 +37,20 @@ const ProfilePictureEdit = ({imageSrc, closeModal}:
 
   const handleUploadClick = async () => {
     if (!chosenFile) {
-      alert("Please select a file to upload");
+      setError("Please select a file to upload");
       return;
     }
+
+    setIsLoading(true);
 
     const result = await uploadImage(chosenFile);
 
     if (result.pictureKey) {
-      console.log(result.pictureKey);
       await update({picture: result.pictureKey});
       window.location.reload();
+    } else {
+      setError(result.error.message);
+      setIsLoading(false);
     }
   };
   return (
@@ -57,6 +63,9 @@ const ProfilePictureEdit = ({imageSrc, closeModal}:
           </button>
         </div>
         <div className="flex flex-col py-3">
+          {error && (
+            <p className="text-red-900">{error}</p>
+          )}
           {previewImageUrl && (
             <div className="avatar self-center mb-3">
               <div className="w-48 rounded-full">
@@ -73,6 +82,13 @@ const ProfilePictureEdit = ({imageSrc, closeModal}:
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 if (event?.target?.files?.[0]) {
                   const file = event.target.files[0];
+                  if (file.size > 4000000) {
+                    // error.current = "File is too large (limit is 4 MB)";
+                    setError("File is too large (limit is 4 MB)");
+                    return;
+                  }
+
+                  setError(null);
                   const reader = new FileReader();
                   reader.onloadend = () => {
                     setPreviewImageUrl(reader.result as string);
@@ -87,8 +103,9 @@ const ProfilePictureEdit = ({imageSrc, closeModal}:
           <button
             className="btn btn-primary rounded-4xl btn-sm mt-3"
             onClick={handleUploadClick}
+            disabled={isLoading}
           >
-              Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </div>
       </div>

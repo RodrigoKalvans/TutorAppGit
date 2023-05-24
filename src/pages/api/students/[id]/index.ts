@@ -110,9 +110,6 @@ const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
       message: "User has been deleted",
       user: deletedStudent,
     });
-
-    // Redirect user to main page
-    res.redirect(307, "/");
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).send(error);
   }

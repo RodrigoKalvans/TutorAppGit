@@ -107,7 +107,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   // Check if logged in user already follows the tutor
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
-  const isFollowing = tutor.followers.findIndex((follower: {_id: ObjectId, userId: String, accountType: String}) => follower.userId === session?.user.id.toString()) > -1;
+  const isFollowing = tutor.followers.findIndex((follower: {_id: ObjectId, userId: String, role: String}) => follower.userId === session?.user.id.toString()) > -1;
 
   // Get subjects (tutor's)
   const subjects = await Subject.find({
@@ -184,27 +184,47 @@ const populateActivityArray = async (
     const reference = activities[i];
     let activity;
     let action: string;
+    let targetUser: {
+      id: string,
+      role: string,
+    };
 
     switch (reference.activityType) {
-      case "comment":
+      case "comment": {
         activity = await Comment.findById(reference.activityId);
         action = "commented on post";
+        const post = await Post.findById(activity.postId);
+        targetUser = {
+          id: post.userId,
+          role: post.role,
+        };
         break;
+      }
 
-      case "like":
+      case "like": {
         activity = await Like.findById(reference.activityId);
         action = "liked post";
+        const post = await Post.findById(activity.postId);
+        targetUser = {
+          id: post.userId,
+          role: post.role,
+        };
         break;
+      }
 
-      case "review":
+      case "review": {
         activity = await Review.findById(reference.activityId);
         action = "reviewed a user";
+        targetUser = {
+          id: activity.reviewedUserId,
+          role: activity.reviewedUserRole,
+        };
         break;
-
+      }
       default:
         return;
     }
 
-    activityArray.push({activityType: reference.activityType, action, activity});
+    activityArray.push({activityType: reference.activityType, action, activity, targetUser});
   }
 };

@@ -50,9 +50,12 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
             )}
           </div>
 
-          <p className="m-0 text-xl text-subtitle capitalize">{user.role}</p>
+          <p className="text-xl text-subtitle capitalize">{user.role}</p>
           {user.location && (
-            <p className="mx-0 text-xs font-light">{user.location}</p>
+            <p className="text-xs font-light">{user.location}</p>
+          )}
+          {user.isOnlineAvailable && (
+            <p className="text-xs font-light text-green-600">Online lessons available</p>
           )}
 
           <Rating rating={user.rating} />
