@@ -29,6 +29,7 @@ const SignIn = () => {
           <div className="w-3/5 text-center">
             <h1 className="text-2xl mb-4">Sign in</h1>
             <Login />
+            <p className="text-sm"><Link href="/auth/password-reset" className="underline hover:opacity-80 transition">Forgot password?</Link></p>
             <p className="text-sm">
               Don&apos;t have an account? <Link href="/auth/signup" className="underline hover:opacity-80 transition">Sign up</Link>
             </p>
