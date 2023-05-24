@@ -2,11 +2,13 @@ import {ChangeEvent, MouseEventHandler, useState} from "react";
 import Image from "next/image";
 import {Session} from "next-auth";
 import {AiOutlineClose} from "react-icons/ai";
+import {useSession} from "next-auth/react";
 
-const ProfilePictureEdit = ({imageSrc, session, closeModal}:
+const ProfilePictureEdit = ({imageSrc, closeModal}:
    {imageSrc?: string, session: Session, closeModal: MouseEventHandler}) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>(imageSrc);
   const [chosenFile, setChosenFile] = useState<File>();
+  const {data: session, update} = useSession();
 
   const uploadImage = async (file: File) => {
     // Create a FormData object to send the file to the API endpoint
@@ -14,17 +16,20 @@ const ProfilePictureEdit = ({imageSrc, session, closeModal}:
     formData.append("image", file);
 
     // Make a POST request to the API endpoint to upload the file
-    const response = await fetch(`/api/tutors/${session.user.id}/picture`, {
+    const response = await fetch(`/api/tutors/${session!.user.id}/picture`, {
       method: "POST",
       body: formData,
     });
     const json = await response.json();
 
     if (response.ok) {
-      return;
+      const {user} = json;
+      return {
+        pictureKey: user.picture,
+      };
     } else {
-      console.log(json);
-      alert("ERROR");
+      const {error} = json;
+      return {error};
     }
   };
 
@@ -34,22 +39,19 @@ const ProfilePictureEdit = ({imageSrc, session, closeModal}:
       return;
     }
 
-    try {
-      const resData = await uploadImage(chosenFile);
-      console.log("Image uploaded:", resData);
-      window.location.reload();
+    const result = await uploadImage(chosenFile);
 
-      // Do something with the uploaded image URL, e.g. update user profile
-    } catch (err) {
-      console.error(err);
-      alert("Error uploading file");
+    if (result.pictureKey) {
+      console.log(result.pictureKey);
+      await update({picture: result.pictureKey});
+      window.location.reload();
     }
   };
   return (
     <div className="fixed z-50 inset-0 overflow-y-auto bg-gray-700 bg-opacity-75 flex justify-center items-center">
       <div className="bg-white rounded-lg px-6 py-6 w-full mx-3 md:w-1/2">
         <div className="flex justify-between pb-3 border-b-2">
-          <h1 className="text-xl">Edit your profile</h1>
+          <h1 className="text-xl">Edit your profile picture</h1>
           <button onClick={closeModal}>
             <AiOutlineClose color="#505050" />
           </button>
@@ -58,12 +60,12 @@ const ProfilePictureEdit = ({imageSrc, session, closeModal}:
           {previewImageUrl && (
             <div className="avatar self-center mb-3">
               <div className="w-48 rounded-full">
-                <Image src={previewImageUrl} alt="profile picture" width={100} height={100} />
+                <Image src={previewImageUrl} alt="profile picture" width={200} height={200} />
               </div>
             </div>
           )}
           <div className="flex flex-col">
-            <label className="text-lg mb-3">Upload image</label>
+            <label className="capitalize font-normal text-lg text-current mb-3">Upload image</label>
             <input
               type="file"
               accept=".jpg, .jpeg, .png"

@@ -63,7 +63,7 @@ const Navbar = ({
                   <span className="avatar cursor-pointer">
                     <div tabIndex={0} className="w-[45px] mt-1 flex items-center justify-center rounded-full">
                       {avatar && avatar.presignedUrl ? (
-                          <Image src={avatar.presignedUrl} alt="profile image" width={45} height={45} />
+                          <Image src={avatar.presignedUrl} alt="profile image" width={100} height={100} />
                         ) : (
                           <div className="avatar placeholder w-full aspect-square">
                             <div className="bg-neutral-focus text-neutral-content rounded-full w-full">
