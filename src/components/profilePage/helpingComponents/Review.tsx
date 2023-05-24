@@ -2,6 +2,7 @@ import {SchoolIcon} from "@/utils/icons";
 import ProfilePicture from "./ProfilePicture";
 import RatingStar from "../../ratingStars/RatingStar";
 import {format} from "date-fns";
+import Link from "next/link";
 
 const Review = ({review}: {review: any}) => {
   const reviewerUser = review.reviewerUser;
@@ -10,10 +11,14 @@ const Review = ({review}: {review: any}) => {
       <div className="flex justify-between items-start">
         <div className="flex w-2/3 items-start">
           <div className="w-1/6 -translate-y-6">
-            <ProfilePicture user={reviewerUser} />
+            <Link href={`/${reviewerUser.role}s/${reviewerUser._id}`}>
+              <ProfilePicture user={reviewerUser} />
+            </Link>
           </div>
           <div>
-            <p className="font-medium text-base m-0 ml-2">{reviewerUser.firstName} {reviewerUser.lastName}</p>
+            <Link href={`/${reviewerUser.role}s/${reviewerUser._id}`}>
+              <p className="font-medium text-base m-0 ml-2">{reviewerUser.firstName} {reviewerUser.lastName}</p>
+            </Link>
           </div>
         </div>
 

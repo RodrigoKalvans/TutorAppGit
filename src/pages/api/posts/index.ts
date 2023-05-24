@@ -60,7 +60,7 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   if ((reqPost.role !== "student" && reqPost.role !== "tutor") ||
       (!reqPost.description && !reqPost.images)) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
-        .send({message: "Problem with provided information (Validation Error)"});
+        .send({message: "Missing required parameters"});
     return;
   }
 

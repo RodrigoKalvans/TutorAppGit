@@ -48,6 +48,17 @@ export class Emailer {
     const options = emailVerificationTemplate(this.user, receiver, token);
     return await this.sendEmail(options);
   }
+
+  /**
+ * Sends a password reset email to the specified receiver.
+ * @param {string} receiver - The email address of the receiver.
+ * @param {string} token - The password reset token.
+ * @return {Promise<void>} A promise that resolves when the email is sent.
+ */
+  public async sendPasswordResetEmail(receiver: string, token: string) {
+    const options = passwordRestTemplate(this.user, receiver, token);
+    return await this.sendEmail(options);
+  }
 }
 
 /**
@@ -64,6 +75,24 @@ export const emailVerificationTemplate = (from: string, to: string, token: strin
     to: to,
     subject: "Verify your email",
     text: `Please verify your email by clicking the following link: ${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify?token=${token}`,
-    html: `<p>Please verify your email by clicking the following link: <a href="${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify?token=${token}">${process.env.NEXT_PUBLIC_BASE_URL}/verify?token=${token}</a></p>`,
+    html: `<p>Please verify your email by clicking the following link: <a href="${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify?token=${token}">${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify?token=${token}</a></p>`,
+  } as MailOptions;
+};
+
+/**
+ * Generates a password reset email template.
+ *
+ * @param {string} from - The sender's email address.
+ * @param {string} to - The recipient's email address.
+ * @param {string} token - The verification token.
+ * @return {MailOptions} - The MailOptions.
+ */
+export const passwordRestTemplate = (from: string, to: string, token: string) => {
+  return {
+    from: from,
+    to: to,
+    subject: "Reset your password",
+    text: `Please reset your password by clicking the following link: ${process.env.NEXT_PUBLIC_BASE_URL}/auth/password-reset/${token}`,
+    html: `<p>Please reset your password by clicking the following link: <a href="${process.env.NEXT_PUBLIC_BASE_URL}/auth/password-reset/${token}">${process.env.NEXT_PUBLIC_BASE_URL}/auth/password-reset/${token}</a></p>`,
   } as MailOptions;
 };
