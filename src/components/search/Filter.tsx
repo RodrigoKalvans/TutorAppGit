@@ -37,7 +37,8 @@ const schema = Yup.object({
       .positive("Rating cannot be negative"),
   price: Yup
       .number()
-      .positive("Price cannot be negative"),
+      .positive("Price cannot be negative")
+      .typeError("Price must be a number"),
 });
 
 /**
@@ -134,7 +135,7 @@ export default function Filter({
       setProfileState(null);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]); // I don't understand this error
+  }, [router.query]);
 
   return (
     <>
@@ -148,7 +149,7 @@ export default function Filter({
             isSubmitting: boolean | undefined;
           }) => (
             <Form className="px-5 flex flex-col gap-1">
-              <h2 className="uppercase flex justify-center my-3 font-bold">filter</h2>
+              <h2 className="flex justify-center mb-2 md:my-3 font-medium md:font-bold">Filter</h2>
 
               <label
                 htmlFor="role"
@@ -197,6 +198,7 @@ export default function Filter({
               <Field
                 name="rating"
                 as="input"
+                type="number"
                 placeholder="Rating"
                 className="w-full bg-gray-300 text-gray-900"
               />
@@ -207,6 +209,7 @@ export default function Filter({
               <Field
                 name="price"
                 as="input"
+                type="number"
                 placeholder="Maximum price"
                 className="w-full bg-gray-300 text-gray-900"
               />
@@ -226,7 +229,7 @@ export default function Filter({
 
               <button
                 type="submit"
-                className="btn hover:bg-orange-600 bg-orange-500 my-2 rounded-lg w-full"
+                className="submitButton my-2"
               >
                 {formik.isSubmitting ? "Please wait..." : "Filter"}
               </button>

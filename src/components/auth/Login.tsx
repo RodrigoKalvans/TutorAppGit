@@ -87,7 +87,7 @@ export default function Login() {
               </div>
               <button
                 type="submit"
-                className="signInButton my-8"
+                className="submitButton my-8"
                 disabled={(loading.current || formik.isSubmitting)}
               >
                 {(loading.current || formik.isSubmitting) ? "Signing in..." : "Sign In"}

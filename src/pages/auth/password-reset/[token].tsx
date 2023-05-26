@@ -118,7 +118,7 @@ const PasswordResetPage = ({error, success, email}: {error?: string, success?: b
                         </div>
                         <button
                           type="submit"
-                          className="signInButton my-8"
+                          className="submitButton my-8"
                           disabled={(loading.current || formik.isSubmitting || !email)}
                         >
                           {(loading.current || formik.isSubmitting) ? "Resetting..." : "Reset password"}

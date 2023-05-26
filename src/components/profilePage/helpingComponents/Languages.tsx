@@ -4,7 +4,7 @@ const Languages = ({languages, size = "text-xl"}: {languages: Array<any>, size?:
       <h2 className={`${size} font-medium pb-2`}>Languages</h2>
       {languages ? languages.map((language: any) =>
         <div key={language.code} className="flex">
-          <p className="m-0 text-base pl-2">{language.name}</p>
+          <p className="text-base">{language.name}</p>
         </div>,
       ) : <div>Not found</div>}
     </div>

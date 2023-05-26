@@ -35,14 +35,14 @@ export default function Search({
         <title>Search</title>
       </Head>
       <Navbar black={true} />
-      <main className="flex flex-wrap justify-around min-h-screen pt-2">
+      <main className="flex flex-col lg:flex-row justify-between gap-14 min-h-screen pt-2 container">
         {/** filter */}
-        <div className="w-[22rem] md:w-[26rem] flex flex-col">
+        <div className="flex flex-col w-full lg:w-96 2xl:w-[30rem]">
           <Filter subjects={subjects} setProfileState={setProfiles} allUsers={allUsers} />
           <Sorter inputProfiles={profiles} setProfileState={setProfiles} />
         </div>
 
-        <div className="w-[34rem] md:w-[38rem] lg:w-[44rem]">
+        <div className="flex-1 flex flex-col gap-3">
           {/** profiles */}
           {profiles && (profiles.map((user: any) => (
             <SearchProfile user={user} allSubjects={subjects} key={user._id}/>

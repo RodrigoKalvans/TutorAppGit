@@ -13,7 +13,7 @@
     @apply text-lg
   }
   p {
-    @apply m-1 mb-5 text-base md:text-lg;
+    @apply text-base md:text-lg;
   }
   ul {
     @apply list-disc;
@@ -83,7 +83,7 @@
     @apply bg-opacity-80 rounded-sm;
   }
 
-  .signInButton {
+  .submitButton {
     @apply btn orange border-none rounded-lg capitalize w-full;
   }
 

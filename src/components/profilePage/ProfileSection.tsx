@@ -24,13 +24,13 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
 
   return (
     <BoxContainer>
-      <div className="flex justify-between">
-        <div className="w-9/20">
+      <div className="flex gap-4 justify-between">
+        <div className="flex-1">
           <ProfilePicture user={user} session={session} />
         </div>
-        <div className="w-9/20">
+        <div className="flex-1">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-medium flex items-center">{user.firstName} {user.lastName}
+            <h1 className="text-2xl md:text-3xl font-medium flex items-center">{user.firstName} {user.lastName}
               {isPromoted(user.donations) && <PromoIcon size={15} className="mx-2" fill="orange"></PromoIcon>}
             </h1>
             {canEdit && (
@@ -50,17 +50,19 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
             )}
           </div>
 
-          <p className="text-xl text-subtitle capitalize">{user.role}</p>
+          <p className="text-xl text-subtitle capitalize md:my-2">{user.role}</p>
           {user.location && (
-            <p className="text-xs font-light">{user.location}</p>
+            <p className="text-xs font-light py-1">{user.location}</p>
           )}
           {user.isOnlineAvailable && (
-            <p className="text-xs font-light text-green-600">Online lessons available</p>
+            <p className="text-xs font-light text-green-600 py-1">Online lessons available</p>
           )}
 
-          <Rating rating={user.rating} />
+          <div className="my-1 md:my-2">
+            <Rating rating={user.rating} />
+          </div>
 
-          <div className="mt-2">
+          <div className="sm:mt-2 lg:mt-3">
             <FollowersSection followersNumber={followers} followingNumber={user.following.length}
               userId={user._id} role={user.role} setFollowers={setFollowers} isFollowed={isFollowed} setIsFollowed={setIsFollowed} session={session} />
           </div>
@@ -68,16 +70,20 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-8 my-8">
-        <Subjects subjects={subjects} />
+      <div className="grid grid-cols-2 gap-4 md:gap-8 my-8">
+        <Subjects subjects={subjects} size="text-lg md:text-xl" />
 
-        <Languages languages={user.languages} />
+        <Languages languages={user.languages} size="text-lg md:text-xl" />
 
         {user.role === "tutor" && (
           <>
-            <ContactDetails email={user.email} phoneNumber={user.phoneNumber} />
+            <div className="col-span-2 md:col-span-1">
+              <ContactDetails email={user.email} phoneNumber={user.phoneNumber} />
+            </div>
 
-            <Price priceForLessons={user.priceForLessons} />
+            <div className="col-span-2 md:col-span-1">
+              <Price priceForLessons={user.priceForLessons} />
+            </div>
           </>
         )}
 
