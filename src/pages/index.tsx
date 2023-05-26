@@ -11,6 +11,7 @@ import {LandingPageCard} from "@/types/ambiguous-types";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 import {useSession} from "next-auth/react";
+import Carousel from "@/components/landingPage/Carousel";
 
 /**
  * Landing page
@@ -91,11 +92,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
               <h1 className="text-light">Take a look at our&nbsp;<span className="text-orange-400">featured tutors.</span></h1>
               <Image src={"/icons/trending_tutors_star.svg"} width={50} height={50} alt="star image" />
             </div>
-            {/* <div className="carousel rounded-box flex gap-10 overflow-y-hidden">
-              {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
-                <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
-              )}
-            </div> */}
+            <Carousel carouselItems={carouselItems} subjects={subjects} />
           </div>
         </div>
       </section>
