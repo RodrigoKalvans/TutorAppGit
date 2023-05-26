@@ -24,9 +24,6 @@
   input::placeholder {
     @apply text-gray-700
   }
-  label {
-    @apply uppercase text-sm text-gray-600 font-bold
-  }
   option {
     @apply font-sans font-semibold
   }
@@ -98,10 +95,10 @@
   .modal-content-box {
     @apply bg-white rounded-lg px-6 w-full mx-3 md:w-1/2;
   }
-}
 
-.bord {
-  outline-style: solid;
+  .bord {
+    @apply outline-1
+  }
 }
 
 .shadow-round {

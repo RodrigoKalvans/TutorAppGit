@@ -44,14 +44,14 @@ const createSubject = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({req});
 
   if (!token || token.role !== "admin") {
-    res.status(StatusCodes.FORBIDDEN).send("You are not allowed to create subjects!");
+    res.status(StatusCodes.FORBIDDEN).send("You are not allowed to create subjects");
     return;
   }
 
   const reqSubject = req.body;
 
-  if (!reqSubject.name && !reqSubject.icon) {
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Subject is missing a property!"});
+  if (!reqSubject.name) {
+    res.status(StatusCodes.NO_CONTENT).send({message: "Subject is missing a name"});
     return;
   }
 
@@ -60,7 +60,7 @@ const createSubject = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await newSubject.save();
 
-    res.status(StatusCodes.OK).send({message: "New subject was created!", subject: newSubject});
+    res.status(StatusCodes.OK).send({message: `Subject '${newSubject.name}' was created`, subject: newSubject});
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error);
   }

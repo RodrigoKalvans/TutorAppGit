@@ -4,6 +4,8 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import {deleteAllReferencesOfDeletedUser} from "@/utils/apiHelperFunction/userHelper";
+import {getToken} from "next-auth/jwt";
+import {MAX_SUBJECT_COUNT, MAX_LANGUAGE_COUNT} from "@/utils/consts";
 
 /**
  * Tutors route
@@ -55,6 +57,20 @@ const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
         });
     return;
   }
+  if (req.body.posts.length > MAX_SUBJECT_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum subject count exceeded",
+        });
+    return;
+  }
+  if (req.body.posts.length > MAX_LANGUAGE_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum language count exceeded",
+        });
+    return;
+  }
 
   if (req.body.password) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Password reset is not allowed with this request"});
@@ -87,9 +103,9 @@ const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
  * @return {null} returns null in case the method of request is incorrect
  */
 const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
-  const check = await validateUser(req);
+  const token = await getToken({req});
 
-  if (!check) {
+  if (!token || token.id !== id && token.id !== "admin") {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
           message: "You are not authenticated/authorized to do this action!",

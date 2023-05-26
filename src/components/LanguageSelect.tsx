@@ -1,7 +1,9 @@
 import Select from "react-tailwindcss-select";
-import {Dispatch, useState} from "react";
+import {Dispatch, useCallback, useState} from "react";
 import languages from "@/utils/languages.json";
 import {ObjectId} from "mongoose";
+
+const MAXIMUM_SELECTED_LANGUAGES = 10;
 
 /**
  * Language select element
@@ -33,16 +35,18 @@ export default function LanguageSelect({
      * is called when subject Select element is initialized
      * @return {JSX} component
      */
-  const getLanguageOptions = () => {
+  const getLanguageOptions = useCallback(() => {
     const options: { value: string; label: string; }[] = [];
     languages.map((language: any) => options.push({value: `${language.code}`, label: `${language.name}`}));
     return options;
-  };
+  }, []);
 
   /** is called onChange in Select element
      * @param {string[]} value is the new string[] containing chosen options objects
      */
-  const setSelectedLanguages = (value: any) => {
+  const setSelectedLanguages = useCallback((value: any) => {
+    // make sure user does not exceed max number of languages
+    if (chosenLanguages && chosenLanguages.length >= MAXIMUM_SELECTED_LANGUAGES && value.length > chosenLanguages.length) return;
     if (value) {
       setLanguagesState(value.map((option: {
         value: string,
@@ -55,7 +59,7 @@ export default function LanguageSelect({
       setLanguagesState([]);
     }
     setChosenLanguages(value);
-  };
+  }, [chosenLanguages, setLanguagesState]);
 
   return (
     <>

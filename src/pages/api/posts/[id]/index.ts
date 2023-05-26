@@ -101,7 +101,7 @@ const updatePostById = async (req: NextApiRequest, res: NextApiResponse, id: Str
 const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const token = await getToken({req});
 
-  if (!token) {
+  if (!token || token.id !== id && token.id !== "admin") {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
           message: "You are not authenticated! Log in or create an account first!",
@@ -125,6 +125,8 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
   }
 
   try {
+    const deletingPost = await Post.findById(id);
+
     deletingPost.comments.forEach(async (element: {commentId: String;}) => {
       const deletedComment = await Comment.findByIdAndDelete(element.commentId);
 
@@ -133,7 +135,7 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
     const postToDelete = await Post.findByIdAndDelete(id);
 
     res.status(StatusCodes.OK).send({
-      message: "Post with its comments has been deleted",
+      message: "Post has been deleted",
       post: postToDelete,
     });
   } catch (error) {

@@ -20,6 +20,8 @@ const CreatePost = () => {
 
     const json = await res.json();
 
+    // TODO: Handle something here?
+
     console.log(json);
   };
 

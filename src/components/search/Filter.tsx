@@ -5,7 +5,7 @@ import {NextRouter, useRouter} from "next/router";
 
 import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
-import {Dispatch, useEffect, useState} from "react";
+import {Dispatch, useCallback, useEffect, useState} from "react";
 import {isPromoted} from "@/utils/promotion";
 
 type Values = {
@@ -97,7 +97,8 @@ export default function Filter({
  * @param {Array<any>} sourceArray is the array that will be sorted - passed by reference
  * @return {Array<any>} filtered array
  */
-  const filterProfiles = (filter: any | undefined) => {
+  const filterProfiles = useCallback((filter: any | undefined) => {
+    console.log(filter);
     if (filter == undefined) filter = router.query; // in case we got here from the navbar
     const keys = Object.keys(filter); // keys in the filter (eg  { firstName: "john" } )
     const arr = allUsers.filter((user: any) => { // do the following on every user object
@@ -107,7 +108,7 @@ export default function Filter({
           if (key == "rating") return filter[key] == user[key].number; // rating is a number
           if (key == "languages") return filter[key].every((filterLanguage: any) => user[key].some((userLanguage: any) => filterLanguage.name == userLanguage.name));
           if (key == "price") return Object.values(user["priceForLessons"]).some((price: any) => Number(price) <= Number(filter[key])); // any price in the user object must be below entered value
-          if (key == "role" && filter[key] == "both") return true; // handle role == "both"
+          if (key == "role" && filter[key] == "both" && user[key] !== "admin") return true; // handle role == "both"
           if (Array.isArray(user[key])) return filter[key].every((val: any) => user[key].includes(val)); // every value in filter must be present in user
           return user[key].toLowerCase().includes(filter[key].toLowerCase());
         } catch (err: any) {
@@ -117,7 +118,7 @@ export default function Filter({
     });
     // sort before returning
     return sortByDonation(arr);
-  };
+  }, [allUsers, router.query]);
 
   /**
  * This is used to sort profiles based on whether the fit the donation criteria outlined by isPromoted()
@@ -129,13 +130,18 @@ export default function Filter({
   };
 
   useEffect(() => {
-    setProfileState(filterProfiles(router.query));
+    const query = router.query;
+    // This is done such that you can search by subject through router
+    if (router.query.subjects && !Array.isArray(router.query.subjects)) {
+      query.subjects = router.query.subjects.split("~");
+      console.log(query);
+    }
+    setProfileState(filterProfiles(query));
 
     return () => {
       setProfileState(null);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]);
+  }, [filterProfiles, router.query, setProfileState]);
 
   return (
     <>

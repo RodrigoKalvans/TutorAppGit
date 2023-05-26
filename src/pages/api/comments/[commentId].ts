@@ -47,18 +47,8 @@ const getCommentById = async (res: NextApiResponse, id: String) => {
 const deleteCommentById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const token = await getToken({req});
 
-  if (!token) {
+  if (!token || token.id !== id && token.id !== "admin") {
     res.status(StatusCodes.UNAUTHORIZED)
-        .send({
-          message: "You are not authenticated! Log in or create an account first!",
-        });
-    return;
-  }
-
-  const deletingComment = await Comment.findById(id);
-
-  if (deletingComment.userId !== token.id) {
-    res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authorized to do this action! It is not your comment!",
         });
