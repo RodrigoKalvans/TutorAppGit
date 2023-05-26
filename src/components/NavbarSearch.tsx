@@ -52,7 +52,7 @@ export default function NavbarSearch() {
         <button type="submit" className="absolute inset-y-0">
           <svg aria-hidden="true" className="ml-3 w-5 h-5" fill="none" stroke="grey" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         </button>
-        <input type="text" id="search" className="w-full h-full mr-0 pl-10 rounded-full bg-white-200 text-black focus:outline-none" placeholder="Search" required />
+        <input type="text" id="search" className="w-full h-full mr-0 pl-10 rounded-full bg-white-200 text-black focus:outline-none" placeholder="Search" />
 
         <button type="button" name="dropdown" id="dropdownBtn" onClick={() => setIsOpen(!isOpen)} className={`capitalize absolute -right-1 min-h-0 h-full px-5 rounded-full max-w-fit ${isOpen ? "bg-[#43607a]" : "bg-[#527695]"} text-light font-normal black focus:outline-none flex items-center hover:bg-[#5980a3] transition-all focus:bg-[#43607a] active:bg-[#395268]`}>
           {role} {arrowSvg}

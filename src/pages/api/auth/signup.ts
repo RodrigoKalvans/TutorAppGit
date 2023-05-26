@@ -5,6 +5,7 @@ import Tutor from "../../../models/Tutor";
 import db from "../../../utils/db";
 import {getToken} from "next-auth/jwt";
 import {subscribeUserToNewsletter} from "@/utils/apiHelperFunction/newsletterHelper";
+import {MAX_SUBJECT_COUNT, MAX_LANGUAGE_COUNT} from "@/utils/consts";
 import {Emailer} from "@/utils/emailer";
 import {v4 as uuidv4} from "uuid";
 import EmailVerification from "@/models/EmailVerification";
@@ -36,6 +37,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         (req.body.role !== "student" && req.body.role !== "tutor")) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({message: "Not enough information (Validation Error)"});
+    return;
+  }
+
+  if (req.body.posts && req.body.posts.length > MAX_SUBJECT_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum subject count exceeded",
+        });
+    return;
+  }
+  if (req.body.posts && req.body.posts.length > MAX_LANGUAGE_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum language count exceeded",
+        });
     return;
   }
 
@@ -125,13 +141,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await newUser.save();
 
   const emailer = new Emailer(process.env.GOOGLE_USER!, process.env.GOOGLE_APP_PASSWORD!);
+
   const verificationToken = uuidv4();
+  const expirationTime = new Date();
+  expirationTime.setMinutes(expirationTime.getMinutes() + 30);
+
   const verificationDbEntry = new EmailVerification({
     email: newUser.email,
     token: verificationToken,
     role: newUser.role,
+    expiresAt: expirationTime,
   });
-  verificationDbEntry.save();
+  await verificationDbEntry.save();
+
   const result = await emailer.sendVerificationEmail(newUser.email, verificationToken);
 
   if (result.error) {

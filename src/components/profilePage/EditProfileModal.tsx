@@ -180,16 +180,20 @@ const EditProfileModal = ({
                       <tbody>
                         {Object.keys(user.priceForLessons).map((key: string, index: number) => (
                           <tr key={index}>
-                            <td><input type="number" id={`minutes${index}`} defaultValue={key} /></td>
-                            <td><input type="number" id={`price${index}`} defaultValue={user.priceForLessons[key]} /></td>
+                            <td>
+                              <input type="number" id={`minutes${index}`} defaultValue={key} className="w-full" />
+                            </td>
+                            <td>
+                              <input type="number" id={`price${index}`} defaultValue={user.priceForLessons[key]} className="w-full" />
+                            </td>
                           </tr>
                         ),
                         )}
 
                         {(Object.keys(user.priceForLessons).length < 2) && (
                           <tr>
-                            <td><input type="number" id="minutes1" /></td>
-                            <td><input type="number" id="price1" /></td>
+                            <td><input type="number" id="minutes1" className="w-full" /></td>
+                            <td><input type="number" id="price1" className="w-full" /></td>
                           </tr>
                         )}
                       </tbody>
@@ -197,7 +201,7 @@ const EditProfileModal = ({
                   </div>
 
                   <div className="flex gap-2">
-                    <input type="checkbox" id="online" onChange={() => setIsOnlineAvailable(!isOnlineAvailable)} />
+                    <input type="checkbox" id="online" checked={user.isOnlineAvailable} onChange={() => setIsOnlineAvailable(!isOnlineAvailable)} />
                     <label className="font-normal capitalize">Online lessons available</label>
                   </div>
                 </>

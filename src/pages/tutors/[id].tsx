@@ -18,6 +18,7 @@ import PostManager from "@/components/posts/PostManager";
 import CreatePostButton from "@/components/CreatePostButton";
 import Comment from "@/models/Comment";
 import Like from "@/models/Like";
+import {ErrorIcon} from "@/utils/icons";
 
 const TutorPage = (
     {
@@ -29,7 +30,7 @@ const TutorPage = (
       posts,
       activityArray,
     }: {
-      tutor: any,
+      tutor?: any,
       isFollowing: boolean,
       subjects: Array<any>,
       reviews: Array<any>,
@@ -41,7 +42,19 @@ const TutorPage = (
 
   if (!tutor) {
     return (
-      <p>No tutor was found!</p>
+      <>
+        <Head>
+          <title>Not Found</title>
+        </Head>
+        <Navbar black={true} />
+
+        <main className="min-h-[calc(100vh-64px)] flex items-center justify-center">
+          <div className="flex flex-col items-center">
+            <ErrorIcon size={50} fill="red"/>
+            <p className="text-red-600 text-lg">No tutor was found!</p>
+          </div>
+        </main>
+      </>
     );
   }
 
@@ -49,44 +62,36 @@ const TutorPage = (
 
   return (
     <>
-      {tutor && (
-        <>
-          <Head>
-            <title>{fullName}</title>
-          </Head>
 
-          <Navbar black={true} />
+      <Head>
+        <title>{fullName}</title>
+      </Head>
 
-          <main className="container flex py-2 gap-14">
-            <section className="basis-[40rem]">
-              <div className="flex flex-col gap-5">
-                <ProfileSection user={tutor} isFollowing={isFollowing}
-                  subjects={subjects} session={session} allSubjects={allSubjects} />
-                <Activity fullName={fullName} activity={activityArray} />
-                <ReviewsSection reviews={reviews} session={session}
-                  reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
+      <Navbar black={true} />
 
-              </div>
-            </section>
+      <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
+        <section className="basis-[40rem]">
+          <div className="flex flex-col gap-5">
+            <ProfileSection user={tutor} isFollowing={isFollowing}
+              subjects={subjects} session={session} allSubjects={allSubjects} />
+            <Activity fullName={fullName} activity={activityArray} />
+            <ReviewsSection reviews={reviews} session={session}
+              reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
 
-            <section>
-              <div className="flex justify-between items-center mb-5">
-                <span className="font-medium text-xl">Posts</span>
-                {session?.user.id === tutor._id.toString() && (
-                  <CreatePostButton />
-                )}
-              </div>
-              <div>
-                <PostManager userId={tutor._id.toString()} />
-              </div>
-            </section>
-          </main>
-        </>
-      )}
+          </div>
+        </section>
 
-      {!tutor && (
-        <p>No tutor was found!</p>
-      )}
+        <section>
+          <div className="flex justify-between items-center mb-5">
+            <span className="font-medium text-xl">Posts</span>
+            {session?.user.id === tutor._id.toString() && (
+              <CreatePostButton />
+            )}
+          </div>
+
+          <PostManager userId={tutor._id.toString()} />
+        </section>
+      </main>
     </>
   );
 };

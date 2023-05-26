@@ -118,8 +118,8 @@ export default function SignUp({
         const {message} = json;
         setError(message);
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.error(err);
       router.push("/_error");
     }
   };
@@ -288,7 +288,7 @@ export default function SignUp({
                 <div className="flex items-center justify-center">
                   <button
                     type="submit"
-                    className="signInButton my-8"
+                    className="submitButton my-8"
                     disabled={(formik.isSubmitting || loading.current)}
                   >
                     {(formik.isSubmitting || loading.current) ? "Please wait..." : "Sign Up"}

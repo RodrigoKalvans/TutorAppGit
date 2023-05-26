@@ -8,6 +8,7 @@ const EmailVerificationSchema: mongoose.Schema = new mongoose.Schema(
         values: ["student", "tutor"],
         message: "{VALUE} is not supported as a role",
       }},
+      expiresAt: {type: Date, required: true},
     },
     {timestamps: true},
 );

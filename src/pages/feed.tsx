@@ -34,12 +34,12 @@ const Feed = ({
         <title>Feed</title>
       </Head>
       <Navbar black/>
-      <main className="min-h-screen w-full flex-col pt-5 -mt-5 container">
-        <div className="flex justify-center gap-10 pt-3">
+      <main className="min-h-screen container">
+        <div className="flex flex-col items-center lg:flex-row lg:items-start justify-center gap-10 mt-5">
           {/** sidebar (top tutors & create post) */}
-          <div className="w-[30%] px-5">
-            <CreatePostButton style="w-full btn bg-[#3F678A] bg-opacity-80 hover:bg-blue-600 hover:bg-opacity-100 border-none normal-case text-white font-medium text-md rounded-box" />
-            <div className="mt-5 flex-col">
+          <div className="w-full lg:w-[30%]">
+            <CreatePostButton style="w-full btn bg-[#3F678A] bg-opacity-80 hover:bg-[#3F678A] hover:bg-opacity-100 border-none normal-case text-white font-medium text-md rounded-box mb-2" />
+            <div className="flex-col">
               <div className="bg-white rounded-box p-3 py-5">
                 <h1 className="w-full flex justify-center font-bold text-xl">Top tutors</h1>
                 {isLoading && <div className="text-xl mt-10 w-full flex justify-center">Loading...</div>}
@@ -53,17 +53,15 @@ const Feed = ({
             </div>
           </div>
           {/** posts section */}
-          <div className="w-3/5 bg-white rounded-t-2xl">
+          <div className="w-full lg:w-3/5 bg-white pb-5 rounded-2xl">
             <div className="w-full rounded-b-none flex items-center mb-5">
               <button onClick={() => setGeneral(true)} className="border-solid border-r-2 border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tl-2xl hover:bg-gray-200 text-black transition-colors duration-500">General</button>
-              <button onClick={() => setGeneral(false)} className="border-solid border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tr-2xl hover:bg-gray-200 text-black transition-colors duration-500">Follow</button>
+              <button onClick={() => setGeneral(false)} className="border-solid border-l-2 border-b-2 font-bold border-gray-300 w-1/2 h-8 rounded-tr-2xl hover:bg-gray-200 text-black transition-colors duration-500">Follow</button>
             </div>
             <div className="w-full flex justify-center">
-              <div className="w-full">
-                {general && <PostManager loggedInUser={user} />}
-                {!general && user && <PostManager followed loggedInUser={user}/>}
-                {!general && !user && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
-              </div>
+              {general && <PostManager />}
+              {!general && user && <PostManager followed />}
+              {!general && !user && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
             </div>
           </div>
         </div>

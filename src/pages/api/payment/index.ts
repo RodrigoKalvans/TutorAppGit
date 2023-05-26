@@ -42,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const l = parseInt(req.query.limit as string, 10);
     if (!Number.isNaN(l)) limit = l;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 
   const intents = await getIntents(limit);

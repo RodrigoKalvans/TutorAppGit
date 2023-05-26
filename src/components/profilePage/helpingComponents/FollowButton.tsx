@@ -49,10 +49,10 @@ const FollowButton = ({role, id, followers, setFollowers, isFollowed, setIsFollo
   return (
     <>
       {!isFollowed && (
-        <button className={`btn btn-sm bg-orange-500 hover:bg-orange-400 rounded-3xl px-5 text-white normal-case border-0 font-light ${loading && ("loading bg-gray-400")}`}onClick={async () => await handleFollow()}>Follow</button>
+        <button type="button" className={`btn btn-sm bg-orange-500 hover:bg-orange-400 rounded-3xl px-5 text-white normal-case border-0 font-light ${loading && ("loading bg-gray-400")}`}onClick={async () => await handleFollow()} disabled={loading}>Follow</button>
       )}
       {isFollowed && (
-        <button className={`btn btn-sm btn-primary rounded-3xl normal-case border-0 font-light ${loading && ("loading bg-gray-400")}`} onClick={async () => await handleUnfollow()}>Unfollow</button>
+        <button type="button" className={`btn btn-sm btn-primary rounded-3xl normal-case border-0 font-light ${loading && ("loading bg-gray-400")}`} onClick={async () => await handleUnfollow()} disabled={loading}>Unfollow</button>
       )}
     </>
 
