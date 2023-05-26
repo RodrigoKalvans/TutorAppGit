@@ -6,6 +6,7 @@ import {FaArrowCircleUp} from "react-icons/fa";
 import {CgProfile} from "react-icons/cg";
 import {BiAtom, BiCodeAlt, BiBook} from "react-icons/bi";
 import {SlChemistry} from "react-icons/sl";
+import {VscError} from "react-icons/vsc";
 
 export {
   TbMathSymbols as MathIcon,
@@ -29,4 +30,5 @@ export {
   AiFillLike as LikeIcon,
   AiOutlineLoading as LoadingIcon,
   MdDelete as DeleteIcon,
+  VscError as ErrorIcon,
 };

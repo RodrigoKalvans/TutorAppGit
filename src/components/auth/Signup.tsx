@@ -288,7 +288,7 @@ export default function SignUp({
                 <div className="flex items-center justify-center">
                   <button
                     type="submit"
-                    className="signInButton my-8"
+                    className="submitButton my-8"
                     disabled={(formik.isSubmitting || loading.current)}
                   >
                     {(formik.isSubmitting || loading.current) ? "Please wait..." : "Sign Up"}

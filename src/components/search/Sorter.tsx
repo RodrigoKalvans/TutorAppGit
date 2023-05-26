@@ -14,6 +14,7 @@ const Sorter = ({
   inputProfiles: Array<any>,
   setProfileState: Dispatch<any>,
 }) => {
+  const [sortingType, setSortingType] = useState<string | null>();
   const [sortMetric, setSortMetric] = useState<string | undefined>(undefined);
   const lastSortMetric = useRef<typeof sortMetric>(sortMetric);
   const repeat = useRef<boolean>(false); // used to know if same sort is applied over again, in this case the result should be inverted
@@ -25,6 +26,7 @@ const Sorter = ({
 
 
   const priceSort = (metric = "price") => {
+    setSortingType("price");
     if (lastSortMetric.current == metric) repeat.current = !repeat.current;
     else repeat.current = false;
     setProfileState(priceQuickSort(inputProfiles, repeat.current));
@@ -32,6 +34,7 @@ const Sorter = ({
   };
 
   const ratingSort = (metric = "rating") => {
+    setSortingType("rating");
     if (lastSortMetric.current == metric) repeat.current = !repeat.current;
     else repeat.current = false;
     setProfileState(ratingQuickSort(inputProfiles, repeat.current ? true : false));
@@ -40,14 +43,23 @@ const Sorter = ({
 
   return (
     <>
-      <div className="h-fit rounded-b-2xl bg-white p-2 pb-4">
+      <div className="h-fit rounded-b-2xl bg-white p-2 md:pb-4">
         <hr className="" />
-        <h2 className="uppercase flex justify-center my-3 font-bold">Sort</h2>
-        <div className="flex justify-center my-1">
-          <div className="btn btn-wide hover:bg-orange-600 bg-orange-500" onClick={() => ratingSort()}>Rating</div>
-        </div>
-        <div className="flex justify-center my-1">
-          <div className="btn btn-wide hover:bg-orange-600 bg-orange-500" onClick={() => priceSort()}>Price</div>
+        <h2 className="flex justify-center my-2 md:my-3 font-medium md:font-bold">Sort by</h2>
+        <div className="flex justify-center gap-4 my-1">
+          <button
+            type="button"
+            className={`btn ${sortingType === "rating" && "orange"} btn-sm border-none capitalize font-normal`}
+            onClick={() => ratingSort()}
+          >
+            Rating
+          </button>
+          <div
+            className={`btn ${sortingType === "price" && "orange"} btn-sm border-none capitalize font-normal`}
+            onClick={() => priceSort()}>
+            Price
+          </div>
+
         </div>
       </div>
     </>

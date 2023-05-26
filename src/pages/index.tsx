@@ -84,6 +84,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
             style={{
               objectFit: "cover",
             }}
+            className="rounded-4xl"
           />
           <div className={`${styles.gradientTrending} ${styles.box} flex flex-col z-10`}>
             <div className="flex justify-between items-center mb-10">

@@ -4,31 +4,37 @@ import Student from "@/models/Student";
 import Tutor from "@/models/Tutor";
 
 export const verifyEmailToken = async (token: string) => {
-  const result = await EmailVerification.findOne({token: token});
+  const emailVerificationEntry = await EmailVerification.findOne({token: token});
 
-  if (!result) {
+  if (!emailVerificationEntry) {
+    return {error: "Invalid or expired token"};
+  }
+
+  const expirationTime = new Date(emailVerificationEntry.expiresAt);
+
+  if (expirationTime.getTime() < new Date().getTime()) {
     return {error: "Invalid or expired token"};
   }
 
   let user;
 
-  switch (result.role) {
+  switch (emailVerificationEntry.role) {
     case "student":
-      user = await Student.findOne({email: result.email});
+      user = await Student.findOne({email: emailVerificationEntry.email});
       break;
 
     case "tutor":
-      user = await Tutor.findOne({email: result.email});
+      user = await Tutor.findOne({email: emailVerificationEntry.email});
       break;
   }
 
   if (!user) {
-    await EmailVerification.findByIdAndDelete(result._id);
+    await EmailVerification.findByIdAndDelete(emailVerificationEntry._id);
     return {error: "User with this email does not have an account"};
   }
 
   user.emailVerified = true;
-  await EmailVerification.findByIdAndDelete(result._id);
+  await EmailVerification.findByIdAndDelete(emailVerificationEntry._id);
 
   await user.save();
 
@@ -39,7 +45,7 @@ export const verifyPasswordResetToken = async (token: string) => {
   const passwordResetRecord = await PasswordReset.findOne({token: token});
 
   if (!passwordResetRecord) {
-    return {error: "No token"};
+    return {error: "Invalid or expired token"};
   }
 
   const expirationTime = new Date(passwordResetRecord.expiresAt);
