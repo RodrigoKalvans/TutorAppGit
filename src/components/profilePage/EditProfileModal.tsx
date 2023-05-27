@@ -1,5 +1,5 @@
 import {Session} from "next-auth";
-import {MouseEventHandler, useRef, useState} from "react";
+import {MouseEventHandler, useState} from "react";
 import {AiOutlineClose} from "react-icons/ai";
 import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
@@ -32,14 +32,14 @@ const EditProfileModal = ({
   const [selectedLanguages, setSelectedLanguages] = useState();
   const [isOnlineAvailable, setIsOnlineAvailable] = useState(false);
   const [open, setOpen] = useState(false);
-  const loading = useRef(false);
-  const error = useRef<string>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
 
   const router = useRouter();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    loading.current = true;
+    setLoading(true);
     const updatedUser: {
       firstName?: string,
       lastName?: string,
@@ -95,14 +95,14 @@ const EditProfileModal = ({
         });
 
         if (!res.ok) {
-          const json = await res.json();
-          console.log(json);
+          const {message} = await res.json();
+          setError(message);
         }
       }
       window.location.reload();
     } else {
-      const json = await response.json();
-      console.log(json);
+      const {message} = await response.json();
+      setError(message);
     }
   };
 
@@ -117,9 +117,9 @@ const EditProfileModal = ({
       await signOut();
       router.push("/");
     } else if (res.status === 401) {
-      error.current = "You have to log in first to delete the account";
+      setError("You have to log in first to delete the account");
     } else if (res.status === 404) {
-      error.current = "Your profile was not found. If you are still logged in to your account, please log out";
+      setError("Your profile was not found. If you are still logged in to your account, please log out");
     }
   };
 
@@ -217,9 +217,9 @@ const EditProfileModal = ({
               <button
                 type="submit"
                 className="btn btn-primary rounded-4xl btn-sm mt-3"
-                disabled={loading.current}
+                disabled={loading}
               >
-                {loading.current ? "Saving..." : "Save"}
+                {loading ? "Saving..." : "Save"}
               </button>
 
               <button
@@ -257,11 +257,11 @@ const EditProfileModal = ({
         </div>
       </div>}
 
-      {error.current && (
+      {error && (
         <div className="alert alert-error shadow-lg fixed left-1/2 w-[90%] -translate-x-1/2 top-2">
           <div className="flex w-full">
             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>{error.current}</span>
+            <span>{error}</span>
             <button type="button" onClick={() => setOpen(false)} className="ml-auto">&#10006;</button>
           </div>
         </div>

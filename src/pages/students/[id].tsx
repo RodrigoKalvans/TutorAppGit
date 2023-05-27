@@ -70,7 +70,7 @@ const StudentPage = (
       <Navbar black={true} />
 
       <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
-        <section className="basis-[40rem]">
+        <section className="w-full">
           <div className="flex flex-col gap-5">
             <ProfileSection user={student} isFollowing={isFollowing} subjects={subjects} session={session} allSubjects={allSubjects} />
             <Activity fullName={fullName} activity={activityArray} />
