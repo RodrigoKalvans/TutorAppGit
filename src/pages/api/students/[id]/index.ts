@@ -57,14 +57,15 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
         });
     return;
   }
-  if (req.body.posts.length > MAX_SUBJECT_COUNT) {
+
+  if (req.body.subjects && req.body.subjects.length > MAX_SUBJECT_COUNT) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({
           message: "Maximum subject count exceeded",
         });
     return;
   }
-  if (req.body.posts.length > MAX_LANGUAGE_COUNT) {
+  if (req.body.languages && req.body.languages.length > MAX_LANGUAGE_COUNT) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({
           message: "Maximum language count exceeded",
@@ -88,7 +89,7 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
 
     res.status(StatusCodes.OK).send(updatedStudent);
   } catch (error) {
-    res.status(StatusCodes.NOT_FOUND).send(error);
+    res.status(StatusCodes.NOT_FOUND).send({message: "Error occurred", error});
   }
 
   return;

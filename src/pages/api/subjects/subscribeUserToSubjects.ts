@@ -116,7 +116,7 @@ const addUserToSubjects = async (req: NextApiRequest, res: NextApiResponse, id: 
 
     res.status(StatusCodes.OK).send({message: "Successfully added!", user});
   } catch (error) {
-    res.status(StatusCodes.NOT_FOUND).send(error);
+    res.status(StatusCodes.NOT_FOUND).send({message: "Error occurred", error});
   }
 
   return;

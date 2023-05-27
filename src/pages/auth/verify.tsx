@@ -75,9 +75,12 @@ const VerificationPage = ({success, error, email}: {success?: boolean, error?: s
               <>
                 <h1 className="text-2xl mb-4">{header}</h1>
                 {!error && (
-                  <p>
+                  <>
+                    <p>
               We&apos;ve sent you an email with the verification link to your email address. Please check your inbox and click the link to activate your account (don&apos;t forget to check your spam box).
-                  </p>
+                    </p>
+                    <p><Link href={"/auth/signin"} className="cursor-pointer underline hover:opacity-80 transition-all">Go back to sign in page</Link></p>
+                  </>
                 )}
 
                 {(email && !error) && (

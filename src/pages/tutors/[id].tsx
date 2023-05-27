@@ -19,6 +19,7 @@ import CreatePostButton from "@/components/CreatePostButton";
 import Comment from "@/models/Comment";
 import Like from "@/models/Like";
 import {ErrorIcon} from "@/utils/icons";
+import {Suspense} from "react";
 
 const TutorPage = (
     {
@@ -69,29 +70,34 @@ const TutorPage = (
 
       <Navbar black={true} />
 
-      <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
-        <section className="basis-[40rem]">
-          <div className="flex flex-col gap-5">
-            <ProfileSection user={tutor} isFollowing={isFollowing}
-              subjects={subjects} session={session} allSubjects={allSubjects} />
-            <Activity fullName={fullName} activity={activityArray} />
-            <ReviewsSection reviews={reviews} session={session}
-              reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
+      <Suspense fallback={<p>Loading...</p>}>
 
-          </div>
-        </section>
+        <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
+          <section className="w-full">
+            <div className="flex flex-col gap-5">
+              <ProfileSection user={tutor} isFollowing={isFollowing}
+                subjects={subjects} session={session} allSubjects={allSubjects} />
+              <Activity fullName={fullName} activity={activityArray} />
+              <ReviewsSection reviews={reviews} session={session}
+                reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
 
-        <section>
-          <div className="flex justify-between items-center mb-5">
-            <span className="font-medium text-xl">Posts</span>
-            {session?.user.id === tutor._id.toString() && (
-              <CreatePostButton />
-            )}
-          </div>
+            </div>
+          </section>
 
-          <PostManager userId={tutor._id.toString()} />
-        </section>
-      </main>
+          <section>
+            <div className="flex justify-between items-center mb-5">
+              <span className="font-medium text-xl">Posts</span>
+              {session?.user.id === tutor._id.toString() && (
+                <CreatePostButton />
+              )}
+            </div>
+
+            <PostManager userId={tutor._id.toString()} />
+          </section>
+        </main>
+      </Suspense>
+
+
     </>
   );
 };
