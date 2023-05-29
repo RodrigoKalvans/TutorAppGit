@@ -1,29 +1,22 @@
 import PostManager from "@/components/posts/PostManager";
-import {Session, getServerSession} from "next-auth";
-import {authOptions} from "./api/auth/[...nextauth]";
-import {GetServerSidePropsContext} from "next";
 import Navbar from "@/components/Navbar";
 import {useState} from "react";
 import Footer from "@/components/Footer";
-import db from "@/utils/db";
 import useSWR from "swr";
 import CreatePostButton from "@/components/CreatePostButton";
 import FeedPageTopTutor from "@/components/feed/FeedPageTopTutor";
-import Tutor from "@/models/Tutor";
-import Student from "@/models/Student";
 import Head from "next/head";
+import {useSession} from "next-auth/react";
+import {LoadingIcon} from "@/utils/icons";
 
 /**
  * Feed page
  * @param {Array<any>} allPosts
  * @return {JSX}
  */
-const Feed = ({
-  user,
-} : {
-  user?: any,
-}) => {
+const Feed = () => {
   const [general, setGeneral] = useState<boolean>(true);
+  const {data: session} = useSession();
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const {data: topTutors, error, isLoading} = useSWR("/api/tutors?topTutors=true", fetcher);
@@ -45,9 +38,15 @@ const Feed = ({
                 {isLoading && <div className="text-xl mt-10 w-full flex justify-center">Loading...</div>}
                 {error && <div className="text-xl mt-10 w-full flex justify-center text-red-600">Error...</div>}
                 <div className="w-full mt-3">
-                  {topTutors && topTutors.map((tutor: any) => (
-                    <FeedPageTopTutor tutor={tutor} key={tutor._id} />
-                  ))}
+                  {isLoading ? (
+                    <LoadingIcon className="animate-spin" />
+                  ) : (
+                    <>
+                      {topTutors && topTutors.map((tutor: any) => (
+                        <FeedPageTopTutor tutor={tutor} key={tutor._id} />
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -60,8 +59,8 @@ const Feed = ({
             </div>
             <div className="w-full flex justify-center">
               {general && <PostManager />}
-              {!general && user && <PostManager followed />}
-              {!general && !user && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
+              {!general && session && <PostManager followed />}
+              {!general && !session && <div className="m-5 mt-10 flex justify-center text-xl">Log in to view the follow feed</div>}
             </div>
           </div>
         </div>
@@ -72,27 +71,3 @@ const Feed = ({
 };
 
 export default Feed;
-
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  await db.connect();
-
-  const session: Session | null = await getServerSession(context.req, context.res, authOptions);
-
-  // get posts for follow feed
-  let loggedInUser: any;
-  if (session) {
-    if (session.user.role === "tutor") {
-      loggedInUser = await Tutor.findById(session.user.id);
-    } else if (session.user.role === "student") {
-      loggedInUser = await Student.findById(session.user.id);
-    }
-  }
-
-  // await db.disconnect();
-
-  return {
-    props: {
-      user: loggedInUser ? JSON.parse(JSON.stringify(loggedInUser)) : null,
-    },
-  };
-};

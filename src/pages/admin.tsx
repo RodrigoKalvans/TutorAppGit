@@ -34,8 +34,6 @@ const Admin = (
     const response = await fetch(`/api/posts/${post._id.toString()}`, {
       method: "DELETE",
     });
-    const json = await response.json();
-    console.log(json);
     if (!response.ok) return;
     setPosts((oldValues) => {
       return oldValues.filter((p) => p._id.toString() !== post._id);
@@ -54,8 +52,6 @@ const Admin = (
       });
     }
     try {
-      const json = await response?.json();
-      console.log(json);
       if (!response?.ok) return;
       setUsers((oldValues) => {
         return oldValues.filter((u) => u._id.toString() !== user._id);
@@ -69,8 +65,7 @@ const Admin = (
     const response = await fetch(`/api/comments/${comment._id.toString()}`, {
       method: "DELETE",
     });
-    const json = await response.json();
-    console.log(json);
+
     if (!response.ok) return;
     setComments((oldValues) => {
       return oldValues.filter((c) => c._id.toString() !== comment._id);
@@ -81,8 +76,7 @@ const Admin = (
     const response = await fetch(`/api/reviews/${review._id.toString()}`, {
       method: "DELETE",
     });
-    const json = await response.json();
-    console.log(json);
+
     if (!response.ok) return;
     setReviews((oldValues) => {
       return oldValues.filter((r) => r._id.toString() !== review._id);
@@ -93,8 +87,7 @@ const Admin = (
     const response = await fetch(`/api/subjects/${subject._id.toString()}`, {
       method: "DELETE",
     });
-    const json = await response.json();
-    console.log(json);
+
     if (!response.ok) return;
     setSubjects((oldValues) => {
       return oldValues.filter((s) => s._id.toString() !== subject._id);

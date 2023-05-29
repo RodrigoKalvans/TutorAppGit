@@ -18,7 +18,6 @@ const FollowButton = ({role, id, followers, setFollowers, isFollowed, setIsFollo
     if (json.message) {
       console.log(json.message);
     } else if (res.ok) {
-      console.log(json);
       setFollowers(followers+1);
       setLoading(false);
       setIsFollowed(true);
@@ -40,7 +39,6 @@ const FollowButton = ({role, id, followers, setFollowers, isFollowed, setIsFollo
     if (json.message) {
       console.log(json.message);
     } else if (res.ok) {
-      console.log(json);
       setFollowers(followers-1);
       setLoading(false);
       setIsFollowed(false);

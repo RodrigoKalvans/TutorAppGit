@@ -77,7 +77,6 @@ export default function Filter({
       subjects: chosenSubjects,
       languages: chosenLanguages,
     };
-    console.log(query);
     setProfileState(filterProfiles(query));
   };
 
@@ -98,7 +97,6 @@ export default function Filter({
  * @return {Array<any>} filtered array
  */
   const filterProfiles = useCallback((filter: any | undefined) => {
-    console.log(filter);
     if (filter == undefined) filter = router.query; // in case we got here from the navbar
     const keys = Object.keys(filter); // keys in the filter (eg  { firstName: "john" } )
     const arr = allUsers.filter((user: any) => { // do the following on every user object
@@ -134,7 +132,6 @@ export default function Filter({
     // This is done such that you can search by subject through router
     if (router.query.subjects && !Array.isArray(router.query.subjects)) {
       query.subjects = router.query.subjects.split("~");
-      console.log(query);
     }
     setProfileState(filterProfiles(query));
 
