@@ -218,9 +218,8 @@ export const deleteProfilePicture = async (req: NextApiRequest, res: NextApiResp
   });
 
   try {
-    const response = await client.send(command);
+    await client.send(command);
     res.status(StatusCodes.OK).send("Profile picture with key " + key + " has been deleted.");
-    console.log(response);
   } catch (err) {
     res.status(StatusCodes.BAD_REQUEST).send({err});
   }
@@ -233,9 +232,8 @@ export const deletePostPicture = async (req: NextApiRequest, res: NextApiRespons
   });
 
   try {
-    const response = await client.send(command);
+    await client.send(command);
     res.status(StatusCodes.OK).send("Profile picture with key " + key + " has been deleted.");
-    console.log(response);
   } catch (err) {
     res.status(StatusCodes.BAD_REQUEST).send({err});
   }

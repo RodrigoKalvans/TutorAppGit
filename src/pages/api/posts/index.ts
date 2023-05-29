@@ -150,7 +150,6 @@ const followedIds = async (token: JWT | null) => {
   token?.role == "student" ?
   user = await Student.findById(token?.id) :
   user = await Tutor.findById(token?.id);
-  console.log(user);
   const arr = [];
   for (let i = 0; i < user.following.length; i++) {
     arr.push(user.following.at(i).userId);

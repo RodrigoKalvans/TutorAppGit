@@ -114,7 +114,7 @@ const Post = ({
 
   return (
     <>
-      {post &&
+      {post && !isLoading &&
         <div className="flex flex-col bg-white text-sm rounded-2xl shadow-md w-full 2xl:w-[52rem] hov">
           {/** top section */}
           {user && !isLoading && (
