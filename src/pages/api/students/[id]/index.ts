@@ -5,7 +5,7 @@ import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import {deleteAllReferencesOfDeletedUser} from "@/utils/apiHelperFunction/userHelper";
 import {getToken} from "next-auth/jwt";
-import {MAX_SUBJECT_COUNT, MAX_LANGUAGE_COUNT} from "@/utils/consts";
+import {MAX_LANGUAGE_COUNT} from "@/utils/consts";
 
 /**
  * Dynamic student route
@@ -58,14 +58,9 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
     return;
   }
 
-  if (req.body.subjects && req.body.subjects.length > MAX_SUBJECT_COUNT) {
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
-        .send({
-          message: "Maximum subject count exceeded",
-        });
-    return;
-  }
-  if (req.body.languages && req.body.languages.length > MAX_LANGUAGE_COUNT) {
+  const {body} = req;
+
+  if (body.languages && body.languages.length > MAX_LANGUAGE_COUNT) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({
           message: "Maximum language count exceeded",
@@ -73,19 +68,18 @@ const updateStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
     return;
   }
 
-  if (req.body.password) {
+  if (body.password || body.role || body.subjects ||
+      body.followers || body.following || body.rating ||
+      body.reviews || body.activity || body.posts ||
+      body.emailVerified || body.isSuspended ||
+      body.subscriberId || body.donations) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Password reset is not allowed with this request"});
     return;
   }
 
   try {
     const updatedStudent = await Student
-        .findByIdAndUpdate(id,
-            {
-              $set: req.body,
-            },
-            {new: true},
-        );
+        .findByIdAndUpdate(id, body, {new: true});
 
     res.status(StatusCodes.OK).send(updatedStudent);
   } catch (error) {

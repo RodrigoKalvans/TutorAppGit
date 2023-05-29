@@ -84,7 +84,7 @@ const TutorPage = (
             </div>
           </section>
 
-          <section>
+          <section className="w-full">
             <div className="flex justify-between items-center mb-5">
               <span className="font-medium text-xl">Posts</span>
               {session?.user.id === tutor._id.toString() && (

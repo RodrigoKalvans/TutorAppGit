@@ -5,6 +5,7 @@ import Subject from "@/models/Subject";
 import {getToken} from "next-auth/jwt";
 import Tutor from "@/models/Tutor";
 import Student from "@/models/Student";
+import {MAX_SUBJECT_COUNT} from "@/utils/consts";
 
 /**
  * Dynamic subject route
@@ -41,6 +42,14 @@ const addUserToSubjects = async (req: NextApiRequest, res: NextApiResponse, id: 
 
   if (!subjectIds) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).send({message: "Not valid information"});
+    return;
+  }
+
+  if (subjectIds.length > MAX_SUBJECT_COUNT) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send({
+          message: "Maximum subject count exceeded",
+        });
     return;
   }
 
