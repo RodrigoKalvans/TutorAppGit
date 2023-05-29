@@ -20,6 +20,13 @@ import CreatePostButton from "@/components/CreatePostButton";
 import Navbar from "@/components/Navbar";
 import Like from "@/models/Like";
 import {ErrorIcon} from "@/utils/icons";
+import {useLoading} from "@/utils/hooks";
+import BoxContainer from "@/components/profilePage/helpingComponents/BoxContainer";
+import dynamic from "next/dynamic";
+
+const ContentLoader = dynamic(import("react-content-loader"), {
+  ssr: false,
+});
 
 const StudentPage = (
     {
@@ -39,6 +46,7 @@ const StudentPage = (
     posts: Array<any>,
     activityArray: Array<any>,
   }) => {
+  const isLoading = useLoading();
   const {data: session} = useSession();
 
   if (!student) {
@@ -69,6 +77,7 @@ const StudentPage = (
 
       <Navbar black={true} />
 
+      {!isLoading ? (
       <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
         <section className="w-full">
           <div className="flex flex-col gap-5">
@@ -80,7 +89,7 @@ const StudentPage = (
           </div>
         </section>
 
-        <section>
+        <section className="w-full">
           <div className="flex justify-between items-center mb-5">
             <span className="font-medium text-xl">Posts</span>
             {session?.user.id === student._id.toString() && (
@@ -92,6 +101,67 @@ const StudentPage = (
           </div>
         </section>
       </main>
+      ) : (
+        <main className="container py-2 min-h-screen">
+          <BoxContainer style="hidden lg:w-2/5">
+            {/* <MyLoader /> */}
+            <ContentLoader
+              speed={2}
+              width={1100}
+              height={500}
+              viewBox="0 0 400 160"
+              backgroundColor="#ededed"
+              foregroundColor="#dbdbdb"
+            >
+              <rect x="48" y="8" rx="3" ry="3" width="88" height="6" />
+              <rect x="48" y="26" rx="3" ry="3" width="52" height="6" />
+              <circle cx="22" cy="22" r="20" />
+              <rect x="158" y="136" rx="0" ry="0" width="3" height="0" />
+              <rect x="4" y="64" rx="3" ry="3" width="35" height="11" />
+              <rect x="4" y="94" rx="3" ry="3" width="43" height="5" />
+              <rect x="4" y="83" rx="3" ry="3" width="43" height="5" />
+              <rect x="6" y="114" rx="3" ry="3" width="35" height="11" />
+              <rect x="6" y="144" rx="3" ry="3" width="43" height="5" />
+              <rect x="6" y="133" rx="3" ry="3" width="43" height="5" />
+              <rect x="77" y="64" rx="3" ry="3" width="35" height="11" />
+              <rect x="77" y="94" rx="3" ry="3" width="43" height="5" />
+              <rect x="77" y="83" rx="3" ry="3" width="43" height="5" />
+              <rect x="76" y="114" rx="3" ry="3" width="35" height="11" />
+              <rect x="76" y="144" rx="3" ry="3" width="43" height="5" />
+              <rect x="76" y="133" rx="3" ry="3" width="43" height="5" />
+            </ContentLoader>
+          </BoxContainer>
+
+          <BoxContainer style="w-full lg:hidden">
+            {/* <MyLoader /> */}
+            <ContentLoader
+              speed={2}
+              width={250}
+              height={400}
+              viewBox="0 0 250 400"
+              backgroundColor="#ededed"
+              foregroundColor="#dbdbdb"
+            >
+              <rect x="108" y="47" rx="3" ry="3" width="129" height="9" />
+              <rect x="108" y="73" rx="3" ry="3" width="77" height="9" />
+              <rect x="123" y="187" rx="0" ry="0" width="2" height="0" />
+              <rect x="11" y="141" rx="3" ry="3" width="60" height="19" />
+              <rect x="11" y="193" rx="3" ry="3" width="74" height="9" />
+              <rect x="11" y="174" rx="3" ry="3" width="74" height="9" />
+              <rect x="15" y="227" rx="3" ry="3" width="60" height="19" />
+              <rect x="15" y="279" rx="3" ry="3" width="74" height="9" />
+              <rect x="15" y="260" rx="3" ry="3" width="74" height="9" />
+              <rect x="137" y="141" rx="3" ry="3" width="60" height="19" />
+              <rect x="137" y="193" rx="3" ry="3" width="74" height="9" />
+              <rect x="137" y="174" rx="3" ry="3" width="74" height="9" />
+              <rect x="135" y="227" rx="3" ry="3" width="60" height="19" />
+              <rect x="135" y="279" rx="3" ry="3" width="74" height="9" />
+              <rect x="135" y="260" rx="3" ry="3" width="74" height="9" />
+              <circle cx="46" cy="66" r="44" />
+            </ContentLoader>
+          </BoxContainer>
+        </main>
+      )}
     </>
   );
 };

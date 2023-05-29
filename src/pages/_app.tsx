@@ -24,9 +24,7 @@ export default function App({
         }
       `}</style>
       <SessionProvider session={session}>
-        <main className={`${inter.variable} font-sans`}>
-          <Component {...pageProps} />
-        </main>
+        <Component {...pageProps} />
       </SessionProvider>
     </>
   );

@@ -2,6 +2,7 @@
 import {useSession} from "next-auth/react";
 import Post from "./Post";
 import {useCallback, useEffect, useState} from "react";
+import {LoadingIcon} from "@/utils/icons";
 
 /**
  * contains Post components and controls the data flow to and from Posts
@@ -81,7 +82,6 @@ const PostManager = ({
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 &&
       !loading
     ) {
-      console.log("Fetching more posts...");
       fetchPosts();
     }
   }, [loading]);
@@ -100,15 +100,22 @@ const PostManager = ({
   return (
     <>
       <div className="h-fit flex flex-col gap-10">
-        {loading && "loading"}
-        {posts && posts.length > 0 ?
+        {loading ? (
+          <LoadingIcon className="animate-spin" />
+        ) : (
+          <>
+            {posts && posts.length > 0 && !loading ? (
           posts.map((post: any, index: number) =>
             <Post post={post} key={index} index={index} handleDelete={handleDeletePost} session={session} />,
-          ) :
+          )
+         ) : (
           <div className="text-black text-xl m-5 flex justify-center">
               No posts found!
           </div>
-        }
+         )}
+          </>
+        )}
+
       </div>
     </>
   );

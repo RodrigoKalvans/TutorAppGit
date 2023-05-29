@@ -27,7 +27,7 @@ const Carousel = ({
         )}
       </div> */}
       <div className="flex justify-center">
-        <C autoPlay infiniteLoop interval={interval} transitionTime={transition} className="w-[700px] bord">
+        <C autoPlay infiniteLoop interval={interval} transitionTime={transition} showThumbs={false} className="w-[700px] bord">
           {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
             <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
           )}
