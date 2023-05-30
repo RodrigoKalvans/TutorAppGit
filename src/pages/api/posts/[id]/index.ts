@@ -101,7 +101,7 @@ const updatePostById = async (req: NextApiRequest, res: NextApiResponse, id: Str
 const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const token = await getToken({req});
 
-  if (!token || token.id !== id && token.id !== "admin") {
+  if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
           message: "You are not authenticated! Log in or create an account first!",
@@ -116,7 +116,7 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
     return;
   }
 
-  if (deletingPost.userId !== token.id) {
+  if (deletingPost.userId !== token.id && token.role !== "admin") {
     res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authorized to do this action! It is not your post!",

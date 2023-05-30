@@ -12,7 +12,7 @@ import {EditIcon, PromoIcon} from "@/utils/icons";
 import EditProfileModal from "./EditProfileModal";
 import {isPromoted} from "@/utils/promotion";
 
-const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {user: any, isFollowing: boolean, subjects: Array<any>, session: Session | null, allSubjects: Array<any>}) => {
+const ProfileSection = ({user, isFollowing, subjects, session}: {user: any, isFollowing: boolean, subjects: Array<any>, session: Session | null}) => {
   const [followers, setFollowers] = useState(user.followers.length);
   const [isFollowed, setIsFollowed] = useState(isFollowing);
   const canEdit = (session?.user.id === user._id) ? true : false;
@@ -43,7 +43,7 @@ const ProfileSection = ({user, isFollowing, subjects, session, allSubjects}: {us
                 </button>
                 {isEditing && (
                   <div className="absolute">
-                    <EditProfileModal closeModal={closeModal} allSubjects={allSubjects} user={user} session={session} userSubjects={subjects} />
+                    <EditProfileModal closeModal={closeModal} user={user} session={session} userSubjects={subjects} />
                   </div>
                 )}
               </>

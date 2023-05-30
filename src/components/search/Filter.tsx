@@ -156,13 +156,13 @@ export default function Filter({
 
               <label
                 htmlFor="role"
-              >role
+              >Role
                 <Field
                   as="select"
                   className="p-2 px-4 ml-2 rounded-xl bg-gray-300 text-black"
                   name="role"
                 >
-                  <option value="tutor" selected>Tutors</option>
+                  <option value="tutor">Tutors</option>
                   <option value="student">Students</option>
                   <option value="both">Both</option>
                 </Field>
