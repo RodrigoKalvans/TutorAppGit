@@ -5,6 +5,8 @@ import LanguageSelect from "../LanguageSelect";
 import SubjectSelect from "../SubjectSelect";
 import {useRouter} from "next/router";
 import {signOut} from "next-auth/react";
+import useSWR from "swr";
+import {LoadingIcon} from "@/utils/icons";
 
 /**
  * This component is mounted whenever the user tries to edit their profile details from their profile page
@@ -17,13 +19,11 @@ import {signOut} from "next-auth/react";
  */
 const EditProfileModal = ({
   closeModal,
-  allSubjects,
   user,
   session,
   userSubjects,
 } : {
   closeModal: MouseEventHandler,
-  allSubjects: Array<any>,
   user: any,
   session: Session | null,
   userSubjects: Array<any>,
@@ -36,6 +36,10 @@ const EditProfileModal = ({
   const [error, setError] = useState<string>();
 
   const router = useRouter();
+
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+  const {data: allSubjects, isLoading} = useSWR("/api/subjects", fetcher);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -146,7 +150,11 @@ const EditProfileModal = ({
               </div>
               <div>
                 <label className="font-light mb-2 block">Subjects</label>
-                <SubjectSelect setSubjectsState={setSelectedSubjects} subjects={allSubjects} userSubjects={userSubjects} />
+                {isLoading ? (
+                  <LoadingIcon className="animate-spin" />
+                ) : (
+                  <SubjectSelect setSubjectsState={setSelectedSubjects} subjects={allSubjects} userSubjects={userSubjects} />
+                )}
               </div>
               <div>
                 <label className="font-light mb-2 block">Languages</label>
