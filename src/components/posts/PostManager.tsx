@@ -100,19 +100,19 @@ const PostManager = ({
   return (
     <>
       <div className="h-fit flex flex-col gap-10">
-        {loading ? (
+        {loading && (!posts || posts.length === 0) ? (
           <LoadingIcon className="animate-spin" />
         ) : (
           <>
-            {posts && posts.length > 0 && !loading ? (
-          posts.map((post: any, index: number) =>
-            <Post post={post} key={index} index={index} handleDelete={handleDeletePost} session={session} />,
-          )
-         ) : (
-          <div className="text-black text-xl m-5 flex justify-center">
-              No posts found!
-          </div>
-         )}
+            {posts && posts.length > 0 ? (
+              posts.map((post: any, index: number) =>
+                <Post post={post} key={index} index={index} handleDelete={handleDeletePost} session={session} />,
+              )
+            ) : (
+              <div className="text-black text-xl m-5 flex justify-center">
+                  No posts found!
+              </div>
+            )}
           </>
         )}
 

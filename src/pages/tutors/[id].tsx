@@ -19,13 +19,6 @@ import CreatePostButton from "@/components/CreatePostButton";
 import Comment from "@/models/Comment";
 import Like from "@/models/Like";
 import {ErrorIcon} from "@/utils/icons";
-import {useLoading} from "@/utils/hooks";
-import BoxContainer from "@/components/profilePage/helpingComponents/BoxContainer";
-import dynamic from "next/dynamic";
-
-const ContentLoader = dynamic(import("react-content-loader"), {
-  ssr: false,
-});
 
 const TutorPage = (
     {
@@ -34,7 +27,6 @@ const TutorPage = (
       subjects,
       reviews,
       allSubjects,
-      posts,
       activityArray,
     }: {
       tutor?: any,
@@ -42,10 +34,8 @@ const TutorPage = (
       subjects: Array<any>,
       reviews: Array<any>,
       allSubjects: Array<any>,
-      posts: Array<any>,
       activityArray: Array<any>,
     }) => {
-  const isLoading = useLoading();
   const {data: session} = useSession();
 
   if (!tutor) {
@@ -77,91 +67,29 @@ const TutorPage = (
 
       <Navbar black={true} />
 
-      {!isLoading ? (
-        <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
-          <section className="w-full">
-            <div className="flex flex-col gap-5">
-              <ProfileSection user={tutor} isFollowing={isFollowing}
-                subjects={subjects} session={session} allSubjects={allSubjects} />
-              <Activity fullName={fullName} activity={activityArray} />
-              <ReviewsSection reviews={reviews} session={session}
-                reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
+      <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
+        <section className="w-full">
+          <div className="flex flex-col gap-5">
+            <ProfileSection user={tutor} isFollowing={isFollowing}
+              subjects={subjects} session={session} />
+            <Activity fullName={fullName} activity={activityArray} />
+            <ReviewsSection reviews={reviews} session={session}
+              reviewedUserId={tutor._id.toString()} reviewedUserRole="tutor" />
 
-            </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="w-full">
-            <div className="flex justify-between items-center mb-5">
-              <span className="font-medium text-xl">Posts</span>
-              {session?.user.id === tutor._id.toString() && (
-                <CreatePostButton />
-              )}
-            </div>
+        <section className="w-full">
+          <div className="flex justify-between items-center mb-5">
+            <span className="font-medium text-xl">Posts</span>
+            {session?.user.id === tutor._id.toString() && (
+              <CreatePostButton />
+            )}
+          </div>
 
-            <PostManager userId={tutor._id.toString()} />
-          </section>
-        </main>
-        ) : (
-          <main className="container py-2 min-h-screen">
-            <BoxContainer style="hidden lg:w-2/5">
-              {/* <MyLoader /> */}
-              <ContentLoader
-                speed={2}
-                width={1100}
-                height={500}
-                viewBox="0 0 400 160"
-                backgroundColor="#ededed"
-                foregroundColor="#dbdbdb"
-              >
-                <rect x="48" y="8" rx="3" ry="3" width="88" height="6" />
-                <rect x="48" y="26" rx="3" ry="3" width="52" height="6" />
-                <circle cx="22" cy="22" r="20" />
-                <rect x="158" y="136" rx="0" ry="0" width="3" height="0" />
-                <rect x="4" y="64" rx="3" ry="3" width="35" height="11" />
-                <rect x="4" y="94" rx="3" ry="3" width="43" height="5" />
-                <rect x="4" y="83" rx="3" ry="3" width="43" height="5" />
-                <rect x="6" y="114" rx="3" ry="3" width="35" height="11" />
-                <rect x="6" y="144" rx="3" ry="3" width="43" height="5" />
-                <rect x="6" y="133" rx="3" ry="3" width="43" height="5" />
-                <rect x="77" y="64" rx="3" ry="3" width="35" height="11" />
-                <rect x="77" y="94" rx="3" ry="3" width="43" height="5" />
-                <rect x="77" y="83" rx="3" ry="3" width="43" height="5" />
-                <rect x="76" y="114" rx="3" ry="3" width="35" height="11" />
-                <rect x="76" y="144" rx="3" ry="3" width="43" height="5" />
-                <rect x="76" y="133" rx="3" ry="3" width="43" height="5" />
-              </ContentLoader>
-            </BoxContainer>
-
-            <BoxContainer style="w-full lg:hidden">
-              {/* <MyLoader /> */}
-              <ContentLoader
-                speed={2}
-                width={250}
-                height={400}
-                viewBox="0 0 250 400"
-                backgroundColor="#ededed"
-                foregroundColor="#dbdbdb"
-              >
-                <rect x="108" y="47" rx="3" ry="3" width="129" height="9" />
-                <rect x="108" y="73" rx="3" ry="3" width="77" height="9" />
-                <rect x="123" y="187" rx="0" ry="0" width="2" height="0" />
-                <rect x="11" y="141" rx="3" ry="3" width="60" height="19" />
-                <rect x="11" y="193" rx="3" ry="3" width="74" height="9" />
-                <rect x="11" y="174" rx="3" ry="3" width="74" height="9" />
-                <rect x="15" y="227" rx="3" ry="3" width="60" height="19" />
-                <rect x="15" y="279" rx="3" ry="3" width="74" height="9" />
-                <rect x="15" y="260" rx="3" ry="3" width="74" height="9" />
-                <rect x="137" y="141" rx="3" ry="3" width="60" height="19" />
-                <rect x="137" y="193" rx="3" ry="3" width="74" height="9" />
-                <rect x="137" y="174" rx="3" ry="3" width="74" height="9" />
-                <rect x="135" y="227" rx="3" ry="3" width="60" height="19" />
-                <rect x="135" y="279" rx="3" ry="3" width="74" height="9" />
-                <rect x="135" y="260" rx="3" ry="3" width="74" height="9" />
-                <circle cx="46" cy="66" r="44" />
-              </ContentLoader>
-            </BoxContainer>
-          </main>
-        )}
+          <PostManager userId={tutor._id.toString()} />
+        </section>
+      </main>
 
     </>
   );
@@ -192,16 +120,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     },
   });
 
-  // get posts
-  const posts = await Post.find({
-    _id: {
-      $in: tutor.posts,
-    },
-  });
-
-  // Get all subjects
-  const allSubjects = await Subject.find();
-
   const reviews = await Review.find({
     _id: {
       $in: tutor.reviews,
@@ -221,9 +139,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       tutor,
       isFollowing,
       subjects: JSON.parse(JSON.stringify(subjects)),
-      allSubjects: JSON.parse(JSON.stringify(allSubjects)),
       reviews: JSON.parse(JSON.stringify(newReviewsArr)),
-      posts: JSON.parse(JSON.stringify(posts)),
       activityArray: JSON.parse(JSON.stringify(activityArray)),
     },
   };
@@ -233,18 +149,36 @@ const fetchReviewers = async (reviews: Array<any>) => {
   const newArr: any[] = [];
 
   for (let i: number = 0; i < reviews.length; i++) {
-    let reviewerUser;
+    let user;
     const review = reviews[i];
     if (review.reviewerUserRole === "student") {
-      const student = await Student.findById(review.reviewerUserId);
-      reviewerUser = student;
+      user = await Student.findById(review.reviewerUserId);
     } else if (review.reviewerUserRole === "tutor") {
-      const tutor = await Tutor.findById(review.reviewerUserId);
-      reviewerUser = tutor;
+      user = await Tutor.findById(review.reviewerUserId);
     }
 
+    if (!user) continue;
+
+    const reviewerUser: {
+      _id: string,
+      role: string,
+      firstName: string,
+      lastName: string,
+      picture?: string,
+    } = {
+      _id: user._id,
+      role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+
+    if (user.picture) reviewerUser.picture = user.picture;
+
     if (reviewerUser) {
-      newArr.push({reviewerUser: reviewerUser, ...review._doc});
+      newArr.push({
+        reviewerUser,
+        ...review._doc,
+      });
     }
   }
   return newArr;
