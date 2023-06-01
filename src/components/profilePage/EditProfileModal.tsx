@@ -50,6 +50,7 @@ const EditProfileModal = ({
       description?: string,
       languages?: string[],
       phoneNumber?: string,
+      contactEmail?: string,
       priceForLessons?: Map<string, string>,
       location?: string,
       isOnlineAvailable?: boolean,
@@ -64,6 +65,8 @@ const EditProfileModal = ({
       updatedUser.location = event.target.location.value;
 
       updatedUser.phoneNumber = event.target.phoneNumber.value;
+      updatedUser.contactEmail = event.target.contactEmail.value;
+
       const map: any = {};
       map[event.target.minutes0.value] = event.target.price0.value;
 
@@ -173,7 +176,7 @@ const EditProfileModal = ({
                   </div>
                   <div>
                     <label className="font-light mb-2 block">Contact email</label>
-                    <input type="email" defaultValue={user.email} id="contactEmail" className="w-full border h-8" />
+                    <input type="email" defaultValue={user.contactEmail ? user.contactEmail : user.email} id="contactEmail" className="w-full border h-8" />
                   </div>
                   <div>
                     <label className="font-light mb-2 block">Prices</label>

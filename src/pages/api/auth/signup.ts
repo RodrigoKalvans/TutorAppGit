@@ -61,6 +61,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     email: string,
     password: string,
     role: string,
+    phoneNumber?: string,
+    languages?: Array<any>,
     priceForLessons?: any,
   } = {
     firstName: req.body.firstName,
@@ -72,6 +74,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.body.role === "tutor" && req.body.priceForLessons) {
     reqUser.priceForLessons = req.body.priceForLessons;
   }
+
+  if (req.body.role === "tutor" && req.body.phoneNumber) {
+    reqUser.phoneNumber = req.body.phoneNumber;
+  }
+
+  if (req.body.languages) reqUser.languages = req.body.languages;
 
   await db.connect();
 
