@@ -15,7 +15,7 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
   const subject = subjects.find((s: any) => s._id === card.tutor.subjects.at(0));
 
   return (
-    <div className="carousel-item relative">
+    <div className="relative flex justify-center w-[740] px-[20px]">
       <div className="bg-blue-920 w-[700px] h-[680px] text-white rounded-3xl rounded-br-xl flex">
         <div className="w-1/2 h-[680px] flex flex-col gap-6">
           <ProfilePicture user={card.tutor} rounded={false} style="rounded-b-[3.5rem] rounded-tl-3xl" />
@@ -37,7 +37,7 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
         </div>
         <div className="w-1/2 h-[680px] relative">
           <div className="flex flex-col gap-y-2 justify-center items-center px-8 bg-blue-910 h-[24rem] rounded-bl-[7.5rem] rounded-tr-3xl shadow-2xl">
-            <b className="text-[28px]">{card.tutor.firstName + " " + card.tutor.lastName}</b>
+            <b className="text-[28px]">{`${card.tutor.firstName} ${card.tutor.lastName}`}</b>
             <b className="text-gray-300 text-[18px] h-10">{card.tutor.location}</b>
             <p className="text-gray-300 text-[16px] h-48 overflow-hidden">{card.tutor.description}</p>
           </div>
@@ -48,7 +48,7 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
             ))}
           </div>
         </div>
-        <div className="absolute bottom-0 rounded-br-xl right-0 h-24 w-1/2 bg-gradient-to-t from-blue-920 to-transparent backdrop-blur-xs"></div>
+        <div className="absolute bottom-0 right-[20px] rounded-br-xl h-24 w-1/2 bg-gradient-to-t from-blue-920 to-transparent backdrop-blur-xs"></div>
       </div>
     </div>
   );
