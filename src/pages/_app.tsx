@@ -27,13 +27,13 @@ export default function App({
   // Add the loading state to only pages that use getServerSideProps
   useEffect(() => {
     const handleChangeStart = (url: string) => {
-      if (url.startsWith("/tutors/") || url.startsWith("/students/")) {
+      if (url && (url.startsWith("/tutors/") || url.startsWith("/students/"))) {
         setIsLoading(true);
       }
     };
 
     const handleChangeEnd = (url: string) => {
-      if (url.startsWith("/tutors/") || url.startsWith("/students/")) {
+      if (url && (url.startsWith("/tutors/") || url.startsWith("/students/"))) {
         setIsLoading(false);
       }
     };

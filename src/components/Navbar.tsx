@@ -4,7 +4,6 @@ import NavbarSearch from "./NavbarSearch";
 import MobileNavbar from "./MobileNavbar";
 import {useState} from "react";
 import useSWR from "swr";
-import {ProfileIcon} from "@/utils/icons";
 import {signOut, useSession} from "next-auth/react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -79,11 +78,14 @@ const Navbar = ({
                   </ul>
                 </div>
               ) : (
-                <span className="avatar relative cursor-pointer">
-                  <Link href={"/auth/signin"}>
-                    <ProfileIcon className="text-[32px] text-orange-400" />
+                <div className="flex items-center gap-4">
+                  <Link href="/auth/signin" className="hover:opacity-80 focus:opacity-70 transition-all">
+                    Log in
                   </Link>
-                </span>
+                  <Link href="/auth/signup" className="btn btn-sm border-none blue capitalize rounded-4xl font-normal">
+                    Sign up
+                  </Link>
+                </div>
               )}
           </div>
           <button type="button" className="md:hidden" onClick={() => {
@@ -95,7 +97,7 @@ const Navbar = ({
           </button>
         </div>
       </nav>
-      <MobileNavbar handleClose={() => setIsOpen(false)} isOpen={isOpen} />
+      <MobileNavbar handleClose={() => setIsOpen(false)} isOpen={isOpen} avatar={avatar} />
     </>
   );
 };
