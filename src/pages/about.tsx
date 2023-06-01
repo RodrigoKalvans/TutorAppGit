@@ -11,7 +11,7 @@ const About = () => {
   return (
     <>
       <Head>
-        <title>About Us</title>
+        <title>TCorvus | About Us</title>
       </Head>
       <Navbar black/>
       <div className="w-screen flex flex-col gap-8 py-8">

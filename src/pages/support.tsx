@@ -11,7 +11,7 @@ const Support = () => {
   return (
     <>
       <Head>
-        <title>Support Us</title>
+        <title>TCorvus | Support Us</title>
       </Head>
       <Navbar black/>
       <div className="w-screen flex flex-col gap-8 py-8">

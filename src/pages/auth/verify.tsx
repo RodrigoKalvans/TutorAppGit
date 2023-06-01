@@ -50,7 +50,7 @@ const VerificationPage = ({success, error, email}: {success?: boolean, error?: s
   return (
     <>
       <Head>
-        <title>Verify you email</title>
+        <title>TCorvus | Verify you email</title>
       </Head>
 
       <main className="flex min-h-screen h-full bg-blue-900">

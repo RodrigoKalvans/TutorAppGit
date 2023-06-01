@@ -25,7 +25,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
   return (
     <>
       <Head>
-        <title>TCorvus</title>
+        <title>TCorvus | Home</title>
       </Head>
       <Navbar />
 

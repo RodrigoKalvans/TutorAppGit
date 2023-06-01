@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,6 +10,9 @@ import Link from "next/link";
 const Custom404 = () => {
   return (
     <>
+      <Head>
+        <title>TCorvus | 404</title>
+      </Head>
       <div className="flex justify-center my-10 bg-white">
         <div className="w-96 h-[36rem] bg-orange-100 flex flex-col rounded-3xl p-5 border-2 border-orange-400 shadow-xl relative">
           <div className="flex justify-center">

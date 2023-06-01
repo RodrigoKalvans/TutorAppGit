@@ -24,7 +24,7 @@ const Feed = () => {
   return (
     <>
       <Head>
-        <title>Feed</title>
+        <title>TCorvus | Feed</title>
       </Head>
       <Navbar black/>
       <main className="min-h-screen container">
