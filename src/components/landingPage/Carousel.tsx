@@ -6,14 +6,14 @@ import "slick-carousel/slick/slick-theme.css";
 
 const settings = {
   dots: true,
-  autoplay: true,
+  autoplay: false,
   autoplaySpeed: 3000,
   speed: 500,
   slidesToShow: 2,
   slidesToScroll: 1,
   responsive: [
     {
-      breakpoint: 1000,
+      breakpoint: 1300,
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -38,7 +38,7 @@ const Carousel = ({
 }) => {
   return (
     <Slider {...settings}>
-      {carouselItems && [...carouselItems, ...carouselItems].map((item: any | LandingPageCard) =>
+      {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
         <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
       )}
     </Slider>

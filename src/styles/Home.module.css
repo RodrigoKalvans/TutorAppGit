@@ -11,5 +11,5 @@
 
 .box {
   @apply rounded-4xl shadow-xl;
-  @apply p-10 lg:p-14;
+  @apply p-4 md:p-10 lg:p-14;
 }

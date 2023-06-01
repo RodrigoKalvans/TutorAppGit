@@ -95,10 +95,6 @@
   .modal-content-box {
     @apply bg-white rounded-lg px-6 w-full mx-3 md:w-1/2;
   }
-
-  .bord {
-    @apply outline-1
-  }
 }
 
 .shadow-round {

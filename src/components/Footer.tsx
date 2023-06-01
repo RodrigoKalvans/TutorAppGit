@@ -52,9 +52,9 @@ export default function Footer() {
             <div>
               <ul>
                 {/** TODO: Add policies */}
-                <li>terms of service</li>
-                <li>privacy policy</li>
-                <li>refund policy</li>
+                <li><a>terms of service</a></li>
+                <li><a>privacy policy</a></li>
+                <li><a>refund policy</a></li>
               </ul>
             </div>
           </div>
