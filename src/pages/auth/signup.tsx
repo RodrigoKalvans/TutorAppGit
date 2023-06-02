@@ -13,7 +13,7 @@ const SignUpPage = ({subjects}: {subjects: any[]}) => {
       </Head>
 
       <main className="flex min-h-screen h-full bg-blue-900">
-        <div className="flex flex-col items-center justify-center w-full bg-white">
+        <div className="flex flex-col items-center justify-center w-full bg-white py-2">
           <Link href="/">
             <Image
               src="/logo.png"

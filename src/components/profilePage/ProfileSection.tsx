@@ -71,14 +71,18 @@ const ProfileSection = ({user, isFollowing, subjects, session}: {user: any, isFo
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:gap-8 my-8">
-        <Subjects subjects={subjects} size="text-lg md:text-xl" />
+        {subjects && subjects.at(0) && (
+          <Subjects subjects={subjects} size="text-lg md:text-xl" />
+        )}
 
-        <Languages languages={user.languages} size="text-lg md:text-xl" />
+        {user.languages && (
+          <Languages languages={user.languages} size="text-lg md:text-xl" />
+        )}
 
         {user.role === "tutor" && (
           <>
             <div className="col-span-2 md:col-span-1">
-              <ContactDetails email={user.email} phoneNumber={user.phoneNumber} />
+              <ContactDetails email={user.contactEmail ? user.contactEmail : user.email} phoneNumber={user.phoneNumber} />
             </div>
 
             <div className="col-span-2 md:col-span-1">
