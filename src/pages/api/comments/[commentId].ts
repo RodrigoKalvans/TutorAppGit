@@ -3,7 +3,7 @@ import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
 import Comment from "@/models/Comment";
 import {getToken} from "next-auth/jwt";
-import {deleteCommentFromUserActivity} from "@/utils/apiHelperFunction/commentHelper";
+import {deleteCommentFromUserActivity} from "@/utils/apiHelperFunction/activityHelper";
 import Post from "@/models/Post";
 
 /**

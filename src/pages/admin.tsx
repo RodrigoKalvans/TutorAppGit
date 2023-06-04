@@ -94,16 +94,46 @@ const Admin = (
     });
   }, []);
 
+  const handlePostSubject = async (e: any) => {
+    e.preventDefault();
+    const newSubject = {
+      name: e.target.name.value,
+      tutors: [],
+    };
+    console.log(newSubject);
+    const response = await fetch("/api/subjects/", {
+      method: "POST",
+      body: JSON.parse(JSON.stringify(newSubject)),
+    });
+    console.log(response);
+  };
+
   return (
     <>
       <div className="flex flex-col px-10 min-h-screen justify-between">
-        <section className="flex flex-col p-2 capitalize">
-          <b className="border-b-dotted">Number of entries</b>
-          <div>users: {users.length}</div>
-          <div>posts: {posts.length}</div>
-          <div>reviews: {reviews.length}</div>
-          <div>comments: {comments.length}</div>
-          <div>subjects: {subjects.length}</div>
+        <section className="flex gap-10">
+          <div className="flex flex-col p-2 capitalize">
+            <b className="border-b-dotted">Number of entries</b>
+            <div>users: {users.length}</div>
+            <div>posts: {posts.length}</div>
+            <div>reviews: {reviews.length}</div>
+            <div>comments: {comments.length}</div>
+            <div>subjects: {subjects.length}</div>
+          </div>
+          <div className="flex flex-col">
+            <h2>Create subject</h2>
+            <form action="submit" onSubmit={handlePostSubject} className="flex flex-col gap-1">
+              <input
+                type="text"
+                placeholder="Subject Name"
+                name="name"
+              />
+              <button type="submit" className="bg-orange-200">Add</button>
+            </form>
+          </div>
+          <div>
+            
+          </div>
         </section>
         <section className="flex justify-center">
           <AdminSection title={"posts"} fields={postFields} content={posts} deleteFunction={handleDeletePost} />

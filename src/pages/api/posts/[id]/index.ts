@@ -4,7 +4,8 @@ import db from "@/utils/db";
 import Post from "../../../../models/Post";
 import {getToken} from "next-auth/jwt";
 import Comment from "@/models/Comment";
-import {deleteCommentFromUserActivity} from "@/utils/apiHelperFunction/commentHelper";
+import {deleteCommentFromUserActivity, deleteLikeFromUserActivity} from "@/utils/apiHelperFunction/activityHelper";
+import Like from "@/models/Like";
 
 /**
  * Dynamic post route
@@ -132,6 +133,13 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
 
       await deleteCommentFromUserActivity(deletedComment._id, deletedComment.role, deletedComment.userId);
     });
+
+    deletingPost.likes.forEach(async (element: {likeId: String;}) => {
+      const deletedComment = await Like.findByIdAndDelete(element.likeId);
+
+      await deleteLikeFromUserActivity(deletedComment._id, deletedComment.role, deletedComment.userId);
+    });
+
     const postToDelete = await Post.findByIdAndDelete(id);
 
     res.status(StatusCodes.OK).send({
