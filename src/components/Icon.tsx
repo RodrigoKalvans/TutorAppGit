@@ -16,7 +16,7 @@ const Icon = ({
   style: string,
   orange?: boolean,
 }) => {
-  return <Image width={50} height={50} src={`/icons/subjectIcons/${subject.name.toLowerCase()}${orange ? "Orange" : ""}.svg`} alt={"icon"} className={style} />;
+  return <Image width={50} height={50} src={`/icons/subjectIcons/${subject.name.replace(/\s+/g, "").toLowerCase()}${orange ? "Orange" : ""}.svg`} alt={"icon"} className={style} />;
   // TODO: rm this
   // switch (subject.name) {
   //   case "Math": return <MathIcon className={style} />;
