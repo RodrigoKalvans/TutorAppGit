@@ -112,7 +112,7 @@ const Admin = (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: name.charAt(0).toUpperCase() + name.slice(1), // capitalize first letter
+        name: event.target.name.value,
       }),
     });
     console.log(await response.json());
