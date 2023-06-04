@@ -23,6 +23,9 @@ const Admin = (
   const [comments, setComments] = useState<Array<any>>(props.comments);
   const [subjects, setSubjects] = useState<Array<any>>(props.subjects);
 
+  const [newSubjectName, setNewSubjectName] = useState<string>("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+
   // fields that will be displayed for each object type
   const postFields = ["_id", "userId", "role", "description"];
   const userFields = ["_id", "role", "firstName", "lastName", "email", "posts"];
@@ -94,18 +97,45 @@ const Admin = (
     });
   }, []);
 
-  const handlePostSubject = async (e: any) => {
-    e.preventDefault();
-    const newSubject = {
-      name: e.target.name.value,
-      tutors: [],
-    };
-    console.log(newSubject);
-    const response = await fetch("/api/subjects/", {
+  const handlePostSubject = async (event: any) => {
+    event.preventDefault();
+    const name = event.target.name.value.replace(/\s+/g, "").toLowerCase();
+    const iconBase = event.target.icon.files[0];
+    const iconOrange = event.target.iconOrange.files[0];
+
+    await uploadToServer(iconBase, `${name}.svg`);
+    await uploadToServer(iconOrange, `${name}Orange.svg`);
+
+    const response = await fetch("/api/subjects", {
       method: "POST",
-      body: JSON.parse(JSON.stringify(newSubject)),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+      }),
     });
-    console.log(response);
+    console.log(await response.json());
+  };
+
+  const uploadToServer = async (image: any, name: string) => {
+    const form = new FormData();
+    form.append("image", image);
+    form.append("name", name);
+    console.log("uploading image> ", form);
+    const response = await fetch("/api/iconUpload", {
+      method: "POST",
+      body: form,
+    });
+    return await response.json();
+  };
+
+  const buttonDisable = () => {
+    setIsButtonDisabled(true);
+    const COOLDOWN = 10000; // 10 seconds
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, COOLDOWN);
   };
 
   return (
@@ -121,18 +151,44 @@ const Admin = (
             <div>subjects: {subjects.length}</div>
           </div>
           <div className="flex flex-col">
-            <h2>Create subject</h2>
+            <h2>Create subject (files must be SVGs)</h2>
             <form action="submit" onSubmit={handlePostSubject} className="flex flex-col gap-1">
-              <input
-                type="text"
-                placeholder="Subject Name"
-                name="name"
-              />
-              <button type="submit" className="bg-orange-200">Add</button>
+              <div className="flex flex-row">
+                <input
+                  type="text"
+                  placeholder="Subject Name"
+                  name="name"
+                  onChange={(e) => setNewSubjectName(e.target.value.toLowerCase())}
+                  required
+                />
+                <div className="flex flex-col">
+                  <input
+                    type="file"
+                    name="icon"
+                    required
+                    accept=".svg"
+                  />
+                  <div>file name: {`${newSubjectName}`}</div>
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    name="iconOrange"
+                    required
+                    accept=".svg"
+                  />
+                  <div>file name: {`${newSubjectName}Orange`}</div>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  className={`w-24 ${isButtonDisabled ? "bg-black text-white" : "bg-orange-200"} `}
+                  disabled={isButtonDisabled}
+                  onClick={buttonDisable}
+                >{isButtonDisabled ? "Disabled..." : "Add Subject"}</button>
+              </div>
             </form>
-          </div>
-          <div>
-            
           </div>
         </section>
         <section className="flex justify-center">
