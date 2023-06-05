@@ -56,7 +56,7 @@
   }
 
   .buttonLink {
-    @apply btn px-9 md:px-14 p-2 rounded-full border-0 text-white ;
+    @apply btn-sm md:btn px-9 md:px-14 p-2 rounded-full md:rounded-full border-0 text-white flex items-center;
     @apply text-lg font-medium normal-case;
   }
   
@@ -73,7 +73,7 @@
   }
 
   .inputField {
-    @apply w-full bg-gray-200 bg-opacity-0 border-b-2 rounded-none transition text-gray-900 p-3;
+    @apply w-full bg-gray-200 bg-opacity-0 border-b-2 rounded-none transition text-gray-900 p-2 md:p-3 placeholder:text-sm md:placeholder:text-base;
   }
   
   .inputField:focus {
@@ -94,10 +94,6 @@
 
   .modal-content-box {
     @apply bg-white rounded-lg px-6 w-full mx-3 md:w-1/2;
-  }
-
-  .bord {
-    @apply outline-1
   }
 }
 

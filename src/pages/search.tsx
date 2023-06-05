@@ -32,7 +32,7 @@ export default function Search({
   return (
     <>
       <Head>
-        <title>Search</title>
+        <title>TCorvus | Search</title>
       </Head>
       <Navbar black={true} />
       <main className="flex flex-col lg:flex-row justify-between gap-14 min-h-screen pt-2 container">

@@ -23,17 +23,16 @@ const schema = Yup.object({
       .max(8),
   firstName: Yup
       .string()
-      .max(25, "First name cannot be longer than 25 chars"),
+      .max(25, "First name cannot be longer than 25 characters"),
   lastName: Yup
       .string()
-      .max(25, "Last name cannot be longer than 25 chars"),
+      .max(25, "Last name cannot be longer than 25 characters"),
   location: Yup
       .string()
-      .max(50, "Location cannot be longer than 50 chars"),
+      .max(50, "Location cannot be longer than 50 characters"),
   rating: Yup
       .number()
-      .moreThan(0, "Rating cannot be <0")
-      .lessThan(5, "Rating cannot be >5")
+      .lessThan(6, "Rating cannot be >5")
       .positive("Rating cannot be negative"),
   price: Yup
       .number()

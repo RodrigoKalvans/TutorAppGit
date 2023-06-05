@@ -3,8 +3,7 @@ import {Dispatch, useEffect, useRef, useState} from "react";
 /**
  * This component is used on the search page to sort the displayed users
  * @param {Array<any>} inputProfiles is used as the collection that is sorted
- * @param {Dispatch<any>} setProfileState is used to update the displayed
- * profiles with the newly sorted collection
+ * @param {Dispatch<any>} setProfileState is used to update the displayed profiles with the newly sorted collection
  * @return {JSX}
  */
 const Sorter = ({
@@ -14,7 +13,6 @@ const Sorter = ({
   inputProfiles: Array<any>,
   setProfileState: Dispatch<any>,
 }) => {
-  const [sortingType, setSortingType] = useState<string | null>();
   const [sortMetric, setSortMetric] = useState<string | undefined>(undefined);
   const lastSortMetric = useRef<typeof sortMetric>(sortMetric);
   const repeat = useRef<boolean>(false); // used to know if same sort is applied over again, in this case the result should be inverted
@@ -26,7 +24,6 @@ const Sorter = ({
 
 
   const priceSort = (metric = "price") => {
-    setSortingType("price");
     if (lastSortMetric.current == metric) repeat.current = !repeat.current;
     else repeat.current = false;
     setProfileState(priceQuickSort(inputProfiles, repeat.current));
@@ -34,7 +31,6 @@ const Sorter = ({
   };
 
   const ratingSort = (metric = "rating") => {
-    setSortingType("rating");
     if (lastSortMetric.current == metric) repeat.current = !repeat.current;
     else repeat.current = false;
     setProfileState(ratingQuickSort(inputProfiles, repeat.current ? true : false));
@@ -49,17 +45,18 @@ const Sorter = ({
         <div className="flex justify-center gap-4 my-1">
           <button
             type="button"
-            className={`btn ${sortingType === "rating" && "orange"} btn-sm border-none capitalize font-normal`}
+            className="btn focus:bg-orange-500 btn-sm border-none capitalize font-normal"
             onClick={() => ratingSort()}
           >
             Rating
           </button>
-          <div
-            className={`btn ${sortingType === "price" && "orange"} btn-sm border-none capitalize font-normal`}
-            onClick={() => priceSort()}>
+          <button
+            type="button"
+            className="btn focus:bg-orange-500 btn-sm border-none capitalize font-normal"
+            onClick={() => priceSort()}
+          >
             Price
-          </div>
-
+          </button>
         </div>
       </div>
     </>

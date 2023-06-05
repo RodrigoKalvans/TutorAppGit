@@ -7,7 +7,7 @@ const SignIn = () => {
   return (
     <>
       <Head>
-        <title>Sign in</title>
+        <title>TCorvus | Sign in</title>
       </Head>
 
       <main className="flex min-h-screen h-full">

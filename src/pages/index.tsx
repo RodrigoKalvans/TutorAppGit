@@ -25,7 +25,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
   return (
     <>
       <Head>
-        <title>TCorvus</title>
+        <title>TCorvus | Home</title>
       </Head>
       <Navbar />
 
@@ -87,7 +87,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
             className="rounded-4xl"
           />
           <div className={`${styles.gradientTrending} ${styles.box} flex flex-col z-10`}>
-            <div className="flex justify-between items-center mb-10">
+            <div className="flex justify-between items-center mb-5 md:mb-10">
               <h1 className="text-light">Take a look at our&nbsp;<span className="text-orange-400">featured tutors.</span></h1>
               <Image src={"/icons/trending_tutors_star.svg"} width={50} height={50} alt="star image" />
             </div>
@@ -114,7 +114,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
       </section>
 
       {/** Support our mission */}
-      <section className="container">
+      <section className="container mb-14">
         <div className="relative">
           <Image
             src={"/images/birds-bg.png"}

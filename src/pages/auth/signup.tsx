@@ -9,11 +9,11 @@ const SignUpPage = ({subjects}: {subjects: any[]}) => {
   return (
     <>
       <Head>
-        <title>Sign up</title>
+        <title>TCorvus | Sign up</title>
       </Head>
 
       <main className="flex min-h-screen h-full bg-blue-900">
-        <div className="flex flex-col items-center justify-center w-full bg-white">
+        <div className="flex flex-col items-center justify-center w-full bg-white py-2">
           <Link href="/">
             <Image
               src="/logo.png"

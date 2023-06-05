@@ -4,7 +4,10 @@ import db from "@/utils/db";
 import Post from "../../../../models/Post";
 import {getToken} from "next-auth/jwt";
 import Comment from "@/models/Comment";
-import {deleteCommentFromUserActivity} from "@/utils/apiHelperFunction/commentHelper";
+import Tutor from "@/models/Tutor";
+import Student from "@/models/Student";
+import Like from "@/models/Like";
+import {removeActivityFromUser} from "@/utils/apiHelperFunction/userHelper";
 
 /**
  * Dynamic post route
@@ -125,14 +128,31 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
   }
 
   try {
-    const deletingPost = await Post.findById(id);
+    const postToDelete = await Post.findByIdAndDelete(id);
 
-    deletingPost.comments.forEach(async (element: {commentId: String;}) => {
+    postToDelete.comments.forEach(async (element: {commentId: String;}) => {
       const deletedComment = await Comment.findByIdAndDelete(element.commentId);
 
-      await deleteCommentFromUserActivity(deletedComment._id, deletedComment.role, deletedComment.userId);
+      await removeActivityFromUser(deletedComment._id, undefined, deletedComment.userId, deletedComment.role);
     });
-    const postToDelete = await Post.findByIdAndDelete(id);
+
+    // Remove post from the user
+    if (postToDelete.role === "tutor") {
+      await Tutor.findByIdAndUpdate(postToDelete.userId, {
+        $pull: {posts: postToDelete._id},
+      });
+    } else {
+      await Student.findByIdAndUpdate(postToDelete.userId, {
+        $pull: {posts: postToDelete._id},
+      });
+    }
+
+    // Remove likes from user's activity
+    deletingPost.likes.forEach(async (element: {likeId: String;}) => {
+      const deletedLike = await Like.findByIdAndDelete(element.likeId);
+
+      await removeActivityFromUser(deletedLike._id, undefined, deletedLike.userId, deletedLike.role);
+    });
 
     res.status(StatusCodes.OK).send({
       message: "Post has been deleted",
