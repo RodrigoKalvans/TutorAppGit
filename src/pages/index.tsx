@@ -109,7 +109,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
                     If you want to know more about our mission,
                     values, and the story behind our platform, visit our about us page!
           </p>
-          <Link href="/signin" className="buttonLink blue">Learn more about us</Link>
+          <Link href="/about" className="buttonLink blue">Learn more about us</Link>
         </div>
       </section>
 
@@ -133,7 +133,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
                     Your support will help us to continue to improve and expand our services
                     to reach more students who need our help.
             </p>
-            <Link href="/signin" className="buttonLink blue">Support us now</Link>
+            <Link href="/support" className="buttonLink blue">Support us now</Link>
           </div>
         </div>
       </section>
