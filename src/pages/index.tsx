@@ -114,7 +114,7 @@ export default function Home({subjects, carouselItems}: {subjects: Array<any>, c
       </section>
 
       {/** Support our mission */}
-      <section className="container">
+      <section className="container mb-14">
         <div className="relative">
           <Image
             src={"/images/birds-bg.png"}

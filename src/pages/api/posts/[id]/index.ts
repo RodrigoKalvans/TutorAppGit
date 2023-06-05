@@ -5,6 +5,8 @@ import Post from "../../../../models/Post";
 import {getToken} from "next-auth/jwt";
 import Comment from "@/models/Comment";
 import {deleteCommentFromUserActivity} from "@/utils/apiHelperFunction/commentHelper";
+import Tutor from "@/models/Tutor";
+import Student from "@/models/Student";
 
 /**
  * Dynamic post route
@@ -125,14 +127,24 @@ const deletePostByID = async (req: NextApiRequest, res: NextApiResponse, id: Str
   }
 
   try {
-    const deletingPost = await Post.findById(id);
+    const postToDelete = await Post.findByIdAndDelete(id);
 
-    deletingPost.comments.forEach(async (element: {commentId: String;}) => {
+    postToDelete.comments.forEach(async (element: {commentId: String;}) => {
       const deletedComment = await Comment.findByIdAndDelete(element.commentId);
 
       await deleteCommentFromUserActivity(deletedComment._id, deletedComment.role, deletedComment.userId);
     });
-    const postToDelete = await Post.findByIdAndDelete(id);
+
+    // Remove post from the user
+    if (postToDelete.role === "tutor") {
+      await Tutor.findByIdAndUpdate(postToDelete.userId, {
+        $pull: {posts: postToDelete._id},
+      });
+    } else {
+      await Student.findByIdAndUpdate(postToDelete.userId, {
+        $pull: {posts: postToDelete._id},
+      });
+    }
 
     res.status(StatusCodes.OK).send({
       message: "Post has been deleted",
