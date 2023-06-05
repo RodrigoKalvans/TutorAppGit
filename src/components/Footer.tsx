@@ -16,7 +16,6 @@ export default function Footer() {
                 <li><Link href={"/about"}>About Us</Link></li>
                 <li><Link href={"/support"}>Support Us</Link></li>
                 <li><Link href={"/feed"}>Feed</Link></li>
-                {/** TODO: Add payment link */}
                 <li><a href={`${process.env.PAYMENT_LINK}`}>Donate</a></li>
               </ul>
             </div>
@@ -39,10 +38,10 @@ export default function Footer() {
             <div>
               <ul>
                 {/** TODO: Add social media links */}
-                <li>insta</li>
-                <li>facebook</li>
-                <li>twitter</li>
-                <li>linkedin</li>
+                <li><a href="example.com">Instagram</a></li>
+                <li><a href="">Facebook</a></li>
+                <li><a href="">Twitter</a></li>
+                <li><a href="">LinkedIn</a></li>
               </ul>
             </div>
           </div>
@@ -52,9 +51,8 @@ export default function Footer() {
             <div>
               <ul>
                 {/** TODO: Add policies */}
-                <li><a>terms of service</a></li>
-                <li><a>privacy policy</a></li>
-                <li><a>refund policy</a></li>
+                <li><Link target="_blank" href="/docs/terms-of-service">Terms of Service</Link></li>
+                <li><Link target="_blank" href="/docs/privacy-policy">Privacy Policy</Link></li>
               </ul>
             </div>
           </div>
