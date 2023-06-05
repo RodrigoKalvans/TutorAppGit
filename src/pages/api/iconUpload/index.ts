@@ -15,15 +15,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({req});
 
   if (!token) {
-    res.status(StatusCodes.UNAUTHORIZED).send({message: "You are not authenticated! Log in or create an account first to upload any images!"});
+    res.status(StatusCodes.UNAUTHORIZED).send({message: "You are not authenticated"});
     return;
   }
   if (token.id !== "admin") {
-    res.status(StatusCodes.FORBIDDEN).send({message: "The action is forbidden! You cannot upload images for other user!"});
+    res.status(StatusCodes.FORBIDDEN).send({message: "You are not authorized"});
     return;
   }
 
-  const data = await new Promise((reject) => {
+  await new Promise((reject) => {
     const form = new IncomingForm();
     form.parse(req, (err: any, fields: any, file: any) => {
       if (err) return reject(err);
@@ -35,8 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(StatusCodes.IM_A_TEAPOT).send({message: err});
       });
     });
-  });
-  res.status(200).send({data});
+  }).then((data) => res.status(200).send({data}));
 };
 
 export default handler;

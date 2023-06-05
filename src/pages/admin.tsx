@@ -106,16 +106,19 @@ const Admin = (
     await uploadToServer(iconBase, `${name}.svg`);
     await uploadToServer(iconOrange, `${name}Orange.svg`);
 
-    const response = await fetch("/api/subjects", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: event.target.name.value,
-      }),
-    });
-    console.log(await response.json());
+    try {
+      const response = await fetch("/api/subjects", {
+        method: "POST",
+        body: JSON.stringify({
+          name: event.target.name.value,
+        }),
+      });
+      if (!response.ok) throw response;
+      else console.log(await response.json());
+    } catch (err) {
+      console.error(err);
+      alert("Check the console to see the error");
+    }
   };
 
   const uploadToServer = async (image: any, name: string) => {
@@ -127,7 +130,7 @@ const Admin = (
       method: "POST",
       body: form,
     });
-    return await response.json();
+    console.log(response);
   };
 
   const buttonDisable = () => {

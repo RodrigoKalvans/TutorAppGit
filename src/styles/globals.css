@@ -56,7 +56,7 @@
   }
 
   .buttonLink {
-    @apply btn px-9 md:px-14 p-2 rounded-full border-0 text-white ;
+    @apply btn-sm md:btn px-9 md:px-14 p-2 rounded-full md:rounded-full border-0 text-white flex items-center;
     @apply text-lg font-medium normal-case;
   }
   
