@@ -12,7 +12,7 @@ const Support = () => {
   return (
     <>
       <Head>
-        <title>Support Us</title>
+        <title>TCorvus | Support Us</title>
       </Head>
       <Navbar black/>
       <main className="flex items-center">

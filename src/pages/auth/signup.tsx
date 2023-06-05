@@ -9,7 +9,7 @@ const SignUpPage = ({subjects}: {subjects: any[]}) => {
   return (
     <>
       <Head>
-        <title>Sign up</title>
+        <title>TCorvus | Sign up</title>
       </Head>
 
       <main className="flex min-h-screen h-full bg-blue-900">

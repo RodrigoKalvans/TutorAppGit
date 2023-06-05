@@ -12,7 +12,7 @@ const About = () => {
   return (
     <>
       <Head>
-        <title>About Us</title>
+        <title>TCorvus | About Us</title>
       </Head>
 
       <Navbar black/>

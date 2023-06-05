@@ -33,3 +33,25 @@ export const deleteCommentFromUserActivity = async (commentId: String, role: Str
     );
   }
 };
+
+/**
+ * This will remove the specified like from the user's activiy field
+ * @param {string} likeId
+ * @param {string} role
+ * @param {string} userId
+ */
+export const deleteLikeFromUserActivity = async (likeId: String, role: String, userId: String) => {
+  if (role === "student") {
+    await Student.findByIdAndUpdate(userId, {
+      $pull: {activity: {activityId: likeId}},
+    },
+    {safe: true},
+    );
+  } else {
+    await Tutor.findByIdAndUpdate(userId, {
+      $pull: {activity: {activityId: likeId}},
+    },
+    {safe: true},
+    );
+  }
+};

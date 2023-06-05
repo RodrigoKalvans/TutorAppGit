@@ -4,8 +4,16 @@ import {Session} from "next-auth";
 import {AiOutlineClose} from "react-icons/ai";
 import {useSession} from "next-auth/react";
 
-const ProfilePictureEdit = ({imageSrc, closeModal}:
-   {imageSrc?: string, session: Session, closeModal: MouseEventHandler}) => {
+const IMAGE_SIZE_LIMIT = 4000000; // 4 MB
+
+const ProfilePictureEdit = ({
+  imageSrc,
+  closeModal,
+} : {
+  imageSrc?: string,
+  session: Session,
+  closeModal: MouseEventHandler
+}) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>(imageSrc);
   const [chosenFile, setChosenFile] = useState<File>();
   const {data: session, update} = useSession();
@@ -82,7 +90,7 @@ const ProfilePictureEdit = ({imageSrc, closeModal}:
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 if (event?.target?.files?.[0]) {
                   const file = event.target.files[0];
-                  if (file.size > 4000000) {
+                  if (file.size > IMAGE_SIZE_LIMIT) {
                     // error.current = "File is too large (limit is 4 MB)";
                     setError("File is too large (limit is 4 MB)");
                     return;

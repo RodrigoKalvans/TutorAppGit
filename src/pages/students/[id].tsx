@@ -19,7 +19,6 @@ import Navbar from "@/components/Navbar";
 import Like from "@/models/Like";
 import {ErrorIcon} from "@/utils/icons";
 
-
 const StudentPage = (
     {
       student,
@@ -59,7 +58,7 @@ const StudentPage = (
   return (
     <>
       <Head>
-        <title>{fullName}</title>
+        <title>TCorvus | {fullName}</title>
       </Head>
 
       <Navbar black={true} />

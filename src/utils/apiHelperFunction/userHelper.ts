@@ -9,7 +9,7 @@ import {getToken} from "next-auth/jwt";
 import {NextApiRequest, NextApiResponse} from "next/types";
 import {deleteReviewFromReviewedUser} from "./reviewHelper";
 import Subject from "@/models/Subject";
-import {deleteCommentFromUserActivity} from "./commentHelper";
+import {deleteCommentFromUserActivity} from "./activityHelper";
 import Like from "@/models/Like";
 
 /**
