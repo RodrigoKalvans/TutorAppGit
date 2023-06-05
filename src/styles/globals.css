@@ -16,7 +16,7 @@
     @apply text-base md:text-lg;
   }
   ul {
-    @apply list-disc;
+    @apply list-none;
   }
   input {
     @apply p-3 py-1 rounded-md;
