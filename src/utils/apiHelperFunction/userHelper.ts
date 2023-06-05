@@ -9,7 +9,6 @@ import {getToken} from "next-auth/jwt";
 import {NextApiRequest, NextApiResponse} from "next/types";
 import {deleteReviewFromReviewedUser} from "./reviewHelper";
 import Subject from "@/models/Subject";
-import {deleteCommentFromUserActivity} from "./activityHelper";
 import Like from "@/models/Like";
 
 /**
@@ -30,7 +29,7 @@ export const deleteAllReferencesOfDeletedUser = async (user: any) => {
       // Delete reference in activity of a user who left a comment
       const comment = await Comment.findByIdAndDelete(commentId);
 
-      await deleteCommentFromUserActivity(comment._id, comment.role, comment.userId);
+      await removeActivityFromUser(comment._id, undefined, comment.userId, comment.role);
     }
 
     // Delete all likes of the deleted post
