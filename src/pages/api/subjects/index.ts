@@ -43,8 +43,12 @@ const getSubjects = async (req: NextApiRequest, res: NextApiResponse) => {
 const createSubject = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({req});
 
-  if (!token || token.role !== "admin") {
-    res.status(StatusCodes.FORBIDDEN).send("You are not allowed to create subjects");
+  if (!token) {
+    res.status(StatusCodes.FORBIDDEN).send("Authorize yourself to create subjects");
+    return;
+  }
+  if (token.role !== "admin") {
+    res.status(StatusCodes.UNAUTHORIZED).send("You are not allowed to create subjects");
     return;
   }
 

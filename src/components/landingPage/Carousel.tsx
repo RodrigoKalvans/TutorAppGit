@@ -1,10 +1,27 @@
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {LandingPageCard} from "@/types/ambiguous-types";
 import TutorCard from "./TutorCard";
-import {Carousel as C} from "react-responsive-carousel";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const interval = 5000; // time between autoplay triggers
-const transition = 500; // duration of the slide transition
+const settings = {
+  dots: true,
+  autoplay: false,
+  autoplaySpeed: 3000,
+  speed: 500,
+  slidesToShow: 2,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1300,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        centerPadding: undefined,
+      },
+    },
+  ],
+};
 
 /**
  * Carousel component
@@ -20,20 +37,11 @@ const Carousel = ({
   subjects: Array<any>
 }) => {
   return (
-    <>
-      {/* <div className="carousel rounded-box flex gap-10 overflow-y-hidden">
-        {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
-          <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
-        )}
-      </div> */}
-      <div className="flex justify-center">
-        <C autoPlay infiniteLoop interval={interval} transitionTime={transition} showThumbs={false} className="w-[700px] bord">
-          {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
-            <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
-          )}
-        </C>
-      </div>
-    </>
+    <Slider {...settings}>
+      {carouselItems && carouselItems.map((item: any | LandingPageCard) =>
+        <TutorCard card={item} key={item.tutor._id} subjects={subjects}/>,
+      )}
+    </Slider>
   );
 };
 

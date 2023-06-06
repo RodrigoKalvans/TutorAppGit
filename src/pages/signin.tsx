@@ -20,7 +20,7 @@ export default function LoginPage({
   return (
     <>
       <Head>
-        <title>Sign in</title>
+        <title>TCorvus | Sign in</title>
       </Head>
 
       <main className="flex flex-col justify-center">

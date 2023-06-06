@@ -14,6 +14,7 @@ const TutorSchema: mongoose.Schema = new mongoose.Schema(
         name: {type: String},
       }],
       phoneNumber: {type: String},
+      contactEmail: {type: String},
       location: {type: String},
       isOnlineAvailable: {type: Boolean},
       subjects: [{type: String}],

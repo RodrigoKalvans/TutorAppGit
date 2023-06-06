@@ -62,7 +62,7 @@ const TutorPage = (
     <>
 
       <Head>
-        <title>{fullName}</title>
+        <title>TCorvus | {fullName}</title>
       </Head>
 
       <Navbar black={true} />

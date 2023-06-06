@@ -7,6 +7,7 @@ import Link from "next/link";
 import SubjectSelect from "../SubjectSelect";
 import YupPassword from "yup-password";
 import {useRouter} from "next/router";
+import LanguageSelect from "../LanguageSelect";
 
 YupPassword(Yup);
 
@@ -17,6 +18,8 @@ type TUser = {
   password: string,
   role: string,
   priceForLessons?: {},
+  languages?: Array<any>,
+  phoneNumber?: string,
   subjectIds: Array<any>,
   subscribeToNewsletters?: boolean,
 }
@@ -57,7 +60,9 @@ export default function SignUp({
   const [minutes, setMinutes] = useState<string | undefined>(undefined);
   const [price, setPrice] = useState<string | undefined>(undefined);
   const [chosenSubjects, setChosenSubjects] = useState<Array<any> | undefined>(undefined);
+  const [selectedLanguages, setSelectedLanguages] = useState<Array<any> | undefined>(undefined);
   const [role, setRole] = useState<string>("student");
+  const [phoneNumber, setPhoneNumber] = useState<string | undefined>();
 
   // Newsletter checkbox
   const [subscribed, setSubscribed] = useState<boolean>(true);
@@ -85,13 +90,17 @@ export default function SignUp({
         const temp = new Map();
         temp.set(minutes, price);
 
-        // what type is this shit?
         const map: any = {};
         temp.forEach((val: string, key: string) => {
           map[key] = val;
         });
 
         userToSignUp.priceForLessons = map;
+
+        if (phoneNumber) userToSignUp.phoneNumber = phoneNumber;
+
+        // Add languages if chosen
+        if (selectedLanguages) userToSignUp.languages = selectedLanguages;
       }
 
       // post new user to the database
@@ -205,11 +214,21 @@ export default function SignUp({
 
                 {role === "tutor" && (
                   <>
+                    <input
+                      id="phoneNumber"
+                      type="number"
+                      placeholder="Contact phone number"
+                      className="inputField mt-2"
+                      pattern="[0-9]+"
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+
                     <div className="mt-5">
                       <SubjectSelect setSubjectsState={setChosenSubjects} subjects={subjects} />
                     </div>
-                    <div className="text-sm text-red-600">
-                      <ErrorMessage name="subjects" />
+
+                    <div className="mt-5">
+                      <LanguageSelect setLanguagesState={setSelectedLanguages} />
                     </div>
 
                     <div className="mt-5">
