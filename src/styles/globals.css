@@ -16,7 +16,7 @@
     @apply text-base md:text-lg;
   }
   ul {
-    @apply list-disc;
+    @apply list-none;
   }
   input {
     @apply p-3 py-1 rounded-md;
@@ -56,7 +56,8 @@
   }
 
   .buttonLink {
-    @apply btn-sm md:btn px-9 md:px-14 p-2 rounded-full md:rounded-full border-0 text-white flex items-center;
+    @apply btn-sm md:btn px-9 md:px-14 md:p-2 text-white text-center;
+    @apply border-0 rounded-full;
     @apply text-lg font-medium normal-case;
   }
   
