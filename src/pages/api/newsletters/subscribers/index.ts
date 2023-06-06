@@ -47,9 +47,9 @@ const subscribeUser = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const data = await subscribeUserToNewsletter(req.body.email, req.body?.firstName, req.body?.lastName, req.body?.role);
-    res.status(StatusCodes.OK).send(data);
+    res.status(StatusCodes.OK).send({data});
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send(error);
+    res.status(StatusCodes.BAD_REQUEST).send({message: "The given data is invalid", error: error});
   }
 };
 
