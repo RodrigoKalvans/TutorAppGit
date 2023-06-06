@@ -22,6 +22,8 @@ NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET=`<secret>`
 
 PAYMENT_LINK=`<payment_link>`
 
+NEXT_PUBLIC_BASE_URL=`<base_url>`
+
 GOOGLE_USER=`<email_address>`
 
 GOOGLE_APP_PASSWORD=`<generated_app_password>`
@@ -50,6 +52,10 @@ After you have openned the account and logged in, go to the following link to ge
 ## Stripe
 
 To handle the payments, this project makes use of Stripe. The information how to set up stripe for this project can be found in [`this document`](./docs/stripe-documentation/stripe.md).
+
+## Base URL
+
+There is an environmental variable called `NEXT_PUBLIC_BASE_URL` that needs to have the base url of a website (for example `https://tcorvus.com`). This env variable is required to generate the link that will be sent with email verification and password reset emails, so that users can be redirected back to a website.
 
 ## Gmail
 
