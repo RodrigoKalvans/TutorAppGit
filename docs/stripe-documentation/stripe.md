@@ -13,8 +13,8 @@ Last edited time: May 30, 2023 2:47 PM
     3. Description
     4. (Only email is needed from the user)
     5. (Include a note to the user that the email they enter must match that of their TCorvus account)
-4. If you are doing this after handoff, save the payment link and add it as an environment variable by the name PAYMENT_LINK. If we are still in the development phase, share the link with us
-5. Additionally, save your PUBLISHABLE_KEY and SECRET_KEY. Both can be found on the right side of your dashboard. These also need to be added to the project as environment variables. Just like with the payment link, if we are past handoff, add them to the project yourselves, if not, please provide us with both keys
+4. If you are doing this after handoff, save the payment link and add it as an environment variable by the name `PAYMENT_LINK`. If we are still in the development phase, share the link with us
+5. Additionally, save your `PUBLISHABLE_KEY` and `SECRET_KEY`. Both can be found on the right side of your dashboard. These also need to be added to the project as environment variables. Just like with the payment link, if we are past handoff, add them to the project yourselves, if not, please provide us with both keys
 
 Example result: 
 
