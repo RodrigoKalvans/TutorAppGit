@@ -41,6 +41,8 @@ const nextConfig = {
     GOOGLE_USER: process.env.GOOGLE_USER,
     GOOGLE_APP_PASSWORD: process.env.GOOGLE_APP_PASSWORD,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+    S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
   },
 };
 
