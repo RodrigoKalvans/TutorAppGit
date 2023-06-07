@@ -29,6 +29,19 @@ const nextConfig = {
       },
     ],
   },
+  env: {
+    MONGODB_URI: process.env.MONGODB_URI,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
+    MAILER_API_KEY: process.env.MAILER_API_KEY,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_STRIPE_SECRET_KEY: process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY,
+    NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET: process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET,
+    PAYMENT_LINK: process.env.PAYMENT_LINK,
+    GOOGLE_USER: process.env.GOOGLE_USER,
+    GOOGLE_APP_PASSWORD: process.env.GOOGLE_APP_PASSWORD,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+  },
 };
 
 module.exports = nextConfig;
