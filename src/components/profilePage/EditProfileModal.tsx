@@ -142,6 +142,9 @@ const EditProfileModal = ({
           </div>
 
           <form className="mb-5" onSubmit={handleSubmit}>
+            {error && (
+              <p className="text-red-900">{error}</p>
+            )}
             <div className="flex flex-col gap-y-7 py-3 max-h-[70vh] overflow-y-auto">
               <div>
                 <label className="font-light mb-2 block">First Name</label>

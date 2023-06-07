@@ -1,6 +1,7 @@
 export const MAX_SUBJECT_COUNT = 3;
 export const MAX_LANGUAGE_COUNT = 10;
-export const MAX_POST_DESCRIPTION_LENGTH = 750;
+export const MAX_POST_IMAGES_COUNT=3;
+export const MAX_POST_DESCRIPTION_LENGTH = 2000;
 // TODO: Change these when going into production
 export const LANDING_PAGE_TOP_TUTOR_IDS = [
   "646b88de26d4f9e190425e0b", // Rodrigo Kalvans

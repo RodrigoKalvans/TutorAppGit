@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // POST method
   if (req.method === "POST") await like(req, res, id as string, post);
   // DELETE method
-  if (req.method === "DELETE") await removeLike(req, res, id as string, post);
+  if (req.method === "DELETE") await removeLike(req, res, post);
 
   // await db.disconnect();
   return;
@@ -115,11 +115,10 @@ const like = async (req: NextApiRequest, res: NextApiResponse, id: string, post:
  * POST create a new comment request
  * @param {NextApiRequest} req HTTP req received from client
  * @param {NextApiResponse} res HTTP response sent to client side
- * @param {string} id id of the post
  * @param {any} post post to be liked
  * @return {null} returns null in case the method of request is incorrect
  */
-const removeLike = async (req: NextApiRequest, res: NextApiResponse, id: string, post: any) => {
+const removeLike = async (req: NextApiRequest, res: NextApiResponse, post: any) => {
   const token = await getToken({req});
 
   if (!token) {
