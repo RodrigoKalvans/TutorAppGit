@@ -16,7 +16,7 @@ declare module "next-auth" {
       lastName: string,
       role: string,
       picture?: string,
-      emailVerified: boolean,
+      emailVerified?: boolean,
     }
   }
 
@@ -26,19 +26,19 @@ declare module "next-auth" {
     lastName: string,
     role: string,
     picture?: string,
-    emailVerified: boolean,
+    emailVerified?: boolean,
   }
 }
 
 declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface JWT {
-    id: string,
+    id: string
     firstName: string,
     lastName: string,
     role: string,
     picture?: string,
-    emailVerified: boolean,
+    emailVerified?: boolean,
   }
 }
 

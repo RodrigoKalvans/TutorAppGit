@@ -6,6 +6,7 @@ import Student from "../../../models/Student";
 import Tutor from "@/models/Tutor";
 import db from "../../../utils/db";
 import {verify} from "argon2";
+import Admin from "@/models/Admin";
 
 /**
  * Authentication options that are going to be used by NextAuth
@@ -26,7 +27,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         const {email, password} = credentials as {
           email: string,
-          password: string
+          password: string,
         };
 
         await db.connect();
@@ -34,10 +35,13 @@ export const authOptions: NextAuthOptions = {
         let user = await Student.findOne({email: email});
         if (!user) {
           user = await Tutor.findOne({email: email});
-          if (!user) throw new Error("Wrong credentials!");
         }
+        if (!user) {
+          user = await Admin.findOne({email: email});
+        }
+        if (!user) throw new Error("Wrong credentials!");
 
-        if (!user.emailVerified) {
+        if (!user.emailVerified && user.role !== "admin") {
           throw new Error("You need to verify your email address before you can sign in.");
         }
         // Split the IV and the encrypted hashed password
@@ -76,16 +80,16 @@ export const authOptions: NextAuthOptions = {
           lastName: string,
           role: string,
           picture?: string,
-          emailVerified: boolean,
+          emailVerified?: boolean,
         } = {
           id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,
-          emailVerified: user.emailVerified,
         };
 
-        if (user.picture) res.picture = user.picture;
+        if (user.picture && user.role !== "admin") res.picture = user.picture;
+        if (user.emailVerified && user.role !== "admin") res.emailVerified = user.emailVerified;
 
         return res;
       },
