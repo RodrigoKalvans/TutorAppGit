@@ -20,3 +20,95 @@
         width: 16rem;
     }
 }
+
+.slickPrev,
+.slickNext
+{
+    font-size: 0;
+    line-height: 0;
+
+    position: absolute;
+    top: 50%;
+
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+
+    cursor: pointer;
+
+    @apply hidden md:block
+}
+.slickPrev:hover,
+.slickPrev:focus,
+.slickNext:hover,
+.slickNext:focus
+{
+    color: transparent;
+    outline: none;
+    background: transparent;
+}
+.slickPrev:hover:before,
+.slickPrev:focus:before,
+.slickNext:hover:before,
+.slickNext:focus:before
+{
+    opacity: 1;
+}
+.slickPrev.slick-disabled:before,
+.slickNext.slick-disabled:before
+{
+    opacity: .25;
+}
+
+.slickPrev:before,
+.slickNext:before
+{
+    font-family: 'slick';
+    font-size: 20px;
+    line-height: 1;
+
+    opacity: .75;
+    color: #282828;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slickPrev
+{
+    left: -25px;
+}
+[dir='rtl'] .slickPrev
+{
+    right: -25px;
+    left: auto;
+}
+.slickPrev:before
+{
+    content: '←';
+}
+[dir='rtl'] .slickPrev:before
+{
+    content: '→';
+}
+
+.slickNext
+{
+    right: -25px;
+}
+[dir='rtl'] .slickNext
+{
+    right: auto;
+    left: -25px;
+}
+.slickNext:before
+{
+    content: '→';
+}
+[dir='rtl'] .slickNext:before
+{
+    content: '←';
+}

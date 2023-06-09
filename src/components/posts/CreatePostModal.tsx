@@ -94,10 +94,11 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
     setIsLoading(true);
 
     const post: {
-      description: string,
-      images?: string[],
+      description?: string,
+      imagesAdded?: boolean,
     } = {
       description: e.target.description.value,
+      imagesAdded: chosenFiles.length > 0,
     };
 
     const response = await fetch("/api/posts", {
@@ -117,11 +118,23 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
 
         if (result.error) {
           setError(result.error.message);
+
+          if (!post.description) {
+            // Delete empty post
+            const res = await fetch(`/api/posts/${json.post._id}`, {
+              method: "DELETE",
+            });
+
+            if (!res.ok) {
+              setError("Error deleteing the post");
+            }
+          }
           setIsLoading(false);
-        } else {
-          window.location.reload();
+          return;
         }
       }
+
+      window.location.reload();
     } else {
       setIsLoading(false);
       setError(json.message);

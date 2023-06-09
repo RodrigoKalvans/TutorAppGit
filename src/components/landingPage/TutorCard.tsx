@@ -15,7 +15,7 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
   const subject = subjects.find((s: any) => s._id === card.tutor.subjects.at(0));
 
   return (
-    <div className="relative flex justify-center w-[740] px-[20px]">
+    <div className="relative flex justify-center px-[20px]">
       <div className="bg-blue-920 w-[300] md:w-[600px] h-[450px] md:h-[600px] text-white rounded-3xl flex">
         <div className="w-full md:w-1/2 h-[680px] flex flex-col gap-2 md:gap-6">
           <div className="max-w-[240px] md:max-w-full top-0">
