@@ -3,7 +3,7 @@ import Tutor from "@/models/Tutor";
 import Student from "@/models/Student";
 import {LandingPageCard, LandingPageCardReview} from "@/types/ambiguous-types";
 import {NR_OF_REVIEWS_PER_TOP_TUTOR_ON_LANDING_PAGE} from "./consts";
-import FeaturedTutors from "@/models/FeaturedTutors";
+import FeaturedTutors from "@/models/FeaturedTutor";
 
 /**
  * Used in the landing page to display top tutors
