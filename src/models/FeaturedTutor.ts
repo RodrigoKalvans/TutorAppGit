@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const FeaturedTutorsSchema: mongoose.Schema = new mongoose.Schema(
     {
-      featuredTutors: [{type: String}],
+      id: {type: String},
     },
     {timestamps: true},
 );

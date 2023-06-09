@@ -73,7 +73,7 @@ const Post = ({
   const [likeCount, setLikeCount] = useState<number>(post.likes.length);
 
   const {data: user, error, isLoading} = useSWR(post ?`/api/${post.role}s/${post.userId}` : null, fetcher);
-  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(post ? `/api/posts/${post._id.toString()}/image` : null, fetcher);
+  const {data: presignedUrls, error: imagesError, isLoading: areImagesLoading} = useSWR(post && post.images ? `/api/posts/${post._id.toString()}/image` : null, fetcher);
 
   // quietly load comments
   const {data: comments}: {data: Array<any>} = useSWR(`/api/comments?postId=${post._id.toString()}`, fetcher);
@@ -148,6 +148,10 @@ const Post = ({
     }
   };
 
+  useEffect(() => {
+    console.log(presignedUrls);
+  }, [presignedUrls]);
+
   return (
     <>
       {post && !isLoading &&
@@ -182,13 +186,11 @@ const Post = ({
                 <p>Images are loading</p>
               )}
               {presignedUrls && !areImagesLoading && (
-                <Slider {...settings} lazyLoad="ondemand">
+                <Slider {...settings} lazyLoad="anticipated">
                   {presignedUrls.map((url: string, index: number) =>
-
-                    <div key={index} className="flex justify-center relative">
+                    <div key={index}>
                       <Image key={index} src={url} unoptimized alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"} mx-auto`} />
                     </div>,
-
                   )}
                 </Slider>
               )}
