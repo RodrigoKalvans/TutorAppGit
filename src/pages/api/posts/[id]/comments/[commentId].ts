@@ -55,13 +55,13 @@ const deleteCommentById = async (req: NextApiRequest, res: NextApiResponse, id: 
     return;
   }
 
-  const deletingComment = await Comment.findById(id);
+  const comment = await Comment.findById(id);
 
-  if (deletingComment.userId !== token.id) {
-    res.status(StatusCodes.FORBIDDEN)
-        .send({
-          message: "You are not authorized to do this action! It is not your comment!",
-        });
+  if (!comment) {
+    res.status(StatusCodes.NOT_FOUND).send({message: `Comment with id ${id} was not found`});
+    return;
+  } else if (comment.userId !== token.id) {
+    res.status(StatusCodes.FORBIDDEN).send({message: "You are not authorized to delete this comment"});
     return;
   }
 

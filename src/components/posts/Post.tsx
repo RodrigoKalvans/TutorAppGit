@@ -8,8 +8,44 @@ import Comment from "./Comment";
 import {DeleteIcon, LikeIcon, LoadingIcon, PromoIcon} from "@/utils/icons";
 import {Session} from "next-auth";
 import {isPromoted} from "@/utils/promotion";
+import styles from "@/styles/Post.module.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const CustomNextArrow = (props: any) => {
+  const {onClick} = props;
+  return (
+    <div
+      className={`${styles.slickNext}`}
+      onClick={onClick}
+    >
+      {">"}
+    </div>
+  );
+};
+
+const CustomPrevArrow = (props: any) => {
+  const {onClick} = props;
+  return (
+    <div
+      className={`${styles.slickPrev}`}
+      onClick={onClick}
+    />
+  );
+};
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json()).catch((res) => res.json());
+
+const settings = {
+  dots: true,
+  autoplay: false,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  nextArrow: <CustomNextArrow />,
+  prevArrow: <CustomPrevArrow />,
+};
 
 /**
  * Post component
@@ -115,19 +151,19 @@ const Post = ({
   return (
     <>
       {post && !isLoading &&
-        <div className="flex flex-col bg-white text-sm rounded-2xl shadow-md w-full 2xl:w-[52rem] hov">
+        <div className={`${styles.post}`}>
           {/** top section */}
           {user && !isLoading && (
-            <div className="flex justify-between items-center px-3 py-1 shadow-lg">
+            <div className="flex gap-1 justify-between items-center px-3 py-1 shadow-lg">
               <Link href={`/${user.role}s/${user._id}`}>
-                <div className="flex gap-2 md:gap-5 items-center">
+                <div className="flex gap-1 sm:gap-2 md:gap-5 items-center">
                   <div className="w-8">
                     <ProfilePicture user={user} />
                   </div>
-                  <p className="text-base md:text-xl">{user.firstName + " " + user.lastName}</p>
+                  <p className="text-sm sm:text-base md:text-xl">{user.firstName + " " + user.lastName}</p>
                   {isPromoted(user.donations) && <PromoIcon size={15} className="-mx-2 -ml-3" fill="orange"></PromoIcon>}
-                    |
-                  <p className="capitalize md:uppercase m-0 text-base md:text-lg">{user.role}</p>
+                  <p>|</p>
+                  <p className="capitalize md:uppercase m-0 text-sm sm:text-base md:text-lg">{user.role}</p>
                 </div>
               </Link>
               <p className="text-xs">
@@ -138,19 +174,23 @@ const Post = ({
           }
           {/** main body (description pics) */}
           <div className="p-3 text-sm flex-col">
-            <div className="w-full mt-2">
-              <p>{post.description}</p>
+            <div className="mt-2 break-words hyphens-manual">
+              <p className="">{post.description}</p>
             </div>
-            <div className="w-full flex justify-center my-5">
+            <div className="my-5">
               {areImagesLoading && (
                 <p>Images are loading</p>
               )}
-              {presignedUrls && (
-                <div className={`${presignedUrls.length > 1 && "carousel rounded-md"}`}>
-                  {presignedUrls.map((url: string, index: number) => (
-                    <Image key={index} src={url} unoptimized alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"}`} />
-                  ))}
-                </div>
+              {presignedUrls && !areImagesLoading && (
+                <Slider {...settings} lazyLoad="ondemand">
+                  {presignedUrls.map((url: string, index: number) =>
+
+                    <div key={index} className="flex justify-center relative">
+                      <Image key={index} src={url} unoptimized alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"} mx-auto`} />
+                    </div>,
+
+                  )}
+                </Slider>
               )}
               {imagesError && <p>Error occurred while fetching the images for this post.</p>}
             </div>

@@ -98,12 +98,12 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY)
         .send({message: `Post description exceeds ${MAX_POST_DESCRIPTION_LENGTH} character limit`});
     return;
-  } else if (reqPost.role !== "student" && reqPost.role !== "tutor" && reqPost.role !== "admin") {
+  } else if (reqPost.role !== "student" && reqPost.role !== "tutor") {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({message: "Invalid role"});
     return;
-  } else if (!reqPost.description && !reqPost.images) {
-    res.status(StatusCodes.NO_CONTENT)
+  } else if (!reqPost.description && !reqPost.imagesAdded) {
+    res.status(StatusCodes.BAD_REQUEST)
         .send({message: "Content is missing"});
     return;
   }
