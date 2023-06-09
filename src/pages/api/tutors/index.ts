@@ -2,7 +2,6 @@ import Tutor from "../../../models/Tutor";
 import {StatusCodes} from "http-status-codes";
 import {NextApiResponse, NextApiRequest} from "next";
 import db from "@/utils/db";
-import FeaturedTutors from "@/models/FeaturedTutors";
 
 const TOP_TUTORS_LIMIT: number = 5;
 
