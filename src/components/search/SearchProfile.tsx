@@ -69,7 +69,7 @@ export default function SearchProfile({user, allSubjects}: {user: any, allSubjec
                 <p className="text-sm md:text-lg">Subjects</p>
                 {subjects.map((subject, index) =>
                   <div key={index} className="flex gap-1 md:gap-2 items-center">
-                    <Icon subject={subject} style="text-orange-600 text-[1.5rem]" />
+                    <Icon subject={subject} style="text-orange-600 w-[1.5rem]" />
                     <p className="text-xs md:text-base font-light" key={subject._id}>{subject.name}</p>
                   </div>,
                 )}
