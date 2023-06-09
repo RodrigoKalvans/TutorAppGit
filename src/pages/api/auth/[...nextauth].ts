@@ -80,16 +80,17 @@ export const authOptions: NextAuthOptions = {
           lastName: string,
           role: string,
           picture?: string,
-          emailVerified?: boolean,
+          emailVerified: boolean,
         } = {
           id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,
+          emailVerified: user.emailVerified,
         };
 
         if (user.picture && user.role !== "admin") res.picture = user.picture;
-        if (user.emailVerified && user.role !== "admin") res.emailVerified = user.emailVerified;
+        if (user.role === "admin") res.emailVerified = true;
 
         return res;
       },
