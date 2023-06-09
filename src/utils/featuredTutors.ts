@@ -3,14 +3,14 @@ import Tutor from "@/models/Tutor";
 import Student from "@/models/Student";
 import {LandingPageCard, LandingPageCardReview} from "@/types/ambiguous-types";
 import {NR_OF_REVIEWS_PER_TOP_TUTOR_ON_LANDING_PAGE} from "./consts";
-import FeaturedTutors from "@/models/FeaturedTutor";
+import FeaturedTutor from "@/models/FeaturedTutor";
 
 /**
  * Used in the landing page to display top tutors
  * @return {Array<any>} returns an array of usable objects
  */
 export const getLandingPageTutors = async () => {
-  const featuredTutorIds = await FeaturedTutors.findOne();
+  const featuredTutorIds = await FeaturedTutor.findOne();
 
   const tutors: Array<any> = await Tutor.find({
     _id: {
