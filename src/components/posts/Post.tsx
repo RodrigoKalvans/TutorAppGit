@@ -151,7 +151,7 @@ const Post = ({
   return (
     <>
       {post && !isLoading &&
-        <div className={`${styles.post}`}>
+        <div className={`${styles.post} hov`}>
           {/** top section */}
           {user && !isLoading && (
             <div className="flex gap-1 justify-between items-center px-3 py-1 shadow-lg">
