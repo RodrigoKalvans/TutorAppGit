@@ -13,17 +13,17 @@ const FeedPageTopTutor = ({tutor}: any) => {
 
   return (
     <Link href={`/tutors/${tutor._id}`}>
-      <div className="rounded-full py-3 px-1 max-w-full min-w-40 my-4 h-20 flex items-center gap-3 hov shadow-round">
-        <div className=" w-20 h-20 flex items-center">
+      <div className="rounded-2xl py-3 px-2 max-w-full min-w-40 my-4 h-20 flex items-center gap-3 hov shadow-round">
+        <div className="w-20 h-20 flex items-center">
           <ProfilePicture user={tutor} key={tutor._id}/>
         </div>
-        <div className="flex-col w-4/5 pr-3">
+        <div className="flex-col w-4/5">
           <div className="my-1 h-1/2 flex justify-between overflow-hidden">
             <div className="max-w-1/2 flex items-center">{tutor.firstName + " " + tutor.lastName}
               {isPromoted(tutor.donations) && <PromoIcon size={15} className="ml-1" fill="orange"></PromoIcon>}
             </div>
             {subject &&
-              <div className="">{subject.name}</div>
+              <p className="text-sm xl:text-base">{subject.name}</p>
             }
           </div>
           <div className="my-1 h-1/2 flex justify-between overflow-hidden">

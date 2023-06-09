@@ -99,7 +99,7 @@ const updateTutorById = async (req: NextApiRequest, res: NextApiResponse, id: St
 const deleteTutorById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const token = await getToken({req});
 
-  if (!token || token.id !== id && token.id !== "admin") {
+  if (!token || token.id !== id && token.role !== "admin") {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
           message: "You are not authenticated/authorized to do this action!",

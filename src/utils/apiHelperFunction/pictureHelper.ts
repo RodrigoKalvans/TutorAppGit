@@ -8,7 +8,13 @@ import {NextApiRequest, NextApiResponse} from "next";
 import sharp from "sharp";
 import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
 
-const client = new S3Client({region: "eu-north-1"});
+const client = new S3Client({
+  region: "eu-north-1",
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string,
+  },
+});
 const upload: Multer = multer({
   limits: {
     fileSize: 4000000,

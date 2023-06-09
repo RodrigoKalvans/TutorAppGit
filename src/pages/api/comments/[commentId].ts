@@ -41,17 +41,27 @@ const getCommentById = async (res: NextApiResponse, id: String) => {
  * DELETE comment request
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
- * @param {String} id post id from dynamic page
+ * @param {String} id comment id
  * @return {null} returns null in case the method of request is incorrect
  */
 const deleteCommentById = async (req: NextApiRequest, res: NextApiResponse, id: String) => {
   const token = await getToken({req});
 
-  if (!token || token.id !== id && token.id !== "admin") {
+  if (!token) {
     res.status(StatusCodes.UNAUTHORIZED)
         .send({
-          message: "You are not authorized to do this action! It is not your comment!",
+          message: "You are not authenticated!",
         });
+    return;
+  }
+
+  const comment = await Comment.findById(id);
+
+  if (!comment) {
+    res.status(StatusCodes.NOT_FOUND).send({message: `Comment with id ${id} was not found`});
+    return;
+  } else if (comment.userId !== token.id) {
+    res.status(StatusCodes.FORBIDDEN).send({message: "You are not authorized to delete this comment"});
     return;
   }
 

@@ -1,5 +1,5 @@
 export const MAX_SUBJECT_COUNT = 3;
 export const MAX_LANGUAGE_COUNT = 10;
-export const MAX_POST_DESCRIPTION_LENGTH = 750;
+export const MAX_POST_DESCRIPTION_LENGTH = 2000;
 export const NR_OF_POSTS_PER_PAGE = 10;
 export const NR_OF_REVIEWS_PER_TOP_TUTOR_ON_LANDING_PAGE = 2;
