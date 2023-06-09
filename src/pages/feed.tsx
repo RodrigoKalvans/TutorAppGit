@@ -32,13 +32,12 @@ const Feed = () => {
           {/** sidebar (top tutors & create post) */}
           <div className="w-full lg:w-[30%]">
             <CreatePostButton style="w-full btn bg-[#3F678A] bg-opacity-80 hover:bg-[#3F678A] hover:bg-opacity-100 border-none normal-case text-white font-medium text-md rounded-box mb-2" />
-            <div className="flex-col">
-              <div className="bg-white rounded-box p-3 py-5">
-                <h1 className="w-full flex justify-center font-bold text-xl">Top tutors</h1>
-                {isLoading && <div className="text-xl mt-10 w-full flex justify-center">Loading...</div>}
-                {error && <div className="text-xl mt-10 w-full flex justify-center text-red-600">Error...</div>}
-                <div className="w-full mt-3">
-                  {isLoading ? (
+            <div className="bg-white rounded-box p-3 py-5">
+              <h1 className="w-full flex justify-center font-bold text-xl">Top tutors</h1>
+              {isLoading && <div className="text-xl mt-10 w-full flex justify-center">Loading...</div>}
+              {error && <div className="text-xl mt-10 w-full flex justify-center text-red-600">Error...</div>}
+              <div className="w-full mt-3">
+                {isLoading ? (
                     <LoadingIcon className="animate-spin" />
                   ) : (
                     <>
@@ -47,7 +46,6 @@ const Feed = () => {
                       ))}
                     </>
                   )}
-                </div>
               </div>
             </div>
           </div>

@@ -21,19 +21,19 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
           <div className="max-w-[240px] md:max-w-full top-0">
             <ProfilePicture user={card.tutor} rounded={false} style="rounded-b-[3.5rem] rounded-t-3xl md:rounded-tr-none" />
           </div>
-          <b className="flex md:hidden justify-center items-center">
+          <p className="text-white inline-block md:hidden text-center">
             {`${card.tutor.firstName} ${card.tutor.lastName}`}
-          </b>
+          </p>
           <div className="flex justify-around mx-4 md:mx-10 md:-mt-4 text-[12px] md:text-[14px] text-gray-400">
             <div>Followers: {card.tutor.followers.length}</div>
             <div>Following: {card.tutor.following.length}</div>
           </div>
-          <div className="flex items-center justify-center gap-3 md:gap-5 text-[18px] md:text-[25px] text-gray-100 capitalize">
-            <Icon subject={subject} style="text-[35px] md:text-[50px] h-full text-orange-600" key={subject._id} />
-            {subject.name}
+          <div className="flex items-center gap-3 pl-3">
+            <Icon subject={subject} style="w-8 md:w-12" key={subject._id} />
+            <p className="text-base md:text-lg text-white capitalize">{subject.name}</p>
           </div>
-          <div className="flex justify-center items-center gap-3 text-[12px] md:text-[16px]">
-            <EmailIcon fill="#F97316" className="text-[30px]"/>
+          <div className="flex items-center gap-3 text-[12px] md:text-[16px] pl-3">
+            <EmailIcon fill="#F97316" className="text-[24px] md:text-[28px]"/>
             {card.tutor.email}
           </div>
           <div className="flex justify-center">

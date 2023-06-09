@@ -1,0 +1,22 @@
+.post {
+    @apply flex flex-col;
+    @apply text-sm;
+    @apply bg-white rounded-2xl shadow-md hov;
+    @apply sm:w-[36rem] md:w-[44rem] lg:w-[34rem] xl:w-[44rem] 2xl:w-[52rem];
+
+    @media (max-width: 640px) {
+        width: 28rem;
+    }
+
+    @media (max-width: 520px) {
+        width: 22rem;
+    }
+
+    @media (max-width: 400px) {
+        width: 20rem;
+    }
+
+    @media (max-width: 300px) {
+        width: 16rem;
+    }
+}
