@@ -10,11 +10,14 @@ import FeaturedTutor from "@/models/FeaturedTutor";
  * @return {Array<any>} returns an array of usable objects
  */
 export const getLandingPageTutors = async () => {
-  const featuredTutorIds = await FeaturedTutor.findOne();
+  const featuredTutorIds = await FeaturedTutor.find();
+
+  const ids: Array<string> = [];
+  featuredTutorIds.forEach((obj: any) => ids.push(obj.id));
 
   const tutors: Array<any> = await Tutor.find({
     _id: {
-      $in: featuredTutorIds.featuredTutors,
+      $in: ids,
     },
   });
 

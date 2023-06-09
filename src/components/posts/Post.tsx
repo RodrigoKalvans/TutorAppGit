@@ -148,6 +148,10 @@ const Post = ({
     }
   };
 
+  useEffect(() => {
+    console.log(presignedUrls);
+  }, [presignedUrls]);
+
   return (
     <>
       {post && !isLoading &&
@@ -183,12 +187,10 @@ const Post = ({
               )}
               {presignedUrls && !areImagesLoading && (
                 <Slider {...settings} lazyLoad="ondemand">
-                  {presignedUrls.map((url: string, index: number) =>
-
+                  {presignedUrls && presignedUrls.length > 0 && presignedUrls.map((url: string, index: number) =>
                     <div key={index} className="flex justify-center relative">
                       <Image key={index} src={url} unoptimized alt="profile picture" width={400} height={400} className={`${presignedUrls.length === 1 && "rounded-md"} mx-auto`} />
                     </div>,
-
                   )}
                 </Slider>
               )}
