@@ -35,7 +35,7 @@ GOOGLE_APP_PASSWORD=`<generated_app_password>`
 
 ## NextAuth
 
-NextAuth is the authentication tool that provides simplicity in developing the authentication system. It is used in this project, and in order for it to work `NEXTAUTH_SECRET` is required. Therefore, you need to generate the secret key by using any third-party websites, or if you have GitBash (Git) installed in your system, you can generate the secret key by pasting the following command in GitBash: `openssl rand -base64 32`
+NextAuth is the authentication tool that provides simplicity in developing the authentication system. It is used in this project, and in order for it to work `NEXTAUTH_SECRET` is required. Therefore, you need to generate the secret key by using any third-party websites (e.g. [`https://generate-secret.vercel.app/32`](https://generate-secret.vercel.app/32)), or if you have GitBash (Git) installed in your system, you can generate the secret key by pasting the following command in GitBash: `openssl rand -base64 32`
 
 ## AWS
 

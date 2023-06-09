@@ -124,9 +124,12 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
     return;
   }
 
-  const deletingReview = await Review.findById(id);
+  const review = await Review.findById(id);
 
-  if (deletingReview.reviewerUserId !== token.id) {
+  if (!review) {
+    res.status(StatusCodes.NOT_FOUND).send({message: `Review with id ${id} was not found`});
+    return;
+  } else if (review.reviewerUserId !== token.id) {
     res.status(StatusCodes.FORBIDDEN)
         .send({
           message: "You are not authorized to do this action! It is not your review!",
@@ -142,11 +145,11 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
     await deleteReviewFromReviewedUser(reviewToDelete);
 
     res.status(StatusCodes.OK).send({
-      message: "Review and its references have been deleted.",
+      message: "Review and its references have been deleted",
       review: reviewToDelete,
     });
   } catch (error) {
-    res.status(StatusCodes.NOT_FOUND).send(error);
+    res.status(StatusCodes.NOT_FOUND).send({error});
   }
 
   return;

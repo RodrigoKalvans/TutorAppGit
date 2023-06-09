@@ -1,11 +1,7 @@
-import React, {ChangeEvent, MouseEventHandler, useRef, useState} from "react";
+import React, {ChangeEvent, MouseEventHandler, useState} from "react";
 import {AiOutlineClose} from "react-icons/ai";
 import Image from "next/image";
-
-// TODO: Max count of what? Need a clearer name
-const MAX_COUNT = 3;
-
-const MAX_DESCRIPTION_LENGTH = 750;
+import {MAX_POST_DESCRIPTION_LENGTH, MAX_POST_IMAGES_COUNT} from "@/utils/consts";
 
 /**
  * This modal component allows the user to create a post
@@ -17,20 +13,20 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
   const [previewImageUrls, setPreviewImageUrls] = useState<string[]>([]);
   const [chosenFiles, setChosenFiles] = useState<File[]>([]);
   const [descriptionLengthError, setDescriptionLengthError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<String | null>();
 
   /**
    * used to make sure description does not exceed allowed limit
    * @param {string} description as entered by the user
    */
   const validateDescriptionLength = (description: string) => {
-    if (description.length > MAX_DESCRIPTION_LENGTH) {
+    if (description.length > MAX_POST_DESCRIPTION_LENGTH) {
       setDescriptionLengthError(true);
     } else {
       setDescriptionLengthError(false);
     }
   };
-  const [isLoading, setIsLoading] = useState(false);
-  const error = useRef<String | null>();
 
   const uploadImages = async (files: File[], postId: string) => {
     // Create a FormData object to send the file to the API endpoint
@@ -52,7 +48,12 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
       return json;
     } else {
       const {error} = json;
-      return {error};
+
+      if (error.message) {
+        return {error: {message: error.message, error}};
+      }
+
+      return {error: {message: "Error occured while uploading images to the post.", error}};
     }
   };
 
@@ -71,9 +72,9 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
     files.some((file) => {
       if (alreadyChosen.findIndex((f) => f.name === file.name) === -1) {
         alreadyChosen.push(file);
-        if (alreadyChosen.length === MAX_COUNT) setFileLimit(true);
-        if (alreadyChosen.length > MAX_COUNT) {
-          alert(`You can only add a maximum of ${MAX_COUNT} files`);
+        if (alreadyChosen.length === MAX_POST_IMAGES_COUNT) setFileLimit(true);
+        if (alreadyChosen.length > MAX_POST_IMAGES_COUNT) {
+          alert(`You can only add a maximum of ${MAX_POST_IMAGES_COUNT} files`);
           setFileLimit(false);
           limitExceeded = true;
           return true;
@@ -85,15 +86,19 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // TODO: Better way to do this?
-    if (descriptionLengthError) return;
+
+    if (descriptionLengthError) {
+      setError("The description lengths is too big. Max amout of characters allowed is " + MAX_POST_DESCRIPTION_LENGTH);
+      return;
+    }
     setIsLoading(true);
 
     const post: {
-      description: string,
-      images?: string[],
+      description?: string,
+      imagesAdded?: boolean,
     } = {
       description: e.target.description.value,
+      imagesAdded: chosenFiles.length > 0,
     };
 
     const response = await fetch("/api/posts", {
@@ -108,22 +113,31 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
 
     if (response.ok) {
       // Add images if chosen
-      if (chosenFiles) {
+      if (chosenFiles.length > 0) {
         const result = await uploadImages(chosenFiles, json.post._id);
 
         if (result.error) {
-          error.current = "Error occurred while uploading the files";
-        } else {
-          window.location.reload();
+          setError(result.error.message);
+
+          if (!post.description) {
+            // Delete empty post
+            const res = await fetch(`/api/posts/${json.post._id}`, {
+              method: "DELETE",
+            });
+
+            if (!res.ok) {
+              setError("Error deleteing the post");
+            }
+          }
+          setIsLoading(false);
+          return;
         }
-        window.location.reload();
-      } else {
-        console.error(json);
-        alert("An error ocurred during post creation! See console for more information.");
       }
+
+      window.location.reload();
     } else {
       setIsLoading(false);
-      error.current = json.message;
+      setError(json.message);
     }
   };
 
@@ -136,8 +150,8 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
             <AiOutlineClose color="#505050" />
           </button>
         </div>
-        {error.current && (
-          <p className="text-red-900">{error.current}</p>
+        {error && (
+          <p className="text-red-900">{error}</p>
         )}
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col py-3">
@@ -168,7 +182,7 @@ const CreatePostModal = ({closeModal}: {closeModal: MouseEventHandler}) => {
             <div>
               <label>Description</label>
               <textarea id="description" className="w-full border h-20" onChange={(e) => validateDescriptionLength(e.target.value)}/>
-              {descriptionLengthError ? <div className="text-red-500 text-sm">{MAX_DESCRIPTION_LENGTH} character limit</div> : <></>}
+              {descriptionLengthError ? <div className="text-red-500 text-sm">{MAX_POST_DESCRIPTION_LENGTH} character limit</div> : <></>}
             </div>
           </div>
           <div className="border-t-2">
