@@ -9,6 +9,12 @@ import {StatusCodes} from "http-status-codes";
 import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
 import {v4 as uuidv4} from "uuid";
 
+/**
+ * Password reset route
+ * @param {NextApiRequest} req HTTP request received from client side
+ * @param {NextApiResponse} res HTTP response sent to client side
+ * @return {null} returns null in case the method of request is incorrect
+ */
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Handle only "GET" and "POST" methods
   if (req.method !== "GET" && req.method !== "POST" && req.method !== "PUT") {

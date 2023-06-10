@@ -4,7 +4,7 @@ import db from "@/utils/db";
 import Like from "@/models/Like";
 
 /**
- * Comment route
+ * Likes route
  * @param {NextApiRequest} req HTTP request received from client side
  * @param {NextApiResponse} res HTTP response sent to client side
  * @return {null} returns null in case the method of request is incorrect
