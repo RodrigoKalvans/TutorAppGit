@@ -5,11 +5,11 @@ import Rating from "../profilePage/helpingComponents/Rating";
 import {isPromoted} from "@/utils/promotion";
 import {PromoIcon} from "@/utils/icons";
 
-// TODO: types
 /**
  * Card that displays user info on search page
- * @param {{any}}} user object to be displayed in the component
- * @return {any} yo
+ * @param {any} user
+ * @param {Array<any>} allSubjects
+ * @return {JSX}
  */
 export default function SearchProfile({user, allSubjects}: {user: any, allSubjects: Array<any>}) {
   const subjects = allSubjects.filter((subject: any) => user.subjects.includes(subject._id));

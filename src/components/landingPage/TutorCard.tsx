@@ -41,10 +41,10 @@ export default function TutorCard({card, subjects}: {card: any, subjects: Array<
           </div>
         </div>
         <div className="w-1/2 h-[600px] relative hidden md:block">
-          <div className="flex flex-col gap-y-2 justify-center items-center px-8 bg-blue-910 h-[330px] rounded-bl-[7.5rem] rounded-tr-3xl shadow-2xl">
+          <div className="flex flex-col gap-y-1 justify-center items-center px-8 bg-blue-910 h-[330px] rounded-bl-[7.5rem] rounded-tr-3xl shadow-2xl">
             <b className="text-[22px]">{`${card.tutor.firstName} ${card.tutor.lastName}`}</b>
             <b className="text-gray-300 text-[16px] h-10">{card.tutor.location}</b>
-            <p className="text-gray-300 text-[14px] h-48 overflow-hidden">{card.tutor.description}</p>
+            <p className="text-gray-300 text-[14px] h-48 leading-6 rounded-bl-3xl -my-2 overflow-hidden">{card.tutor.description}</p>
           </div>
 
           <div className="w-full flex flex-col gap-3 pt-3 pr-[11px] text-clip">

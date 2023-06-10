@@ -109,7 +109,6 @@ const deleteStudentById = async (req: NextApiRequest, res: NextApiResponse, id: 
 
   try {
     const deletedStudent = await Student.findByIdAndDelete(id);
-    // TODO: DELETE POSTS AND ALL ACTIVITY OF THIS USER FROM DATABASE
 
     await deleteAllReferencesOfDeletedUser(deletedStudent);
     delete deletedStudent.password;

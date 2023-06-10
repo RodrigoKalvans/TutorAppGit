@@ -277,7 +277,6 @@ export default function SignUp({
                     </div>
                   </>
                 )}
-
                 <div className="flex gap-2 mt-5">
                   <input
                     type="checkbox"
@@ -286,9 +285,7 @@ export default function SignUp({
                     className="cursor-pointer"
                     required
                   />
-
-                  {/** TODO: link Terms to ToS */}
-                  <label htmlFor="terms" className="text-xs">Agree to our <Link href="/" >Terms</Link></label>
+                  <label htmlFor="terms" className="text-xs">Agree to our <Link href="/docs/terms-of-service" className="underline">Terms</Link></label>
                 </div>
 
                 <div className="flex gap-2 mt-5">

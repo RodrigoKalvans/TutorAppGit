@@ -13,7 +13,7 @@ export const getLandingPageTutors = async () => {
   const featuredTutorIds = await FeaturedTutor.find();
 
   const ids: Array<string> = [];
-  featuredTutorIds.forEach((obj: any) => ids.push(obj.id));
+  featuredTutorIds.forEach((obj: any) => ids.push(obj.tutorId));
 
   const tutors: Array<any> = await Tutor.find({
     _id: {
@@ -47,7 +47,6 @@ export const getLandingPageTutors = async () => {
       let reviewer: any; // user that made the review
 
       // find the user by id
-      // TODO: handle different (admin?) role
       if (reviewsForCurrentTutor.at(j).reviewerUserRole == "student") {
         reviewer = await Student.findById(reviewsForCurrentTutor.at(j).reviewerUserId);
       } else if (reviewsForCurrentTutor.at(j).reviewerUserRole == "tutor") {

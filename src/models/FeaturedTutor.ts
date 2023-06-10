@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const FeaturedTutorsSchema: mongoose.Schema = new mongoose.Schema(
+const FeaturedTutorSchema: mongoose.Schema = new mongoose.Schema(
     {
-      id: {type: String},
+      tutorId: {type: String, required: true, unique: true},
     },
     {timestamps: true},
 );
 
-const FeaturedTutors = mongoose.models.FeaturedTutors ||
-      mongoose.model("FeaturedTutors", FeaturedTutorsSchema);
-export default FeaturedTutors;
+const FeaturedTutor = mongoose.models.FeaturedTutor ||
+      mongoose.model("FeaturedTutor", FeaturedTutorSchema);
+export default FeaturedTutor;

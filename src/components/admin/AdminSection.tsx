@@ -32,7 +32,7 @@ const AdminSection = ({
     <>
       <section>
         <b className="uppercase flex justify-center">{title}</b>
-        <div className="w-[10rem] hover:w-[35rem] transition-all duration-500 h-screen
+        <div className="w-[8rem] hover:w-[24rem] transition-all duration-500 h-screen
         overflow-scroll my-1 border-t-2 border-dotted border-black">
           {content && content.map((object: any) => (
             <div key={object._id} className="flex items-center border-b-2 border-dashed border-black">

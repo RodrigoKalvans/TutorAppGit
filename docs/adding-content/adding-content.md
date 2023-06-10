@@ -22,3 +22,11 @@ In order to add your contact details simply replace the text in any of the lines
 The Terms of Service and Privacy Policy currently are located in their own respective pages in the /pages/docs/ directory. You can add the content to those pages manually by inserting it into the <p> tags by paragraph. If you instead wish to have those be located on another website (perhaps a Google Drive link), you can add the links in the Footer.tsx file exactly the same as for the social media links.
 
 If you wish to adjust the background color of either of the pages currently created, replace “bg-gray-400” on line 6 with “bg-white.”
+
+## Changing the featured tutors on the landing page
+
+This can be done easily through the admin page. Simply log in with your admin account and go to the /admin page. From there you can add and remove featured tutors as you please. Additionally, through this page you can view all of the entries in posts, users, comments, subjects, likes, etc.
+
+## Uploading icon images
+
+Same as before - this can be done through the admin page. Make sure that you have a black/base version of the icon you wish to use, as well as an orange version. The different versions will be displayed in different locations around the app.
