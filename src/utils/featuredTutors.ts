@@ -13,7 +13,7 @@ export const getLandingPageTutors = async () => {
   const featuredTutorIds = await FeaturedTutor.find();
 
   const ids: Array<string> = [];
-  featuredTutorIds.forEach((obj: any) => ids.push(obj.id));
+  featuredTutorIds.forEach((obj: any) => ids.push(obj.tutorId));
 
   const tutors: Array<any> = await Tutor.find({
     _id: {
