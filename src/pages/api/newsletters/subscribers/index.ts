@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 /**
- * GET comments per post request
+ * GET subscribers of the newsletters
  * @param {NextApiResponse} res HTTP response sent to client side
  * @return {null} returns null in case the method of request is incorrect
  */
@@ -54,7 +54,7 @@ const subscribeUser = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 /**
- * DELETE unsubscribe user from newsletter
+ * DELETE (unsubscribe) user from newsletter
  * @param {NextApiRequest} req HTTP req received from client
  * @param {NextApiResponse} res HTTP response sent to client side
  * @return {null} returns null in case the method of request is incorrect
