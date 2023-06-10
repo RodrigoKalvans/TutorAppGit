@@ -42,7 +42,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="w-full flex flex-col bg-blue-900 text-white mt-5 px-4 md:px-8 lg:px-20">
+      <footer className="w-full flex flex-col bg-blue-900 text-white px-4 md:px-8 lg:px-20">
         <div className="flex flex-col lg:flex-row gap-x-20 gap-y-8 lg:py-5">
           <div className="lg:py-5 grid grid-cols-2 lg:grid-cols-4 jusify-center lg:gap-x-20 gap-y-8 pt-4">
             <div className="space-y-4">

@@ -35,7 +35,7 @@ export default function Search({
         <title>TCorvus | Search</title>
       </Head>
       <Navbar black={true} />
-      <main className="flex flex-col lg:flex-row justify-between gap-14 min-h-screen pt-2 container">
+      <main className="flex flex-col lg:flex-row justify-between gap-14 min-h-screen py-2 container">
         {/** filter */}
         <div className="flex flex-col w-full lg:w-96 2xl:w-[30rem]">
           <Filter subjects={subjects} setProfileState={setProfiles} allUsers={allUsers} />
