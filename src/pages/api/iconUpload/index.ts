@@ -27,7 +27,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const form = new IncomingForm();
     form.parse(req, (err: any, fields: any, file: any) => {
       if (err) return reject(err);
-      console.log("name> ", fields.name);
       const oldPath = file.image.filepath;
       const newPath = `./public/icons/subjectIcons/${fields.name}`;
       mv(oldPath, newPath, function(err: any) { // moves the file to the newPath

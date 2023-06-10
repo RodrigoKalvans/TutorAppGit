@@ -47,7 +47,6 @@ export const getLandingPageTutors = async () => {
       let reviewer: any; // user that made the review
 
       // find the user by id
-      // TODO: handle different (admin?) role
       if (reviewsForCurrentTutor.at(j).reviewerUserRole == "student") {
         reviewer = await Student.findById(reviewsForCurrentTutor.at(j).reviewerUserId);
       } else if (reviewsForCurrentTutor.at(j).reviewerUserRole == "tutor") {

@@ -105,15 +105,13 @@ const savePayment = async (customerEmail: string, amount: number, paymentId: str
     amount,
     paymentId,
   };
-  console.log(payment);
 
   try {
     user.donations.push(payment);
     await user.save();
-    console.log("pushed", user);
     res.status(200).send(`Donation ${paymentId} has been added to ${user._id as string}`);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(400).send(`Error: ${err}`);
   }
 

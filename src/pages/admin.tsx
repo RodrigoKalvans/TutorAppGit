@@ -149,13 +149,12 @@ const Admin = (
       method: "POST",
       body: form,
     });
-    console.log(await response.json());
+    if (!response.ok) console.warn(response);
   };
 
   const handlePostFeaturedTutor = async (event: any) => {
     event.preventDefault();
     const tutorId = event.target.id.value;
-    console.log(tutorId);
     const response = await fetch("/api/featuredTutors", {
       method: "POST",
       headers: {
@@ -171,7 +170,6 @@ const Admin = (
       setFeaturedTutors((oldValues) => {
         return [...oldValues, newFT];
       });
-      console.log(newFT);
     }
   };
 

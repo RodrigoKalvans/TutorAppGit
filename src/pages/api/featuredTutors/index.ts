@@ -50,7 +50,7 @@ const postFeaturedTutor = async (req: NextApiRequest, res: NextApiResponse) => {
     await newFeaturedTutor.save();
     res.status(StatusCodes.OK).send(newFeaturedTutor);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(StatusCodes.BAD_REQUEST).send(err);
   }
   return;
