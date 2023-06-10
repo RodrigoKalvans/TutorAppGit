@@ -57,17 +57,18 @@ const TutorPage = (
   }
 
   const fullName = `${tutor.firstName} ${tutor.lastName}`;
+  const title = `TCorvus | ${fullName}`;
 
   return (
     <>
 
       <Head>
-        <title>TCorvus | {fullName}</title>
+        <title>{title}</title>
       </Head>
 
       <Navbar black={true} />
 
-      <main className="container flex flex-col lg:flex-row py-2 gap-14 min-h-[calc(100vh-64px)]">
+      <main className="2xl:container flex flex-col lg:flex-row py-2 px-2 md:px-5 lg:px-10 gap-10 xl:gap-14 min-h-[calc(100vh-64px)]">
         <section className="w-full">
           <div className="flex flex-col gap-5">
             <ProfileSection user={tutor} isFollowing={isFollowing}

@@ -30,7 +30,7 @@ const ProfileSection = ({user, isFollowing, subjects, session}: {user: any, isFo
         </div>
         <div className="flex-1">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl md:text-3xl font-medium flex items-center">{user.firstName} {user.lastName}
+            <h1 className="text-2xl xl:text-3xl font-medium flex items-center">{user.firstName} {user.lastName}
               {isPromoted(user.donations) && <PromoIcon size={15} className="mx-2" fill="orange"></PromoIcon>}
             </h1>
             {canEdit && (
@@ -50,7 +50,7 @@ const ProfileSection = ({user, isFollowing, subjects, session}: {user: any, isFo
             )}
           </div>
 
-          <p className="text-xl text-subtitle capitalize md:my-2">{user.role}</p>
+          <p className="text-lg xl:text-xl text-subtitle capitalize md:my-2">{user.role}</p>
           {user.location && (
             <p className="text-xs font-light py-1">{user.location}</p>
           )}
@@ -81,11 +81,11 @@ const ProfileSection = ({user, isFollowing, subjects, session}: {user: any, isFo
 
         {user.role === "tutor" && (
           <>
-            <div className="col-span-2 md:col-span-1">
+            <div className="col-span-2 2xl:col-span-1">
               <ContactDetails email={user.contactEmail ? user.contactEmail : user.email} phoneNumber={user.phoneNumber} />
             </div>
 
-            <div className="col-span-2 md:col-span-1">
+            <div className="col-span-2 2xl:col-span-1">
               <Price priceForLessons={user.priceForLessons} />
             </div>
           </>
