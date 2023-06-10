@@ -35,8 +35,8 @@ export default function Footer() {
       }
 
       setLoading(false);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -60,7 +60,6 @@ export default function Footer() {
               <p className="text-light text-lg font-medium">Contact Information</p>
               <div>
                 <ul className="font-light">
-                  {/** TODO: Add contact info */}
                   <li>email</li>
                   <li>phone</li>
                   <li>address</li>
@@ -71,8 +70,7 @@ export default function Footer() {
               <p className="text-light text-lg font-medium">Find us here</p>
               <div>
                 <ul className="font-light">
-                  {/** TODO: Add social media links */}
-                  <li><a href="example.com">Instagram</a></li>
+                  <li><a href="">Instagram</a></li>
                   <li><a href="">Facebook</a></li>
                   <li><a href="">Twitter</a></li>
                   <li><a href="">LinkedIn</a></li>
@@ -83,7 +81,6 @@ export default function Footer() {
               <p className="text-light text-lg font-medium">Additional information</p>
               <div>
                 <ul className="font-light">
-                  {/** TODO: Add policies */}
                   <li><Link target="_blank" href="/docs/terms-of-service">Terms of Service</Link></li>
                   <li><Link target="_blank" href="/docs/privacy-policy">Privacy Policy</Link></li>
                 </ul>

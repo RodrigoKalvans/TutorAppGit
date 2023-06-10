@@ -8,6 +8,7 @@ import {InferGetServerSidePropsType} from "next";
 import {useCallback, useState} from "react";
 import Subject from "@/models/Subject";
 import AdminSection from "@/components/admin/AdminSection";
+import FeaturedTutors from "@/models/FeaturedTutor";
 
 /**
  * This page can be accessed by admin to delete posts and users
@@ -15,13 +16,14 @@ import AdminSection from "@/components/admin/AdminSection";
  * @return {JSX}
  */
 const Admin = (
-    props: InferGetServerSidePropsType<any>, // users, posts
+    props: InferGetServerSidePropsType<any>,
 ) => {
   const [posts, setPosts] = useState<Array<any>>(props.posts);
   const [users, setUsers] = useState<Array<any>>(props.users);
   const [reviews, setReviews] = useState<Array<any>>(props.reviews);
   const [comments, setComments] = useState<Array<any>>(props.comments);
   const [subjects, setSubjects] = useState<Array<any>>(props.subjects);
+  const [featuredTutors, setFeaturedTutors] = useState<Array<any>>(props.featuredTutors);
 
   const [newSubjectName, setNewSubjectName] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
@@ -32,6 +34,7 @@ const Admin = (
   const reviewFields = ["_id", "reviewerUserRole", "reviewerUserId", "reviewedUserRole", "reviewedUserId", "rating", "text"];
   const commentFields = ["_id", "role", "userId", "postId", "text"];
   const subjectFields = ["_id", "name"];
+  const featuredTutorsFields = ["_id", "tutorId"];
 
   const handleDeletePost = useCallback(async (post: any) => {
     const response = await fetch(`/api/posts/${post._id.toString()}`, {
@@ -97,6 +100,19 @@ const Admin = (
     });
   }, []);
 
+  const handleDeleteFeaturedTutor = useCallback(async (featuredTutor: any) => {
+    const response = await fetch(`/api/featuredTutors/${featuredTutor._id.toString()}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) console.error(response);
+    else {
+      setFeaturedTutors((oldValues) => {
+        return oldValues.filter((ft) => ft._id.toString() !== featuredTutor._id);
+      });
+    }
+  }, []);
+
   const handlePostSubject = async (event: any) => {
     event.preventDefault();
     const name = event.target.name.value.replace(/\s+/g, "").toLowerCase();
@@ -113,8 +129,12 @@ const Admin = (
           name: event.target.name.value,
         }),
       });
-      if (!response.ok) throw response;
-      else console.log(await response.json());
+      if (!response.ok) console.error(response);
+      else {
+        setSubjects((oldValues) => {
+          return oldValues.filter(async (s) => s._id.toString() !== (await response.json())._id);
+        });
+      }
     } catch (err) {
       console.error(err);
       alert("Check the console to see the error");
@@ -125,12 +145,32 @@ const Admin = (
     const form = new FormData();
     form.append("image", image);
     form.append("name", name);
-    console.log("uploading image> ", form);
     const response = await fetch("/api/iconUpload", {
       method: "POST",
       body: form,
     });
-    console.log(response);
+    if (!response.ok) console.warn(response);
+  };
+
+  const handlePostFeaturedTutor = async (event: any) => {
+    event.preventDefault();
+    const tutorId = event.target.id.value;
+    const response = await fetch("/api/featuredTutors", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tutorId,
+      }),
+    });
+    if (!response.ok) console.error(response);
+    else {
+      const newFT = await response.json();
+      setFeaturedTutors((oldValues) => {
+        return [...oldValues, newFT];
+      });
+    }
   };
 
   const buttonDisable = () => {
@@ -143,17 +183,18 @@ const Admin = (
 
   return (
     <>
-      <div className="flex flex-col px-10 min-h-screen justify-between">
-        <section className="flex gap-10">
-          <div className="flex flex-col p-2 capitalize">
+      <div className="flex flex-col px-10 min-h-screen justify-between overflow-scroll">
+        <section className="flex flex-wrap gap-10">
+          <div className="flex flex-col m-5 capitalize">
             <b className="border-b-dotted">Number of entries</b>
             <div>users: {users.length}</div>
             <div>posts: {posts.length}</div>
             <div>reviews: {reviews.length}</div>
             <div>comments: {comments.length}</div>
             <div>subjects: {subjects.length}</div>
+            <div>featured tutors: {featuredTutors.length}</div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col m-5">
             <h2>Create subject (files must be SVGs)</h2>
             <form action="submit" onSubmit={handlePostSubject} className="flex flex-col gap-1">
               <div className="flex flex-row">
@@ -186,11 +227,24 @@ const Admin = (
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className={`w-24 ${isButtonDisabled ? "bg-black text-white" : "bg-orange-200"} `}
+                  className={`btn-sm ${isButtonDisabled ? "bg-black text-white" : "bg-orange-310"} `}
                   disabled={isButtonDisabled}
                   onClick={buttonDisable}
                 >{isButtonDisabled ? "Disabled..." : "Add Subject"}</button>
               </div>
+            </form>
+          </div>
+          <div className="m-5 capitalize">
+            <h2>add featured tutor</h2>
+            <form action="submit" onSubmit={handlePostFeaturedTutor}>
+              <input type="text" name="id" required placeholder="id"/>
+              <button
+                type="submit"
+                className="btn-sm bg-orange-310"
+                disabled={isButtonDisabled}
+                onClick={buttonDisable}
+              >{isButtonDisabled ? "Disabled..." : "Add Tutor"}
+              </button>
             </form>
           </div>
         </section>
@@ -200,6 +254,7 @@ const Admin = (
           <AdminSection title={"reviews"} fields={reviewFields} content={reviews} deleteFunction={handleDeleteReview} />
           <AdminSection title={"comments"} fields={commentFields} content={comments} deleteFunction={handleDeleteComment} />
           <AdminSection title={"subjects"} fields={subjectFields} content={subjects} deleteFunction={handleDeleteSubject} />
+          <AdminSection title={"featured tutors"} fields={featuredTutorsFields} content={featuredTutors} deleteFunction={handleDeleteFeaturedTutor} />
         </section>
       </div>
     </>
@@ -217,6 +272,7 @@ export const getServerSideProps = async () => {
   const comments = await Comment.find();
   const reviews = await Review.find();
   const subjects = await Subject.find();
+  const featuredTutors = await FeaturedTutors.find();
   return {
     props: {
       posts: JSON.parse(JSON.stringify(posts)),
@@ -224,6 +280,7 @@ export const getServerSideProps = async () => {
       comments: JSON.parse(JSON.stringify(comments)),
       reviews: JSON.parse(JSON.stringify(reviews)),
       subjects: JSON.parse(JSON.stringify(subjects)),
+      featuredTutors: JSON.parse(JSON.stringify(featuredTutors)),
     },
   };
 };

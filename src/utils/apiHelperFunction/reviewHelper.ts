@@ -156,7 +156,6 @@ export const deleteReviewById = async (req: NextApiRequest, res: NextApiResponse
 };
 
 export const deleteReviewFromReviewedUser = async (review: any) => {
-  // TODO: UPDATE RATING AFTER DELETING REVIEW
   let reviewedUser;
   if (review.reviewedUserRole === "student") {
     reviewedUser = await Student.findByIdAndUpdate(review.reviewedUserId, {

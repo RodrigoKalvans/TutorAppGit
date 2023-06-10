@@ -148,10 +148,6 @@ const Post = ({
     }
   };
 
-  useEffect(() => {
-    console.log(presignedUrls);
-  }, [presignedUrls]);
-
   return (
     <>
       {post && !isLoading &&
