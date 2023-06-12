@@ -1,10 +1,11 @@
-import {MouseEventHandler, useRef, useState} from "react";
+import {MouseEventHandler, useState} from "react";
 import {AiOutlineClose} from "react-icons/ai";
 
 const CreateReviewModal = ({closeModal, reviewedUserId, reviewedUserRole}:
    {closeModal: MouseEventHandler, reviewedUserId: string, reviewedUserRole: string}) => {
   const [rating, setRating] = useState<number>(-1);
-  const errorMessage = useRef();
+  const [errorMessage, setErrorMessage] = useState<String | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const updateRating = (e: any) => {
     setRating(e.target.value);
@@ -12,6 +13,7 @@ const CreateReviewModal = ({closeModal, reviewedUserId, reviewedUserRole}:
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    setLoading(true);
 
     const review: {
       text?: string,
@@ -34,7 +36,8 @@ const CreateReviewModal = ({closeModal, reviewedUserId, reviewedUserRole}:
     } else {
       const json = await res.json();
 
-      errorMessage.current = json.message;
+      setErrorMessage(json.message);
+      setLoading(false);
     }
   };
 
@@ -49,7 +52,7 @@ const CreateReviewModal = ({closeModal, reviewedUserId, reviewedUserRole}:
         </div>
 
         <form className="mb-5" onSubmit={handleSubmit}>
-          {errorMessage.current && <p className="text-red-500">{errorMessage.current}</p>}
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           <div className="flex flex-col gap-y-3 py-3 max-h-[70vh] overflow-y-auto">
             <div>
               <div className="rating rating-md" onChange={updateRating}>
@@ -68,7 +71,13 @@ const CreateReviewModal = ({closeModal, reviewedUserId, reviewedUserRole}:
           </div>
 
           <div className="border-t-2">
-            <button type="submit" className="btn btn-primary rounded-4xl btn-sm mt-3">Submit</button>
+            <button
+              type="submit"
+              className="btn btn-primary rounded-4xl btn-sm mt-3"
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </button>
           </div>
         </form>
       </div>

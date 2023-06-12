@@ -79,6 +79,11 @@ const handleResetPasswordEmailRequest = async (req: NextApiRequest, res: NextApi
 
     if (expirationTime.getTime() < new Date().getTime()) {
       passwordResetRecord.token = uuidv4();
+
+      const newExpirationTime = new Date();
+      newExpirationTime.setMinutes(expirationTime.getMinutes() + 30);
+
+      passwordResetRecord.expiresAt = newExpirationTime;
     }
 
     const result = await emailer.sendPasswordResetEmail(passwordResetRecord.email, passwordResetRecord.token);
