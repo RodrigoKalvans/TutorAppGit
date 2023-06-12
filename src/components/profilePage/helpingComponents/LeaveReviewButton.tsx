@@ -4,7 +4,7 @@ import CreateReviewModal from "../CreateReviewModal";
 
 const LeaveReviewButton = ({reviewedUserId, reviewedUserRole}:
   {reviewedUserId: string, reviewedUserRole: string}) => {
-  const [openCreatePost, setOpenCreatePost] = useState<boolean>(false);
+  const [openCreateReview, setOpenCreatePost] = useState<boolean>(false);
   const {data: session} = useSession();
 
   const closeModal = () => {
@@ -17,7 +17,7 @@ const LeaveReviewButton = ({reviewedUserId, reviewedUserRole}:
         <button type="button" onClick={() => setOpenCreatePost(true)} className="btn btn-sm rounded-full capitalize">Leave Review</button>
       )}
 
-      {openCreatePost && (
+      {openCreateReview && (
         <CreateReviewModal closeModal={closeModal} reviewedUserId={reviewedUserId}
           reviewedUserRole={reviewedUserRole} />
       )}
