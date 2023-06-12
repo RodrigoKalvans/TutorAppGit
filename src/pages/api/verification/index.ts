@@ -60,6 +60,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
     if (expirationTime.getTime() < new Date().getTime()) {
       emailVerificationRecord.token = uuidv4();
+
+      const newExpirationTime = new Date();
+      newExpirationTime.setMinutes(expirationTime.getMinutes() + 30);
+
+      emailVerificationRecord.expiresAt = newExpirationTime;
     }
 
     const emailer = new Emailer(process.env.GOOGLE_USER!, process.env.GOOGLE_APP_PASSWORD!);
