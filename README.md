@@ -5,12 +5,17 @@ Before running the project and using the app, there is a list of ENV variables t
 List of environmetal variables that are required:
 <code>
 
+ENCRYPTION_KEY=`<encryption_key>`
+
 MONGODB_URI=`mongodb+srv://<username>:<password>@cluster0.0jp3cpr.mongodb.net/<database-name>?retryWrites=true&w=majority`
 
 NEXTAUTH_SECRET=`<generated_nextauth_secret>`
 
-AWS_ACCESS_KEY_ID=`<aws_access_key_id>`
-AWS_SECRET_ACCESS_KEY=`<aws_secret_key>`
+NEXTAUTH_URL=`<base_url>`
+
+S3_ACCESS_KEY_ID=`<aws_access_key_id>`
+
+S3_SECRET_ACCESS_KEY=`<aws_secret_key>`
 
 MAILER_API_KEY=`<api_key_mailerlite>`
 
@@ -29,13 +34,19 @@ GOOGLE_USER=`<email_address>`
 GOOGLE_APP_PASSWORD=`<generated_app_password>`
 </code>
 
+## Encryption key
+
+`ENCRYPTION_KEY` is need to additionally encrypt passwords of the users. Genarate an encryption key at [`https://generate-random.org/encryption-key-generator?count=1&bytes=32&cipher=aes-256-cbc&string=&password=`](https://generate-random.org/encryption-key-generator?count=1&bytes=32&cipher=aes-256-cbc&string=&password=) and add it to the `ENCRYPTION_KEY` variable.
+
 ## MongoDB
 
  This project uses MongoDB database to store all the information. In order to be able to connect to it, you firstly need to create an account ([`create account link`](https://www.mongodb.com/cloud/atlas/lp/try4?utm_source=bing&utm_campaign=search_bs_pl_evergreen_atlas_core_prosp-brand_gic-null_emea-nl_ps-all_desktop_eng_lead&utm_term=mongodb%20atlas&utm_medium=cpc_paid_search&utm_ad=p&utm_ad_campaign_id=415204547&adgroup=1214960818278103&msclkid=7ff4724ad48e1951e3dd1635ce5db860)) and then set up your database on mongodb website. To set up a database, please follow the [`instructions`](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/) created by MongoDB (please click Atlas UI to see the instructions that you need). As it is indicated at the Next steps section of the above instructions, you need to add the IP address to the IP list. Please, do so by following this [`instructions`](https://www.mongodb.com/docs/atlas/security/add-ip-address-to-list/). After previous steps are done, you need to create the user for your database. You can follow [`this link`](https://www.mongodb.com/docs/atlas/tutorial/create-mongodb-user-for-cluster/) and follow the instructions there. Once everything is done, add `MONGODB_URI` evirinmental variable. This variable has the link to connect to the database. The link has placeholders that should be replaced with username and password of the user you created in the last step, and database name. The URI: `mongodb+srv://<username>:<password>@cluster0.0jp3cpr.mongodb.net/<database-name>?retryWrites=true&w=majority`
 
 ## NextAuth
 
-NextAuth is the authentication tool that provides simplicity in developing the authentication system. It is used in this project, and in order for it to work `NEXTAUTH_SECRET` is required. Therefore, you need to generate the secret key by using any third-party websites (e.g. [`https://generate-secret.vercel.app/32`](https://generate-secret.vercel.app/32)), or if you have GitBash (Git) installed in your system, you can generate the secret key by pasting the following command in GitBash: `openssl rand -base64 32`
+NextAuth is the authentication tool that provides simplicity in developing the authentication system. It is used in this project, and in order for it to work `NEXTAUTH_SECRET` is required. Therefore, you need to generate the secret key by using any third-party websites (e.g. [`https://generate-secret.vercel.app/32`](https://generate-secret.vercel.app/32)), or if you have GitBash (Git) installed in your system, you can generate the secret key by pasting the following command in GitBash: `openssl rand -base64 32`.
+
+There is one more envirinment variable that is needed for NextAuth, which is `NEXTAUTH_URL`. This variable needs to have the base url of a deployed website (e.g. `https://tcorvus.com`).
 
 ## AWS
 

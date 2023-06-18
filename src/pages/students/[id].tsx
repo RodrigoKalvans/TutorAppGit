@@ -96,11 +96,16 @@ export default StudentPage;
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   await db.connect();
   let student = await Student.findById(context.query.id);
+  if (!student) {
+    return {
+      props: {},
+    };
+  }
   student = JSON.parse(JSON.stringify(student));
 
   // Check if logged in user already follows the student
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
-  const isFollowing = student.followers.findIndex((follower: {_id: ObjectId, userId: String, role: String}) => follower.userId === session?.user.id.toString()) > -1;
+  const isFollowing: boolean = student.followers.findIndex((follower: {_id: ObjectId, userId: String, role: String}) => follower.userId === session?.user.id.toString()) > -1;
   // Get subjects
   const subjects = await Subject.find({
     _id: {
