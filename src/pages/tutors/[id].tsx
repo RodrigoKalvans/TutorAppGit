@@ -112,7 +112,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   // Check if logged in user already follows the tutor
   const session: Session | null = await getServerSession(context.req, context.res, authOptions);
-  const isFollowing = tutor.followers.findIndex((follower: {_id: ObjectId, userId: String, role: String}) => follower.userId === session?.user.id.toString()) > -1;
+  const isFollowing: boolean = tutor.followers.findIndex((follower: {_id: ObjectId, userId: String, role: String}) => follower.userId === session?.user.id.toString()) > -1;
 
   // Get subjects (tutor's)
   const subjects = await Subject.find({
